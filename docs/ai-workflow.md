@@ -37,7 +37,7 @@ flowchart LR
 
 Before coding, ask the agent:
 
-> Inspect this Flutter repository and the ticket. Before coding, create an implementation plan with: summary, files to change, architecture approach, state management, validation, tests, risks, and assumptions. Do not write code yet. Follow AGENTS.md.
+> Inspect this Flutter repository and the linked GitHub issue. Before coding, create an implementation plan with: summary, files to change, architecture approach, state management, validation, tests, risks, and assumptions. Do not write code yet. Follow AGENTS.md.
 
 ## Implementation prompt
 
@@ -53,6 +53,6 @@ Implement a simple onboarding screen with email input, validation, loading state
 
 Build the whole app.
 
-## Product repos
+## Backlog
 
-Keep this repository as a **reusable template**. For each client or product, create a separate repo (fork, duplicate, or `Use this template`) and add tickets there — not in the template itself.
+Track work in **GitHub Issues** (or your team’s issue tracker). Do not commit ticket markdown under `docs/` — the issue body is the source of truth for scope and acceptance criteria.
