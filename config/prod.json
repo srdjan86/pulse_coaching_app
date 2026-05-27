@@ -1,0 +1,7 @@
+{
+  "FLAVOR": "prod",
+  "APP_NAME": "Pulse",
+  "BACKEND": "mock",
+  "SUPABASE_URL": "",
+  "SUPABASE_ANON_KEY": ""
+}

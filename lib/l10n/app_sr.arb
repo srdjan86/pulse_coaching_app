@@ -1,0 +1,20 @@
+{
+  "@@locale": "sr",
+  "appTitle": "AI Flutter Šablon",
+  "homeTitle": "Početna",
+  "homeSubtitle": "Flutter šablon spreman za AI radni tok",
+  "counterTitle": "Brojač (BLoC)",
+  "counterDescription": "Arhitektura po funkcijama sa flutter_bloc",
+  "authTitle": "Autentifikacija (MVVM)",
+  "authDescription": "Backend-agnostična autentifikacija sa mock, Firebase ili Supabase",
+  "counterLabel": "Pritisnuli ste dugme ovoliko puta:",
+  "incrementTooltip": "Povećaj",
+  "signIn": "Prijavi se",
+  "signOut": "Odjavi se",
+  "signedInAs": "Prijavljeni ste kao {email}",
+  "notSignedIn": "Niste prijavljeni",
+  "backendLabel": "Backend: {backend}",
+  "flavorLabel": "Okruženje: {flavor}",
+  "demoEmail": "demo@primer.rs",
+  "loading": "Učitavanje..."
+}

@@ -1,0 +1,61 @@
+name: AI agent task
+description: Ticket formatted for ticket → plan → code → tests → PR workflow
+title: '[AI Task] '
+labels: ['ai-task']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template in Week 2+ when driving agent-assisted delivery.
+        Keep the task scoped to one PR when possible.
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: One sentence outcome
+      placeholder: Add pull-to-refresh on the home feature list.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+        - [ ] Tests cover new behavior
+        - [ ] CI passes
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context / constraints
+      description: Architecture notes, files to touch, patterns to follow
+      value: |
+        - Follow feature-first layout under `lib/features/`
+        - Use BLoC for stateful flows unless MVVM is already established in the feature
+        - Update localization for user-visible strings
+    validations:
+      required: false
+
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Out of scope
+      placeholder: No backend changes, no new dependencies.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: qa
+    attributes:
+      label: QA checklist (for PR description)
+      options:
+        - label: Happy path verified manually
+        - label: Error states handled
+        - label: Localization reviewed
+        - label: No regressions in existing tests

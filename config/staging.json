@@ -1,0 +1,7 @@
+{
+  "FLAVOR": "staging",
+  "APP_NAME": "Pulse Staging",
+  "BACKEND": "mock",
+  "SUPABASE_URL": "",
+  "SUPABASE_ANON_KEY": ""
+}

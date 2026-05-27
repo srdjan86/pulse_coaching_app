@@ -1,0 +1,37 @@
+name: Feature request
+description: Suggest an improvement to the template
+title: '[Feature] '
+labels: ['enhancement']
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or opportunity
+      description: What workflow or pattern is missing?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Affected areas
+      options:
+        - label: Architecture / features
+        - label: Tests
+        - label: CI / GitHub templates
+        - label: AGENTS.md / AI workflow
+        - label: Localization / flavors

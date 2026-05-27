@@ -1,0 +1,44 @@
+{
+  "@@locale": "en",
+  "appTitle": "AI Flutter Template",
+  "@appTitle": {
+    "description": "Application title shown in the app bar"
+  },
+  "homeTitle": "Home",
+  "homeSubtitle": "AI-ready Flutter delivery template",
+  "counterTitle": "Counter (BLoC)",
+  "counterDescription": "Feature-first architecture with flutter_bloc",
+  "authTitle": "Auth (MVVM)",
+  "authDescription": "Backend-agnostic auth with mock, Firebase, or Supabase",
+  "counterLabel": "You have pushed the button this many times:",
+  "incrementTooltip": "Increment",
+  "signIn": "Sign in",
+  "signOut": "Sign out",
+  "signedInAs": "Signed in as {email}",
+  "@signedInAs": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "notSignedIn": "Not signed in",
+  "backendLabel": "Backend: {backend}",
+  "@backendLabel": {
+    "placeholders": {
+      "backend": {
+        "type": "String"
+      }
+    }
+  },
+  "flavorLabel": "Flavor: {flavor}",
+  "@flavorLabel": {
+    "placeholders": {
+      "flavor": {
+        "type": "String"
+      }
+    }
+  },
+  "demoEmail": "demo@example.com",
+  "loading": "Loading..."
+}
