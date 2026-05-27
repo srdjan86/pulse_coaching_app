@@ -40,5 +40,17 @@
     }
   },
   "demoEmail": "demo@example.com",
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "onboardingTitle": "Welcome to Pulse",
+  "@onboardingTitle": {
+    "description": "Onboarding screen headline"
+  },
+  "onboardingSubtitle": "Coaching and wellness, tailored for you. Enter your email to get started.",
+  "@onboardingSubtitle": {
+    "description": "Onboarding screen supporting text"
+  },
+  "onboardingEmailLabel": "Email",
+  "onboardingEmailHint": "you@example.com",
+  "onboardingCta": "Get started",
+  "onboardingEmailInvalid": "Enter a valid email address"
 }
