@@ -87,6 +87,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingEmailInvalid => 'Enter a valid email address';
 
   @override
+  String get loginTitle => 'Sign in to Pulse';
+
+  @override
+  String get loginSubtitle => 'Welcome back.';
+
+  @override
+  String get loginEmailLabel => 'Email';
+
+  @override
+  String get loginPasswordLabel => 'Password';
+
+  @override
+  String get loginPasswordHint => 'Your password';
+
+  @override
+  String get loginEmailRequired => 'Email is required';
+
+  @override
+  String get loginPasswordRequired => 'Password is required';
+
+  @override
   String get settingsTitle => 'Settings';
 
   @override

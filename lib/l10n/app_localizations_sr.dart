@@ -86,6 +86,27 @@ class AppLocalizationsSr extends AppLocalizations {
   String get onboardingEmailInvalid => 'Unesite ispravnu email adresu';
 
   @override
+  String get loginTitle => 'Prijavite se na Pulse';
+
+  @override
+  String get loginSubtitle => 'Dobrodošli nazad.';
+
+  @override
+  String get loginEmailLabel => 'Email';
+
+  @override
+  String get loginPasswordLabel => 'Lozinka';
+
+  @override
+  String get loginPasswordHint => 'Vaša lozinka';
+
+  @override
+  String get loginEmailRequired => 'Email je obavezan';
+
+  @override
+  String get loginPasswordRequired => 'Lozinka je obavezna';
+
+  @override
   String get settingsTitle => 'Podešavanja';
 
   @override
