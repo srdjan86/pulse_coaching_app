@@ -8,6 +8,7 @@ import 'package:pulse_coaching_app/features/counter/presentation/bloc/counter_ev
 import 'package:pulse_coaching_app/features/counter/presentation/bloc/counter_state.dart';
 import 'package:pulse_coaching_app/features/counter/presentation/pages/counter_page.dart';
 import 'package:pulse_coaching_app/l10n/app_localizations.dart';
+import '../../helpers/test_dependencies.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,7 +40,7 @@ void main() {
   group('CounterPage', () {
     setUp(() async {
       await getIt.reset();
-      await configureDependencies(
+      await configureTestDependencies(
         const AppConfig(
           flavor: AppFlavor.dev,
           appName: 'Pulse Dev',

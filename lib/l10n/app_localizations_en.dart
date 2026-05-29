@@ -85,4 +85,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingEmailInvalid => 'Enter a valid email address';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get themeSectionTitle => 'Appearance';
+
+  @override
+  String get themeModeSystem => 'System';
+
+  @override
+  String get themeModeLight => 'Light';
+
+  @override
+  String get themeModeDark => 'Dark';
 }

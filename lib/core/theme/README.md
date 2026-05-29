@@ -19,4 +19,8 @@
 
 Flavor (`dev` / `staging` / `prod`) only adjusts **secondary** accent via `AppTheme.light(flavor: ...)`.
 
-Dark mode is not implemented yet.
+## Theme mode (user setting)
+
+Users can choose **System**, **Light**, or **Dark** under **Settings** (gear icon on home). The choice is stored locally via `shared_preferences`.
+
+`DeliveryApp` applies `theme`, `darkTheme`, and `themeMode` from `ThemeSettingsViewModel`.

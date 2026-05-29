@@ -2,6 +2,7 @@ import 'package:pulse_coaching_app/app/di/service_locator.dart';
 import 'package:pulse_coaching_app/core/config/app_config.dart';
 import 'package:pulse_coaching_app/core/config/app_flavor.dart';
 import 'package:pulse_coaching_app/core/config/backend_type.dart';
+import '../../helpers/test_dependencies.dart';
 import 'package:pulse_coaching_app/features/home/presentation/pages/home_page.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/view_models/onboarding_view_model.dart';
@@ -13,7 +14,7 @@ import 'package:go_router/go_router.dart';
 void main() {
   setUp(() async {
     await getIt.reset();
-    await configureDependencies(
+    await configureTestDependencies(
       const AppConfig(
         flavor: AppFlavor.dev,
         appName: 'Pulse Dev',

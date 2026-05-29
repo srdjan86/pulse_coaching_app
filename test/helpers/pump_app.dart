@@ -3,6 +3,7 @@ import 'package:pulse_coaching_app/core/config/app_config.dart';
 import 'package:pulse_coaching_app/core/config/app_flavor.dart';
 import 'package:pulse_coaching_app/core/config/backend_type.dart';
 import 'package:pulse_coaching_app/l10n/app_localizations.dart';
+import 'test_dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -16,7 +17,7 @@ Future<void> pumpTestApp(
   ),
 }) async {
   await getIt.reset();
-  await configureDependencies(config);
+  await configureTestDependencies(config);
 
   await tester.pumpWidget(
     MaterialApp(

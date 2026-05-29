@@ -2,6 +2,7 @@ import 'package:pulse_coaching_app/features/auth/presentation/pages/auth_demo_pa
 import 'package:pulse_coaching_app/features/counter/presentation/pages/counter_page.dart';
 import 'package:pulse_coaching_app/features/home/presentation/pages/home_page.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:pulse_coaching_app/features/settings/presentation/pages/settings_page.dart';
 import 'package:go_router/go_router.dart';
 
 GoRouter createAppRouter() {
@@ -18,6 +19,10 @@ GoRouter createAppRouter() {
         builder: (context, state) => const CounterPage(),
       ),
       GoRoute(path: '/auth', builder: (context, state) => const AuthDemoPage()),
+      GoRoute(
+        path: '/settings',
+        builder: (context, state) => const SettingsPage(),
+      ),
     ],
   );
 }

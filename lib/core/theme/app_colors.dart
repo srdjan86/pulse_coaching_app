@@ -46,8 +46,23 @@ class AppColors extends ThemeExtension<AppColors> {
     surfaceContainer: Color(0xFFE8F0F0),
   );
 
+  /// Dark palette aligned with Pulse brand teal.
+  static const dark = AppColors(
+    primary: Color(0xFF4DB6AC),
+    onPrimary: Color(0xFF00363A),
+    surface: Color(0xFF121E1E),
+    onSurface: Color(0xFFE8F0F0),
+    error: Color(0xFFF2B8B5),
+    onError: Color(0xFF601410),
+    surfaceContainer: Color(0xFF1E2E2E),
+  );
+
   static AppColors of(BuildContext context) {
-    return Theme.of(context).extension<AppColors>() ?? light;
+    final extension = Theme.of(context).extension<AppColors>();
+    if (extension != null) {
+      return extension;
+    }
+    return Theme.of(context).brightness == Brightness.dark ? dark : light;
   }
 
   @override

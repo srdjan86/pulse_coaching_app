@@ -1,5 +1,6 @@
 import 'package:pulse_coaching_app/core/theme/app_colors.dart';
 import 'package:pulse_coaching_app/core/theme/app_theme.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -34,6 +35,18 @@ void main() {
 
       expect(theme.scaffoldBackgroundColor, colors.surface);
       expect(theme.appBarTheme.backgroundColor, colors.surface);
+    });
+  });
+
+  group('AppTheme.dark', () {
+    test('maps AppColors.dark to ColorScheme', () {
+      const colors = AppColors.dark;
+      final theme = AppTheme.dark(flavor: 'dev');
+
+      expect(theme.colorScheme.brightness, Brightness.dark);
+      expect(theme.colorScheme.primary, colors.primary);
+      expect(theme.colorScheme.surface, colors.surface);
+      expect(theme.extension<AppColors>(), AppColors.dark);
     });
   });
 }

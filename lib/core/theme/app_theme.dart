@@ -2,13 +2,31 @@ import 'package:pulse_coaching_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  /// Builds the app light theme using [AppColors] and a flavor accent for secondary.
   static ThemeData light({required String flavor}) {
-    const colors = AppColors.light;
+    return _build(
+      colors: AppColors.light,
+      flavor: flavor,
+      brightness: Brightness.light,
+    );
+  }
+
+  static ThemeData dark({required String flavor}) {
+    return _build(
+      colors: AppColors.dark,
+      flavor: flavor,
+      brightness: Brightness.dark,
+    );
+  }
+
+  static ThemeData _build({
+    required AppColors colors,
+    required String flavor,
+    required Brightness brightness,
+  }) {
     final flavorAccent = _flavorAccentColor(flavor);
 
     final colorScheme = ColorScheme(
-      brightness: Brightness.light,
+      brightness: brightness,
       primary: colors.primary,
       onPrimary: colors.onPrimary,
       secondary: flavorAccent,
@@ -23,7 +41,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
-      extensions: const [AppColors.light],
+      extensions: [colors],
       scaffoldBackgroundColor: colors.surface,
       appBarTheme: AppBarTheme(
         backgroundColor: colors.surface,
