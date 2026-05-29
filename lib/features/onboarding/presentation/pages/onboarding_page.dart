@@ -25,8 +25,10 @@ class _OnboardingBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
 
     return Scaffold(
+      backgroundColor: theme.colorScheme.surface,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -46,13 +48,13 @@ class _OnboardingBody extends StatelessWidget {
                     children: [
                       Text(
                         l10n.onboardingTitle,
-                        style: Theme.of(context).textTheme.headlineMedium,
+                        style: theme.textTheme.headlineMedium,
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 12),
                       Text(
                         l10n.onboardingSubtitle,
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: theme.textTheme.bodyLarge,
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 32),
@@ -81,9 +83,7 @@ class _OnboardingBody extends StatelessWidget {
                                 width: 20,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onPrimary,
+                                  color: theme.colorScheme.onPrimary,
                                 ),
                               )
                             : Text(l10n.onboardingCta),

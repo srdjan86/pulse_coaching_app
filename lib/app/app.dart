@@ -17,9 +17,7 @@ class DeliveryApp extends StatelessWidget {
 
     return MaterialApp.router(
       title: config.appName,
-      theme: AppTheme.light(
-        seedColor: AppTheme.seedColorForFlavor(config.flavor.name),
-      ),
+      theme: AppTheme.light(flavor: config.flavor.name),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: createAppRouter(),
