@@ -22,5 +22,10 @@
   "onboardingEmailLabel": "Email",
   "onboardingEmailHint": "vi@primer.rs",
   "onboardingCta": "Započni",
-  "onboardingEmailInvalid": "Unesite ispravnu email adresu"
+  "onboardingEmailInvalid": "Unesite ispravnu email adresu",
+  "settingsTitle": "Podešavanja",
+  "themeSectionTitle": "Izgled",
+  "themeModeSystem": "Sistem",
+  "themeModeLight": "Svetlo",
+  "themeModeDark": "Tamno"
 }

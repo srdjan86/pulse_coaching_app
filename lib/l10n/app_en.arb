@@ -52,5 +52,10 @@
   "onboardingEmailLabel": "Email",
   "onboardingEmailHint": "you@example.com",
   "onboardingCta": "Get started",
-  "onboardingEmailInvalid": "Enter a valid email address"
+  "onboardingEmailInvalid": "Enter a valid email address",
+  "settingsTitle": "Settings",
+  "themeSectionTitle": "Appearance",
+  "themeModeSystem": "System",
+  "themeModeLight": "Light",
+  "themeModeDark": "Dark"
 }

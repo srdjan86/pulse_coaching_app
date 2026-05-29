@@ -11,19 +11,33 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final config = getIt<AppConfig>();
+    final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.appTitle)),
+      backgroundColor: theme.colorScheme.surface,
+      appBar: AppBar(
+        title: Text(l10n.appTitle),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            tooltip: l10n.settingsTitle,
+            onPressed: () => context.push('/settings'),
+          ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Text(
-            l10n.homeSubtitle,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
+          Text(l10n.homeSubtitle, style: theme.textTheme.titleMedium),
           const SizedBox(height: 8),
-          Text(l10n.flavorLabel(config.flavor.name)),
-          Text(l10n.backendLabel(config.backend.name)),
+          Text(
+            l10n.flavorLabel(config.flavor.name),
+            style: theme.textTheme.bodyMedium,
+          ),
+          Text(
+            l10n.backendLabel(config.backend.name),
+            style: theme.textTheme.bodyMedium,
+          ),
           const SizedBox(height: 24),
           _FeatureCard(
             title: l10n.counterTitle,
@@ -55,11 +69,13 @@ class _FeatureCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Card(
       child: ListTile(
-        title: Text(title),
-        subtitle: Text(description),
-        trailing: const Icon(Icons.chevron_right),
+        title: Text(title, style: theme.textTheme.titleMedium),
+        subtitle: Text(description, style: theme.textTheme.bodyMedium),
+        trailing: Icon(Icons.chevron_right, color: theme.colorScheme.primary),
         onTap: onTap,
       ),
     );

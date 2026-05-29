@@ -9,16 +9,26 @@ import 'package:pulse_coaching_app/features/counter/data/repositories/counter_re
 import 'package:pulse_coaching_app/features/counter/domain/repositories/counter_repository.dart';
 import 'package:pulse_coaching_app/features/counter/presentation/bloc/counter_bloc.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/view_models/onboarding_view_model.dart';
+import 'package:pulse_coaching_app/features/settings/data/repositories/shared_preferences_theme_preferences_repository.dart';
+import 'package:pulse_coaching_app/features/settings/domain/repositories/theme_preferences_repository.dart';
+import 'package:pulse_coaching_app/features/settings/presentation/view_models/theme_settings_view_model.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
 
-Future<void> configureDependencies(AppConfig config) async {
+Future<void> configureDependencies(
+  AppConfig config, {
+  SharedPreferences? preferences,
+}) async {
   if (getIt.isRegistered<AppConfig>()) {
     return;
   }
 
   getIt.registerSingleton<AppConfig>(config);
+
+  final prefs = preferences ?? await SharedPreferences.getInstance();
+  getIt.registerSingleton<SharedPreferences>(prefs);
 
   getIt.registerLazySingleton<CounterRepository>(CounterRepositoryImpl.new);
   getIt.registerFactory(() => CounterBloc(getIt()));
@@ -28,6 +38,13 @@ Future<void> configureDependencies(AppConfig config) async {
   );
   getIt.registerFactory(() => AuthViewModel(getIt()));
   getIt.registerFactory(OnboardingViewModel.new);
+
+  getIt.registerLazySingleton<ThemePreferencesRepository>(
+    () => SharedPreferencesThemePreferencesRepository(getIt()),
+  );
+  getIt.registerLazySingleton<ThemeSettingsViewModel>(
+    () => ThemeSettingsViewModel(getIt()),
+  );
 }
 
 AuthRepository _createAuthRepository(AppConfig config) {

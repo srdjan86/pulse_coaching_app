@@ -84,4 +84,19 @@ class AppLocalizationsSr extends AppLocalizations {
 
   @override
   String get onboardingEmailInvalid => 'Unesite ispravnu email adresu';
+
+  @override
+  String get settingsTitle => 'Podešavanja';
+
+  @override
+  String get themeSectionTitle => 'Izgled';
+
+  @override
+  String get themeModeSystem => 'Sistem';
+
+  @override
+  String get themeModeLight => 'Svetlo';
+
+  @override
+  String get themeModeDark => 'Tamno';
 }
