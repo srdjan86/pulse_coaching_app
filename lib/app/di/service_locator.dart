@@ -8,6 +8,7 @@ import 'package:pulse_coaching_app/features/auth/presentation/view_models/auth_v
 import 'package:pulse_coaching_app/features/counter/data/repositories/counter_repository_impl.dart';
 import 'package:pulse_coaching_app/features/counter/domain/repositories/counter_repository.dart';
 import 'package:pulse_coaching_app/features/counter/presentation/bloc/counter_bloc.dart';
+import 'package:pulse_coaching_app/features/onboarding/presentation/view_models/onboarding_view_model.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -26,6 +27,7 @@ Future<void> configureDependencies(AppConfig config) async {
     () => _createAuthRepository(config),
   );
   getIt.registerFactory(() => AuthViewModel(getIt()));
+  getIt.registerFactory(OnboardingViewModel.new);
 }
 
 AuthRepository _createAuthRepository(AppConfig config) {

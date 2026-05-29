@@ -199,6 +199,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loading...'**
   String get loading;
+
+  /// Onboarding screen headline
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Pulse'**
+  String get onboardingTitle;
+
+  /// Onboarding screen supporting text
+  ///
+  /// In en, this message translates to:
+  /// **'Coaching and wellness, tailored for you. Enter your email to get started.'**
+  String get onboardingSubtitle;
+
+  /// No description provided for @onboardingEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get onboardingEmailLabel;
+
+  /// No description provided for @onboardingEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'you@example.com'**
+  String get onboardingEmailHint;
+
+  /// No description provided for @onboardingCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Get started'**
+  String get onboardingCta;
+
+  /// No description provided for @onboardingEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get onboardingEmailInvalid;
 }
 
 class _AppLocalizationsDelegate

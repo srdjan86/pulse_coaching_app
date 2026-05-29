@@ -65,4 +65,23 @@ class AppLocalizationsSr extends AppLocalizations {
 
   @override
   String get loading => 'Učitavanje...';
+
+  @override
+  String get onboardingTitle => 'Dobrodošli u Pulse';
+
+  @override
+  String get onboardingSubtitle =>
+      'Coaching i dobrobit, prilagođeni vama. Unesite email da biste počeli.';
+
+  @override
+  String get onboardingEmailLabel => 'Email';
+
+  @override
+  String get onboardingEmailHint => 'vi@primer.rs';
+
+  @override
+  String get onboardingCta => 'Započni';
+
+  @override
+  String get onboardingEmailInvalid => 'Unesite ispravnu email adresu';
 }

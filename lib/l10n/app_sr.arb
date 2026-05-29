@@ -16,5 +16,11 @@
   "backendLabel": "Backend: {backend}",
   "flavorLabel": "Okruženje: {flavor}",
   "demoEmail": "demo@primer.rs",
-  "loading": "Učitavanje..."
+  "loading": "Učitavanje...",
+  "onboardingTitle": "Dobrodošli u Pulse",
+  "onboardingSubtitle": "Coaching i dobrobit, prilagođeni vama. Unesite email da biste počeli.",
+  "onboardingEmailLabel": "Email",
+  "onboardingEmailHint": "vi@primer.rs",
+  "onboardingCta": "Započni",
+  "onboardingEmailInvalid": "Unesite ispravnu email adresu"
 }

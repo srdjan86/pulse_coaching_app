@@ -66,4 +66,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loading => 'Loading...';
+
+  @override
+  String get onboardingTitle => 'Welcome to Pulse';
+
+  @override
+  String get onboardingSubtitle =>
+      'Coaching and wellness, tailored for you. Enter your email to get started.';
+
+  @override
+  String get onboardingEmailLabel => 'Email';
+
+  @override
+  String get onboardingEmailHint => 'you@example.com';
+
+  @override
+  String get onboardingCta => 'Get started';
+
+  @override
+  String get onboardingEmailInvalid => 'Enter a valid email address';
 }
