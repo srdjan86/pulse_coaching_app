@@ -8,6 +8,8 @@ import 'package:pulse_coaching_app/features/auth/presentation/view_models/auth_v
 import 'package:pulse_coaching_app/features/counter/data/repositories/counter_repository_impl.dart';
 import 'package:pulse_coaching_app/features/counter/domain/repositories/counter_repository.dart';
 import 'package:pulse_coaching_app/features/counter/presentation/bloc/counter_bloc.dart';
+import 'package:pulse_coaching_app/features/onboarding/data/repositories/shared_preferences_onboarding_repository.dart';
+import 'package:pulse_coaching_app/features/onboarding/domain/repositories/onboarding_repository.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/view_models/onboarding_view_model.dart';
 import 'package:pulse_coaching_app/features/settings/data/repositories/shared_preferences_theme_preferences_repository.dart';
 import 'package:pulse_coaching_app/features/settings/domain/repositories/theme_preferences_repository.dart';
@@ -20,6 +22,7 @@ final getIt = GetIt.instance;
 Future<void> configureDependencies(
   AppConfig config, {
   SharedPreferences? preferences,
+  OnboardingRepository? onboardingRepository,
 }) async {
   if (getIt.isRegistered<AppConfig>()) {
     return;
@@ -37,7 +40,14 @@ Future<void> configureDependencies(
     () => _createAuthRepository(config),
   );
   getIt.registerFactory(() => AuthViewModel(getIt()));
-  getIt.registerFactory(OnboardingViewModel.new);
+
+  getIt.registerLazySingleton<OnboardingRepository>(
+    () =>
+        onboardingRepository ?? SharedPreferencesOnboardingRepository(getIt()),
+  );
+  getIt.registerLazySingleton<OnboardingViewModel>(
+    () => OnboardingViewModel(repository: getIt()),
+  );
 
   getIt.registerLazySingleton<ThemePreferencesRepository>(
     () => SharedPreferencesThemePreferencesRepository(getIt()),
