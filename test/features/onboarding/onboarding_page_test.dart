@@ -4,6 +4,7 @@ import 'package:pulse_coaching_app/core/config/app_flavor.dart';
 import 'package:pulse_coaching_app/core/config/backend_type.dart';
 import '../../helpers/test_dependencies.dart';
 import 'package:pulse_coaching_app/features/home/presentation/pages/home_page.dart';
+import 'package:pulse_coaching_app/features/onboarding/data/repositories/in_memory_onboarding_repository.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/view_models/onboarding_view_model.dart';
 import 'package:pulse_coaching_app/l10n/app_localizations.dart';
@@ -33,7 +34,12 @@ void main() {
     bool navigateOnSuccess = false,
   }) async {
     final onboarding = OnboardingPage(
-      viewModel: viewModel ?? OnboardingViewModel(submitDelay: Duration.zero),
+      viewModel:
+          viewModel ??
+          OnboardingViewModel(
+            repository: InMemoryOnboardingRepository(),
+            submitDelay: Duration.zero,
+          ),
     );
 
     if (navigateOnSuccess) {
