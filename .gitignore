@@ -55,3 +55,4 @@ lib/firebase_options.dart
 # FVM Version Cache
 .fvm/
 !.fvm/fvm_config.json
+scripts/node_modules/
