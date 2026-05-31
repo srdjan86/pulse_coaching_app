@@ -19,6 +19,7 @@ jobs:
   ai-review:
     name: AI Code Review
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     # Skip forks — CURSOR_API_KEY is not available to fork PRs.
     if: github.event.pull_request.head.repo.full_name == github.repository
     steps:

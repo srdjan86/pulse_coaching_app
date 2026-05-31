@@ -36,7 +36,7 @@ if (!process.env.CURSOR_API_KEY) {
 let diff;
 try {
   diff = execSync(
-    `git diff ${baseSha}..${headSha} -- lib/ test/ .github/`,
+    `git diff ${baseSha}..${headSha} -- lib/ test/ .github/ scripts/`,
     { cwd: repoRoot, maxBuffer: 2 * 1024 * 1024 }
   ).toString();
 } catch {
