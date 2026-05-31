@@ -5,6 +5,12 @@ on:
     types: [opened, synchronize, reopened]
     branches: [develop, main]
 
+# Cancel any in-progress review for the same PR on new pushes,
+# preventing duplicate comments from parallel runs.
+concurrency:
+  group: pr-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 permissions:
   pull-requests: write
   contents: read
@@ -13,9 +19,11 @@ jobs:
   ai-review:
     name: AI Code Review
     runs-on: ubuntu-latest
+    # Skip forks — CURSOR_API_KEY is not available to fork PRs.
+    if: github.event.pull_request.head.repo.full_name == github.repository
     steps:
       - name: Checkout PR branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -24,10 +32,10 @@ jobs:
         with:
           node-version: "20"
           cache: "npm"
-          cache-dependency-path: scripts/package.json
+          cache-dependency-path: scripts/package-lock.json
 
       - name: Install review agent dependencies
-        run: npm install
+        run: npm ci
         working-directory: scripts
 
       - name: Run AI review agent

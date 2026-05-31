@@ -5,6 +5,6 @@
   "private": true,
   "description": "Cursor SDK review agent for pulse_coaching_app PRs",
   "dependencies": {
-    "@cursor/sdk": "latest"
+    "@cursor/sdk": "1.0.17"
   }
 }
