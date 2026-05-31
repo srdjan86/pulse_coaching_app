@@ -1,0 +1,10 @@
+{
+  "name": "pulse-review-agent",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "Cursor SDK review agent for pulse_coaching_app PRs",
+  "dependencies": {
+    "@cursor/sdk": "latest"
+  }
+}
