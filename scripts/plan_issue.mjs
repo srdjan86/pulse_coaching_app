@@ -17,7 +17,6 @@ const repoRoot = join(__dirname, "..");
 
 const issueNumber = process.env.ISSUE_NUMBER;
 const issueTitle = process.env.ISSUE_TITLE;
-const issueBody = process.env.ISSUE_BODY;
 const repo = process.env.GITHUB_REPOSITORY;
 
 if (!issueNumber || !issueTitle || !repo) {
@@ -38,6 +37,7 @@ try {
   agentsMd = "(AGENTS.md not found)";
 }
 
+const MAX_ISSUE_BODY_CHARS = 4_000;
 const MAX_SOURCE_CHARS = 6_000;
 const MAX_TREE_CHARS = 3_000;
 
@@ -66,6 +66,8 @@ function tryRead(relPath) {
     return `(${relPath} not found)`;
   }
 }
+
+const issueBody = truncate(process.env.ISSUE_BODY ?? "", MAX_ISSUE_BODY_CHARS, "issue body");
 
 const routerSource = truncate(tryRead("lib/app/router/app_router.dart"), MAX_SOURCE_CHARS, "router");
 const diSource = truncate(tryRead("lib/app/di/service_locator.dart"), MAX_SOURCE_CHARS, "service_locator");
