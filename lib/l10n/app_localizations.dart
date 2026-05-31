@@ -236,6 +236,48 @@ abstract class AppLocalizations {
   /// **'Enter a valid email address'**
   String get onboardingEmailInvalid;
 
+  /// No description provided for @loginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to Pulse'**
+  String get loginTitle;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back.'**
+  String get loginSubtitle;
+
+  /// No description provided for @loginEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get loginEmailLabel;
+
+  /// No description provided for @loginPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get loginPasswordLabel;
+
+  /// No description provided for @loginPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your password'**
+  String get loginPasswordHint;
+
+  /// No description provided for @loginEmailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get loginEmailRequired;
+
+  /// No description provided for @loginPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get loginPasswordRequired;
+
   /// No description provided for @settingsTitle.
   ///
   /// In en, this message translates to:

@@ -1,5 +1,6 @@
 import 'package:pulse_coaching_app/app/di/service_locator.dart';
 import 'package:pulse_coaching_app/features/auth/presentation/pages/auth_demo_page.dart';
+import 'package:pulse_coaching_app/features/auth/presentation/pages/login_page.dart';
 import 'package:pulse_coaching_app/features/counter/presentation/pages/counter_page.dart';
 import 'package:pulse_coaching_app/features/home/presentation/pages/home_page.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/pages/onboarding_page.dart';
@@ -32,6 +33,7 @@ GoRouter createAppRouter() {
         path: '/counter',
         builder: (context, state) => const CounterPage(),
       ),
+      GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
       GoRoute(path: '/auth', builder: (context, state) => const AuthDemoPage()),
       GoRoute(
         path: '/settings',
