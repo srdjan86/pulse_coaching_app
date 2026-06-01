@@ -1,0 +1,123 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Semantic version to release (e.g. 0.2.0)"
+        required: true
+        type: string
+      build_number:
+        description: "Flutter build number (integer, e.g. 2)"
+        required: true
+        type: string
+        default: "1"
+
+# Only one release at a time.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Cut Release v${{ inputs.version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate version format
+        run: |
+          if ! echo "${{ inputs.version }}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "Invalid version format: ${{ inputs.version }}. Expected X.Y.Z"
+            exit 1
+          fi
+
+      - name: Check tag does not already exist
+        run: |
+          if git rev-parse "v${{ inputs.version }}" >/dev/null 2>&1; then
+            echo "Tag v${{ inputs.version }} already exists. Aborting."
+            exit 1
+          fi
+
+      - name: Set up Flutter (FVM-pinned version)
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: .fvm/fvm_config.json
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze lib test
+
+      - name: Test
+        run: flutter test
+
+      - name: Bump version in pubspec.yaml
+        run: |
+          sed -i "s/^version: .*/version: ${{ inputs.version }}+${{ inputs.build_number }}/" pubspec.yaml
+          echo "Bumped to $(grep '^version:' pubspec.yaml)"
+
+      - name: Set up Node.js for release notes agent
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: scripts/package-lock.json
+
+      - name: Install release agent dependencies
+        run: npm ci
+        working-directory: scripts
+
+      - name: Generate release notes
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node release_notes.mjs
+        working-directory: scripts
+
+      - name: Update CHANGELOG.md
+        run: |
+          DATE=$(date +%Y-%m-%d)
+          HEADER="## [${{ inputs.version }}] – ${DATE}"
+          NOTES=$(cat /tmp/release_notes.md)
+          # Prepend new entry after the first line (the title) of CHANGELOG.md
+          awk -v header="$HEADER" -v notes="$NOTES" '
+            NR==1 { print; print ""; print header; print ""; print notes; print ""; next }
+            { print }
+          ' CHANGELOG.md > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
+
+      - name: Commit version bump and changelog
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pubspec.yaml CHANGELOG.md
+          git commit -m "chore: release v${{ inputs.version }}"
+          git push
+
+      - name: Create and push tag
+        run: |
+          git tag "v${{ inputs.version }}"
+          git push origin "v${{ inputs.version }}"
+
+      - name: Create GitHub Release
+        run: |
+          gh release create "v${{ inputs.version }}" \
+            --title "v${{ inputs.version }}" \
+            --notes-file /tmp/release_notes.md \
+            --latest
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
