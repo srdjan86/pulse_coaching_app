@@ -33,7 +33,7 @@ if (!process.env.CURSOR_API_KEY) {
 // Find the previous tag (empty string if this is the first release)
 let previousTag = "";
 try {
-  previousTag = execSync("git describe --tags --abbrev=0 HEAD^", {
+  previousTag = execSync("git describe --tags --abbrev=0", {
     cwd: repoRoot,
   })
     .toString()
@@ -115,7 +115,8 @@ try {
   throw err;
 }
 
-const output = `## What's changed in v${version}\n\n${notes}`;
-writeFileSync("/tmp/release_notes.md", output, "utf8");
+// Write just the bullet content — the workflow adds the section header
+// for CHANGELOG; GitHub Release uses the version as its title.
+writeFileSync("/tmp/release_notes.md", notes, "utf8");
 console.log("Release notes written to /tmp/release_notes.md");
-console.log("\n---\n" + output);
+console.log("\n---\n" + notes);
