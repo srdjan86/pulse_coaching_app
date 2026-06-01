@@ -33,6 +33,7 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+          fetch-tags: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validate inputs
@@ -103,8 +104,13 @@ jobs:
           const version = process.env.VERSION;
           const date = new Date().toISOString().split('T')[0];
           const notes = fs.readFileSync('/tmp/release_notes.md', 'utf8').trim();
-          const entry = '## [' + version + '] \u2013 ' + date + '\n\n' + notes + '\n';
           const changelog = fs.readFileSync('CHANGELOG.md', 'utf8');
+          // Guard: skip if this version's section already exists (idempotent re-run)
+          if (changelog.includes('## [' + version + ']')) {
+            console.log('CHANGELOG already contains v' + version + ' — skipping insert.');
+            process.exit(0);
+          }
+          const entry = '## [' + version + '] \u2013 ' + date + '\n\n' + notes + '\n';
           // Insert before the first existing ## section (after the file header)
           const insertAt = changelog.indexOf('\n## ');
           const updated = insertAt === -1
