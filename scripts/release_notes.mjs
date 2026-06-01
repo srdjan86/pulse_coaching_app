@@ -77,7 +77,7 @@ ${gitLog || "(no commits found — use CHANGELOG.md content for the first releas
 Write concise, user-facing release notes for v${version}.
 
 Rules:
-- Group changes under: **Added**, **Changed**, **Fixed**, **Removed** (omit empty groups)
+- Group changes under Keep a Changelog headings: ### Added, ### Changed, ### Fixed, ### Removed (omit empty groups)
 - Each bullet should describe the user or developer benefit, not the implementation detail
 - Skip pure chore/CI/dependency commits unless they affect developer experience significantly
 - Write in plain English; no jargon

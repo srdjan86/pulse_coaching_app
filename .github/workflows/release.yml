@@ -41,8 +41,8 @@ jobs:
             echo "Invalid version: '${{ inputs.version }}'. Expected X.Y.Z"
             exit 1
           fi
-          if ! echo "${{ inputs.build_number }}" | grep -qE '^[0-9]+$'; then
-            echo "Invalid build_number: '${{ inputs.build_number }}'. Expected a positive integer."
+          if ! echo "${{ inputs.build_number }}" | grep -qE '^[1-9][0-9]*$'; then
+            echo "Invalid build_number: '${{ inputs.build_number }}'. Expected a positive integer (>= 1)."
             exit 1
           fi
 
@@ -67,7 +67,7 @@ jobs:
         run: dart format --output=none --set-exit-if-changed lib test
 
       - name: Analyze
-        run: flutter analyze lib test
+        run: flutter analyze --fatal-infos lib test
 
       - name: Test
         run: flutter test
