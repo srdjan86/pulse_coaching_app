@@ -35,7 +35,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Counter (BLoC)'), findsOneWidget);
-    expect(find.text('Auth (MVVM)'), findsOneWidget);
+    expect(find.text('Sign in to Pulse'), findsOneWidget);
     expect(find.text('Flavor: dev'), findsOneWidget);
   });
 }
