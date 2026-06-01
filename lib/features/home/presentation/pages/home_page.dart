@@ -50,6 +50,12 @@ class HomePage extends StatelessWidget {
             description: l10n.authDescription,
             onTap: () => context.push('/login'),
           ),
+          const SizedBox(height: 12),
+          _FeatureCard(
+            title: l10n.coachingVideosTitle,
+            description: l10n.coachingVideosDescription,
+            onTap: () => context.push('/coaching-videos'),
+          ),
         ],
       ),
     );

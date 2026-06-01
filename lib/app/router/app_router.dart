@@ -1,6 +1,8 @@
 import 'package:pulse_coaching_app/app/di/service_locator.dart';
 import 'package:pulse_coaching_app/features/auth/presentation/pages/auth_demo_page.dart';
 import 'package:pulse_coaching_app/features/auth/presentation/pages/login_page.dart';
+import 'package:pulse_coaching_app/features/coaching_videos/presentation/pages/coaching_video_detail_page.dart';
+import 'package:pulse_coaching_app/features/coaching_videos/presentation/pages/coaching_video_library_page.dart';
 import 'package:pulse_coaching_app/features/counter/presentation/pages/counter_page.dart';
 import 'package:pulse_coaching_app/features/home/presentation/pages/home_page.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/pages/onboarding_page.dart';
@@ -34,6 +36,19 @@ GoRouter createAppRouter() {
         builder: (context, state) => const CounterPage(),
       ),
       GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
+      GoRoute(
+        path: '/coaching-videos',
+        builder: (context, state) => const CoachingVideoLibraryPage(),
+        routes: [
+          GoRoute(
+            path: ':id',
+            builder: (context, state) {
+              final videoId = state.pathParameters['id']!;
+              return CoachingVideoDetailPage(videoId: videoId);
+            },
+          ),
+        ],
+      ),
       GoRoute(path: '/auth', builder: (context, state) => const AuthDemoPage()),
       GoRoute(
         path: '/settings',

@@ -5,6 +5,10 @@ import 'package:pulse_coaching_app/features/auth/data/repositories/mock_auth_rep
 import 'package:pulse_coaching_app/features/auth/data/repositories/supabase_auth_repository.dart';
 import 'package:pulse_coaching_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:pulse_coaching_app/features/auth/presentation/view_models/auth_view_model.dart';
+import 'package:pulse_coaching_app/features/coaching_videos/data/repositories/mock_coaching_video_repository.dart';
+import 'package:pulse_coaching_app/features/coaching_videos/domain/repositories/coaching_video_repository.dart';
+import 'package:pulse_coaching_app/features/coaching_videos/presentation/view_models/coaching_video_detail_view_model.dart';
+import 'package:pulse_coaching_app/features/coaching_videos/presentation/view_models/coaching_video_library_view_model.dart';
 import 'package:pulse_coaching_app/features/counter/data/repositories/counter_repository_impl.dart';
 import 'package:pulse_coaching_app/features/counter/domain/repositories/counter_repository.dart';
 import 'package:pulse_coaching_app/features/counter/presentation/bloc/counter_bloc.dart';
@@ -55,6 +59,12 @@ Future<void> configureDependencies(
   getIt.registerLazySingleton<ThemeSettingsViewModel>(
     () => ThemeSettingsViewModel(getIt()),
   );
+
+  getIt.registerLazySingleton<CoachingVideoRepository>(
+    MockCoachingVideoRepository.new,
+  );
+  getIt.registerFactory(() => CoachingVideoLibraryViewModel(getIt()));
+  getIt.registerFactory(() => CoachingVideoDetailViewModel(getIt()));
 }
 
 AuthRepository _createAuthRepository(AppConfig config) {

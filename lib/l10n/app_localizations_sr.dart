@@ -107,6 +107,54 @@ class AppLocalizationsSr extends AppLocalizations {
   String get loginPasswordRequired => 'Lozinka je obavezna';
 
   @override
+  String get coachingVideosTitle => 'Coaching biblioteka';
+
+  @override
+  String get coachingVideosDescription =>
+      'Pregledajte vođene treninge i lekcije oporavka';
+
+  @override
+  String get coachingVideoDetailTitle => 'Lekcija';
+
+  @override
+  String get coachingVideosEmpty => 'Još nema dostupnih lekcija.';
+
+  @override
+  String coachingVideoDurationMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String coachingVideoDurationHoursMinutes(int hours, int minutes) {
+    return '$hours h $minutes min';
+  }
+
+  @override
+  String get coachingVideoPlayerMockHint => 'Pregled video reprodukcije';
+
+  @override
+  String get coachingVideoPlayerUnavailable =>
+      'Video reprodukcija nije dostupna';
+
+  @override
+  String get coachingVideoNotFound => 'Lekcija nije pronađena';
+
+  @override
+  String get coachingVideoLoadError => 'Nije moguće učitati lekcije';
+
+  @override
+  String get coachingVideoCategoryMindfulness => 'Svesnost';
+
+  @override
+  String get coachingVideoCategoryStrength => 'Snaga';
+
+  @override
+  String get coachingVideoCategoryMobility => 'Mobilnost';
+
+  @override
+  String get coachingVideoCategoryRecovery => 'Oporavak';
+
+  @override
   String get settingsTitle => 'Podešavanja';
 
   @override

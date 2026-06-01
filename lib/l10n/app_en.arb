@@ -60,6 +60,37 @@
   "loginPasswordHint": "Your password",
   "loginEmailRequired": "Email is required",
   "loginPasswordRequired": "Password is required",
+  "coachingVideosTitle": "Coaching library",
+  "coachingVideosDescription": "Browse guided workout and recovery lessons",
+  "coachingVideoDetailTitle": "Lesson",
+  "coachingVideosEmpty": "No lessons available yet.",
+  "coachingVideoDurationMinutes": "{minutes} min",
+  "@coachingVideoDurationMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "coachingVideoDurationHoursMinutes": "{hours} h {minutes} min",
+  "@coachingVideoDurationHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "coachingVideoPlayerMockHint": "Video playback preview",
+  "coachingVideoPlayerUnavailable": "Video playback is unavailable",
+  "coachingVideoNotFound": "Lesson not found",
+  "coachingVideoLoadError": "Could not load lessons",
+  "coachingVideoCategoryMindfulness": "Mindfulness",
+  "coachingVideoCategoryStrength": "Strength",
+  "coachingVideoCategoryMobility": "Mobility",
+  "coachingVideoCategoryRecovery": "Recovery",
   "settingsTitle": "Settings",
   "themeSectionTitle": "Appearance",
   "themeModeSystem": "System",

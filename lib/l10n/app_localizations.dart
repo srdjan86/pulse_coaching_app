@@ -278,6 +278,90 @@ abstract class AppLocalizations {
   /// **'Password is required'**
   String get loginPasswordRequired;
 
+  /// No description provided for @coachingVideosTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Coaching library'**
+  String get coachingVideosTitle;
+
+  /// No description provided for @coachingVideosDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse guided workout and recovery lessons'**
+  String get coachingVideosDescription;
+
+  /// No description provided for @coachingVideoDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson'**
+  String get coachingVideoDetailTitle;
+
+  /// No description provided for @coachingVideosEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No lessons available yet.'**
+  String get coachingVideosEmpty;
+
+  /// No description provided for @coachingVideoDurationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String coachingVideoDurationMinutes(int minutes);
+
+  /// No description provided for @coachingVideoDurationHoursMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h {minutes} min'**
+  String coachingVideoDurationHoursMinutes(int hours, int minutes);
+
+  /// No description provided for @coachingVideoPlayerMockHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Video playback preview'**
+  String get coachingVideoPlayerMockHint;
+
+  /// No description provided for @coachingVideoPlayerUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Video playback is unavailable'**
+  String get coachingVideoPlayerUnavailable;
+
+  /// No description provided for @coachingVideoNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson not found'**
+  String get coachingVideoNotFound;
+
+  /// No description provided for @coachingVideoLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load lessons'**
+  String get coachingVideoLoadError;
+
+  /// No description provided for @coachingVideoCategoryMindfulness.
+  ///
+  /// In en, this message translates to:
+  /// **'Mindfulness'**
+  String get coachingVideoCategoryMindfulness;
+
+  /// No description provided for @coachingVideoCategoryStrength.
+  ///
+  /// In en, this message translates to:
+  /// **'Strength'**
+  String get coachingVideoCategoryStrength;
+
+  /// No description provided for @coachingVideoCategoryMobility.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobility'**
+  String get coachingVideoCategoryMobility;
+
+  /// No description provided for @coachingVideoCategoryRecovery.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery'**
+  String get coachingVideoCategoryRecovery;
+
   /// No description provided for @settingsTitle.
   ///
   /// In en, this message translates to:
