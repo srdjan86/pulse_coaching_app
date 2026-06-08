@@ -9,10 +9,33 @@ class AppLocalizationsSr extends AppLocalizations {
   AppLocalizationsSr([String locale = 'sr']) : super(locale);
 
   @override
-  String get appTitle => 'AI Flutter Šablon';
+  String get appTitle => 'Pulse';
 
   @override
   String get homeTitle => 'Početna';
+
+  @override
+  String get homeGreeting => 'Dobro jutro';
+
+  @override
+  String get homeFocusLabel => 'Fokus dana';
+
+  @override
+  String get homeFocusQuote => 'Mali dosledni koraci grade trajne promene.';
+
+  @override
+  String get homeExploreSection => 'Istraži';
+
+  @override
+  String get homeContinueSection => 'Nastavi';
+
+  @override
+  String get homeDevSection => 'Developer';
+
+  @override
+  String coachingVideosSessionCount(int count) {
+    return '$count sesija';
+  }
 
   @override
   String get homeSubtitle => 'Flutter šablon spreman za AI radni tok';
@@ -86,6 +109,15 @@ class AppLocalizationsSr extends AppLocalizations {
   String get onboardingEmailInvalid => 'Unesite ispravnu email adresu';
 
   @override
+  String get onboardingSignInPrompt => 'Već imate nalog?';
+
+  @override
+  String get onboardingSignInLink => 'Prijavite se';
+
+  @override
+  String get onboardingLoadingCta => 'Pokretanje…';
+
+  @override
   String get loginTitle => 'Prijavite se na Pulse';
 
   @override
@@ -105,6 +137,38 @@ class AppLocalizationsSr extends AppLocalizations {
 
   @override
   String get loginPasswordRequired => 'Lozinka je obavezna';
+
+  @override
+  String get loginErrorMessage =>
+      'Email ili lozinka nisu ispravni. Pokušajte ponovo.';
+
+  @override
+  String get loginForgotPassword => 'Zaboravili ste lozinku?';
+
+  @override
+  String get loginGetStartedPrompt => 'Novi ste na Pulse-u?';
+
+  @override
+  String get loginGetStartedLink => 'Započni';
+
+  @override
+  String get coachingVideoCategoryAll => 'Sve';
+
+  @override
+  String get coachingVideoAboutSection => 'O ovoj sesiji';
+
+  @override
+  String get coachingVideoStartSession => 'Započni sesiju';
+
+  @override
+  String get coachingVideoPauseSession => 'Pauziraj sesiju';
+
+  @override
+  String get themeSectionDescription =>
+      'Izaberite kako Pulse izgleda na vašem uređaju';
+
+  @override
+  String get themeOptionLabel => 'Tema';
 
   @override
   String get coachingVideosTitle => 'Coaching biblioteka';

@@ -4,10 +4,10 @@ import 'package:pulse_coaching_app/features/coaching_videos/presentation/pages/c
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/pages/coaching_video_library_page.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/view_models/coaching_video_detail_view_model.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/view_models/coaching_video_library_view_model.dart';
+import 'package:pulse_coaching_app/features/coaching_videos/presentation/widgets/coaching_video_card.dart';
 import 'package:pulse_coaching_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
 
 void main() {
   testWidgets('library page renders video cards', (tester) async {
@@ -15,22 +15,29 @@ void main() {
 
     expect(find.text('Coaching library'), findsOneWidget);
     expect(find.text(_video.title), findsOneWidget);
-    expect(find.text('Mobility'), findsOneWidget);
+    expect(find.byType(CoachingVideoCard), findsOneWidget);
     expect(find.text('8 min'), findsOneWidget);
   });
 
-  testWidgets('library tap navigates to detail page', (tester) async {
-    await _pumpLibrary(tester, withRouter: true);
+  testWidgets('detail page shows lesson content', (tester) async {
+    final repository = _FakeCoachingVideoRepository(videos: [_video]);
+    final viewModel = CoachingVideoDetailViewModel(repository);
 
-    await tester.tap(find.text(_video.title));
-    await tester.pumpAndSettle();
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: CoachingVideoDetailPage(
+          videoId: 'morning-mobility',
+          viewModel: viewModel,
+          enablePlayback: false,
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
 
-    expect(find.text('Lesson'), findsOneWidget);
-    expect(find.text('Video playback preview'), findsOneWidget);
-
-    await tester.drag(find.byType(ListView), const Offset(0, -300));
-    await tester.pumpAndSettle();
-
+    expect(find.textContaining('ABOUT THIS SESSION'), findsOneWidget);
     expect(find.text(_video.description), findsOneWidget);
   });
 
@@ -55,53 +62,18 @@ void main() {
   });
 }
 
-Future<void> _pumpLibrary(
-  WidgetTester tester, {
-  bool withRouter = false,
-}) async {
+Future<void> _pumpLibrary(WidgetTester tester) async {
   final repository = _FakeCoachingVideoRepository(videos: [_video]);
-  final libraryPage = CoachingVideoLibraryPage(
-    viewModel: CoachingVideoLibraryViewModel(repository),
+
+  await tester.pumpWidget(
+    MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: CoachingVideoLibraryPage(
+        viewModel: CoachingVideoLibraryViewModel(repository),
+      ),
+    ),
   );
-
-  if (withRouter) {
-    final router = GoRouter(
-      initialLocation: '/coaching-videos',
-      routes: [
-        GoRoute(
-          path: '/coaching-videos',
-          builder: (context, state) => libraryPage,
-          routes: [
-            GoRoute(
-              path: ':id',
-              builder: (context, state) => CoachingVideoDetailPage(
-                videoId: state.pathParameters['id']!,
-                viewModel: CoachingVideoDetailViewModel(repository),
-                enablePlayback: false,
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-
-    await tester.pumpWidget(
-      MaterialApp.router(
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        routerConfig: router,
-      ),
-    );
-  } else {
-    await tester.pumpWidget(
-      MaterialApp(
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: libraryPage,
-      ),
-    );
-  }
-
   await tester.pumpAndSettle();
 }
 

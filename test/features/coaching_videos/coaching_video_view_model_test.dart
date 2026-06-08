@@ -30,6 +30,18 @@ void main() {
       expect(viewModel.isLoading, isFalse);
       expect(viewModel.errorMessage, isNotNull);
     });
+
+    test('selectCategory filters videos', () async {
+      final viewModel = CoachingVideoLibraryViewModel(
+        _FakeCoachingVideoRepository(videos: coachingVideoMockData),
+      );
+
+      await viewModel.load();
+      viewModel.selectCategory(CoachingVideoCategory.mobility);
+
+      expect(viewModel.filteredVideos.length, 1);
+      expect(viewModel.filteredVideos.first.id, 'morning-mobility');
+    });
   });
 
   group('CoachingVideoDetailViewModel', () {

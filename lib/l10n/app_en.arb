@@ -1,10 +1,24 @@
 {
   "@@locale": "en",
-  "appTitle": "AI Flutter Template",
+  "appTitle": "Pulse",
   "@appTitle": {
     "description": "Application title shown in the app bar"
   },
   "homeTitle": "Home",
+  "homeGreeting": "Good morning",
+  "homeFocusLabel": "Today's focus",
+  "homeFocusQuote": "Small consistent steps build lasting change.",
+  "homeExploreSection": "Explore",
+  "homeContinueSection": "Continue",
+  "homeDevSection": "Developer",
+  "coachingVideosSessionCount": "{count} sessions",
+  "@coachingVideosSessionCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "homeSubtitle": "AI-ready Flutter delivery template",
   "counterTitle": "Counter (BLoC)",
   "counterDescription": "Feature-first architecture with flutter_bloc",
@@ -53,6 +67,9 @@
   "onboardingEmailHint": "you@example.com",
   "onboardingCta": "Get started",
   "onboardingEmailInvalid": "Enter a valid email address",
+  "onboardingSignInPrompt": "Already have an account?",
+  "onboardingSignInLink": "Sign in",
+  "onboardingLoadingCta": "Getting started…",
   "loginTitle": "Sign in to Pulse",
   "loginSubtitle": "Welcome back.",
   "loginEmailLabel": "Email",
@@ -60,6 +77,16 @@
   "loginPasswordHint": "Your password",
   "loginEmailRequired": "Email is required",
   "loginPasswordRequired": "Password is required",
+  "loginErrorMessage": "Email or password is incorrect. Please try again.",
+  "loginForgotPassword": "Forgot password?",
+  "loginGetStartedPrompt": "New to Pulse?",
+  "loginGetStartedLink": "Get started",
+  "coachingVideoCategoryAll": "All",
+  "coachingVideoAboutSection": "About this session",
+  "coachingVideoStartSession": "Start session",
+  "coachingVideoPauseSession": "Pause session",
+  "themeSectionDescription": "Choose how Pulse looks on your device",
+  "themeOptionLabel": "Theme",
   "coachingVideosTitle": "Coaching library",
   "coachingVideosDescription": "Browse guided workout and recovery lessons",
   "coachingVideoDetailTitle": "Lesson",

@@ -1,4 +1,7 @@
+import 'package:pulse_coaching_app/core/theme/app_colors.dart';
+import 'package:pulse_coaching_app/core/theme/app_spacing.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/domain/entities/coaching_video.dart';
+import 'package:pulse_coaching_app/features/coaching_videos/presentation/utils/coaching_video_category_style.dart';
 import 'package:flutter/material.dart';
 
 class CoachingVideoThumbnail extends StatelessWidget {
@@ -6,72 +9,68 @@ class CoachingVideoThumbnail extends StatelessWidget {
     required this.category,
     required this.title,
     this.thumbnailUrl,
+    this.borderRadius = const BorderRadius.all(
+      Radius.circular(AppSpacing.radiusCard),
+    ),
     super.key,
   });
 
   final CoachingVideoCategory category;
   final String title;
   final Uri? thumbnailUrl;
+  final BorderRadius borderRadius;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final color = _categoryColor(category, theme.colorScheme);
+    final colors = AppColors.of(context);
+    final style = coachingVideoCategoryStyle(category);
 
     return AspectRatio(
       aspectRatio: 16 / 9,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                color.withValues(alpha: 0.9),
-                color.withValues(alpha: 0.45),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+        borderRadius: borderRadius,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            if (thumbnailUrl != null)
+              Image.network(
+                thumbnailUrl.toString(),
+                fit: BoxFit.cover,
+                semanticLabel: title,
+                errorBuilder: (context, error, stackTrace) =>
+                    ColoredBox(color: colors.surfaceContainer),
+              )
+            else
+              ColoredBox(color: colors.surfaceContainer),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withValues(alpha: 0.4),
+                  ],
+                  stops: const [0.5, 1],
+                ),
+              ),
             ),
-          ),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              if (thumbnailUrl != null)
-                Image.network(
-                  thumbnailUrl.toString(),
-                  fit: BoxFit.cover,
-                  semanticLabel: title,
-                  errorBuilder: (context, error, stackTrace) =>
-                      const SizedBox.shrink(),
-                ),
-              DecoratedBox(
+            Positioned(
+              bottom: 10,
+              right: 10,
+              child: Container(
+                width: 36,
+                height: 36,
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.18),
+                  color: Colors.white.withValues(alpha: 0.92),
+                  shape: BoxShape.circle,
                 ),
+                child: Icon(Icons.play_arrow, color: style.foreground),
               ),
-              Center(
-                child: Icon(
-                  Icons.play_circle_fill_rounded,
-                  color: theme.colorScheme.onPrimary,
-                  size: 56,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
-  }
-
-  Color _categoryColor(
-    CoachingVideoCategory category,
-    ColorScheme colorScheme,
-  ) {
-    return switch (category) {
-      CoachingVideoCategory.mindfulness => colorScheme.primary,
-      CoachingVideoCategory.strength => colorScheme.tertiary,
-      CoachingVideoCategory.mobility => colorScheme.secondary,
-      CoachingVideoCategory.recovery => colorScheme.error,
-    };
   }
 }
