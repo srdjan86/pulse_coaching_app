@@ -6,41 +6,54 @@ import 'package:pulse_coaching_app/core/theme/app_spacing.dart';
 import 'package:pulse_coaching_app/core/widgets/pulse_feature_card.dart';
 import 'package:pulse_coaching_app/core/widgets/pulse_section_header.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/domain/entities/coaching_video.dart';
-import 'package:pulse_coaching_app/features/coaching_videos/domain/repositories/coaching_video_repository.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/utils/coaching_video_category_style.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/utils/coaching_video_localization.dart';
+import 'package:pulse_coaching_app/features/home/presentation/view_models/home_view_model.dart';
 import 'package:pulse_coaching_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key, this.viewModel});
+
+  final HomeViewModel? viewModel;
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  Widget build(BuildContext context) {
+    final providedViewModel = viewModel;
+    if (providedViewModel != null) {
+      return ChangeNotifierProvider.value(
+        value: providedViewModel,
+        child: const _HomeBody(),
+      );
+    }
+
+    return ChangeNotifierProvider(
+      create: (_) => getIt<HomeViewModel>(),
+      child: const _HomeBody(),
+    );
+  }
 }
 
-class _HomePageState extends State<HomePage> {
-  List<CoachingVideo> _continueVideos = const [];
-  int _sessionCount = 0;
+class _HomeBody extends StatefulWidget {
+  const _HomeBody();
 
+  @override
+  State<_HomeBody> createState() => _HomeBodyState();
+}
+
+class _HomeBodyState extends State<_HomeBody> {
   @override
   void initState() {
     super.initState();
-    _loadVideos();
-  }
-
-  Future<void> _loadVideos() async {
-    try {
-      final videos = await getIt<CoachingVideoRepository>().getVideos();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      setState(() {
-        _sessionCount = videos.length;
-        _continueVideos = videos.take(2).toList();
-      });
-    } catch (_) {
-      // Continue section stays hidden when videos cannot load.
-    }
+      final viewModel = context.read<HomeViewModel>();
+      if (!viewModel.isLoaded) {
+        viewModel.load();
+      }
+    });
   }
 
   @override
@@ -49,6 +62,7 @@ class _HomePageState extends State<HomePage> {
     final config = getIt<AppConfig>();
     final colors = AppColors.of(context);
     final theme = Theme.of(context);
+    final viewModel = context.watch<HomeViewModel>();
 
     return Scaffold(
       backgroundColor: colors.surface,
@@ -93,15 +107,15 @@ class _HomePageState extends State<HomePage> {
               title: l10n.coachingVideosTitle,
               subtitle: l10n.coachingVideosDescription,
               icon: Icons.play_circle_outline,
-              badge: _sessionCount > 0
-                  ? l10n.coachingVideosSessionCount(_sessionCount)
+              badge: viewModel.sessionCount > 0
+                  ? l10n.coachingVideosSessionCount(viewModel.sessionCount)
                   : null,
               onTap: () => context.push('/coaching-videos'),
             ),
-            if (_continueVideos.isNotEmpty) ...[
+            if (viewModel.continueVideos.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.xl),
               PulseSectionHeader(label: l10n.homeContinueSection),
-              ..._continueVideos.map(
+              ...viewModel.continueVideos.map(
                 (video) => Padding(
                   padding: const EdgeInsets.only(bottom: AppSpacing.md),
                   child: _ContinueLessonTile(

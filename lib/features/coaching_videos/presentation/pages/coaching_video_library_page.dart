@@ -131,7 +131,7 @@ class _CoachingVideoLibraryBodyState extends State<_CoachingVideoLibraryBody> {
                   const SliverFillRemaining(
                     child: Center(child: CircularProgressIndicator()),
                   )
-                else if (viewModel.errorMessage != null)
+                else if (viewModel.hasError)
                   SliverFillRemaining(
                     child: Center(child: Text(l10n.coachingVideoLoadError)),
                   )

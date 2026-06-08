@@ -88,111 +88,127 @@ class _LoginBodyState extends State<_LoginBody> {
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.screenHorizontal,
           ),
-          child: Consumer<AuthViewModel>(
-            builder: (context, viewModel, _) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: AppSpacing.xl),
-                  const PulseLogo(),
-                  const SizedBox(height: 48),
-                  Text(
-                    l10n.loginTitle,
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                      fontSize: 30,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(l10n.loginSubtitle, style: theme.textTheme.bodyLarge),
-                  const SizedBox(height: 36),
-                  PulseTextField(
-                    fieldKey: const Key('login_email'),
-                    label: l10n.loginEmailLabel,
-                    controller: _emailController,
-                    errorText: _emailError,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    autofillHints: const [AutofillHints.email],
-                    onChanged: (_) {
-                      if (_emailError != null) {
-                        setState(() => _emailError = null);
-                      }
-                    },
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  PulseTextField(
-                    fieldKey: const Key('login_password'),
-                    label: l10n.loginPasswordLabel,
-                    controller: _passwordController,
-                    hintText: l10n.loginPasswordHint,
-                    errorText: _passwordError,
-                    obscureText: _obscurePassword,
-                    textInputAction: TextInputAction.done,
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscurePassword
-                            ? Icons.visibility_outlined
-                            : Icons.visibility_off_outlined,
-                        color: colors.mutedForeground,
-                      ),
-                      onPressed: () {
-                        setState(() => _obscurePassword = !_obscurePassword);
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: IntrinsicHeight(
+                    child: Consumer<AuthViewModel>(
+                      builder: (context, viewModel, _) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const SizedBox(height: AppSpacing.xl),
+                            const PulseLogo(),
+                            const SizedBox(height: AppSpacing.xxl),
+                            Text(
+                              l10n.loginTitle,
+                              style: theme.textTheme.headlineMedium?.copyWith(
+                                fontSize: 30,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              l10n.loginSubtitle,
+                              style: theme.textTheme.bodyLarge,
+                            ),
+                            const SizedBox(height: AppSpacing.xxl),
+                            PulseTextField(
+                              key: const Key('login_email'),
+                              label: l10n.loginEmailLabel,
+                              controller: _emailController,
+                              errorText: _emailError,
+                              keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.next,
+                              autofillHints: const [AutofillHints.email],
+                              onChanged: (_) {
+                                if (_emailError != null) {
+                                  setState(() => _emailError = null);
+                                }
+                              },
+                            ),
+                            const SizedBox(height: AppSpacing.lg),
+                            PulseTextField(
+                              key: const Key('login_password'),
+                              label: l10n.loginPasswordLabel,
+                              controller: _passwordController,
+                              hintText: l10n.loginPasswordHint,
+                              errorText: _passwordError,
+                              obscureText: _obscurePassword,
+                              textInputAction: TextInputAction.done,
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscurePassword
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                  color: colors.mutedForeground,
+                                ),
+                                onPressed: () {
+                                  setState(
+                                    () => _obscurePassword = !_obscurePassword,
+                                  );
+                                },
+                              ),
+                              onChanged: (_) {
+                                if (_passwordError != null) {
+                                  setState(() => _passwordError = null);
+                                }
+                              },
+                              onSubmitted: (_) => _submit(context, viewModel),
+                            ),
+                            if (viewModel.errorMessage != null) ...[
+                              const SizedBox(height: AppSpacing.lg),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 10,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: colors.error.withValues(alpha: 0.08),
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: colors.error),
+                                ),
+                                child: Text(
+                                  viewModel.errorMessage!,
+                                  style: theme.textTheme.bodyLarge?.copyWith(
+                                    color: colors.error,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ],
+                            const Spacer(),
+                            PulsePrimaryButton(
+                              key: const Key('login_submit'),
+                              label: l10n.signIn,
+                              isLoading: viewModel.isLoading,
+                              onPressed: () => _submit(context, viewModel),
+                            ),
+                            const SizedBox(height: AppSpacing.lg),
+                            Text.rich(
+                              TextSpan(
+                                text: '${l10n.loginGetStartedPrompt} ',
+                                children: [
+                                  TextSpan(
+                                    text: l10n.loginGetStartedLink,
+                                    style: TextStyle(
+                                      color: colors.primary,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                            const SizedBox(height: AppSpacing.xxl),
+                          ],
+                        );
                       },
                     ),
-                    onChanged: (_) {
-                      if (_passwordError != null) {
-                        setState(() => _passwordError = null);
-                      }
-                    },
-                    onSubmitted: (_) => _submit(context, viewModel),
                   ),
-                  if (viewModel.errorMessage != null) ...[
-                    const SizedBox(height: AppSpacing.lg),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        color: colors.error.withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: colors.error),
-                      ),
-                      child: Text(
-                        l10n.loginErrorMessage,
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          color: colors.error,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ],
-                  const Spacer(),
-                  PulsePrimaryButton(
-                    buttonKey: const Key('login_submit'),
-                    label: l10n.signIn,
-                    isLoading: viewModel.isLoading,
-                    onPressed: () => _submit(context, viewModel),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  Text.rich(
-                    TextSpan(
-                      text: '${l10n.loginGetStartedPrompt} ',
-                      children: [
-                        TextSpan(
-                          text: l10n.loginGetStartedLink,
-                          style: TextStyle(
-                            color: colors.primary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyMedium,
-                  ),
-                  const SizedBox(height: 40),
-                ],
+                ),
               );
             },
           ),

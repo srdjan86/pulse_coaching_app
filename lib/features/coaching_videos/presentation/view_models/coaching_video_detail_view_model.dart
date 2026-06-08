@@ -9,24 +9,24 @@ class CoachingVideoDetailViewModel extends ChangeNotifier {
 
   CoachingVideo? _video;
   bool _isLoading = false;
-  String? _errorMessage;
+  bool _hasError = false;
   bool _isLoaded = false;
 
   CoachingVideo? get video => _video;
   bool get isLoading => _isLoading;
-  String? get errorMessage => _errorMessage;
+  bool get hasError => _hasError;
   bool get isLoaded => _isLoaded;
 
   Future<void> load(String id) async {
     _isLoading = true;
-    _errorMessage = null;
+    _hasError = false;
     notifyListeners();
 
     try {
       _video = await _repository.getVideoById(id);
       _isLoaded = true;
     } catch (_) {
-      _errorMessage = 'Could not load lesson';
+      _hasError = true;
     } finally {
       _isLoading = false;
       notifyListeners();

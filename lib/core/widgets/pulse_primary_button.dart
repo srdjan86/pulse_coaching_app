@@ -8,7 +8,6 @@ class PulsePrimaryButton extends StatelessWidget {
     required this.onPressed,
     this.isLoading = false,
     this.icon,
-    this.buttonKey,
     super.key,
   });
 
@@ -16,14 +15,12 @@ class PulsePrimaryButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool isLoading;
   final IconData? icon;
-  final Key? buttonKey;
 
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
 
     return FilledButton(
-      key: buttonKey,
       onPressed: isLoading ? null : onPressed,
       style: FilledButton.styleFrom(
         backgroundColor: isLoading ? colors.primaryPressed : colors.primary,

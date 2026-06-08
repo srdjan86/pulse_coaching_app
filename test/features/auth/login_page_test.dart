@@ -88,7 +88,7 @@ void main() {
   testWidgets('shows error when only email is empty', (tester) async {
     await pumpLogin(tester);
 
-    await tester.enterText(find.byKey(const Key('login_password')), 'password');
+    await tester.enterText(_fieldByKey('login_password'), 'password');
     await tester.tap(find.byKey(const Key('login_submit')));
     await tester.pumpAndSettle();
 
@@ -101,11 +101,8 @@ void main() {
   ) async {
     await pumpLogin(tester, withRouter: true);
 
-    await tester.enterText(
-      find.byKey(const Key('login_email')),
-      'user@example.com',
-    );
-    await tester.enterText(find.byKey(const Key('login_password')), 'password');
+    await tester.enterText(_fieldByKey('login_email'), 'user@example.com');
+    await tester.enterText(_fieldByKey('login_password'), 'password');
     await tester.tap(find.byKey(const Key('login_submit')));
     await tester.pump();
 
@@ -116,4 +113,11 @@ void main() {
     expect(find.text('home'), findsOneWidget);
     expect(find.byKey(const Key('login_submit')), findsNothing);
   });
+}
+
+Finder _fieldByKey(String key) {
+  return find.descendant(
+    of: find.byKey(Key(key)),
+    matching: find.byType(TextField),
+  );
 }

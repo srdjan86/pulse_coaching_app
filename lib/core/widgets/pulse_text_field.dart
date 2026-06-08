@@ -14,7 +14,6 @@ class PulseTextField extends StatelessWidget {
     this.onChanged,
     this.onSubmitted,
     this.suffixIcon,
-    this.fieldKey,
     super.key,
   });
 
@@ -29,7 +28,6 @@ class PulseTextField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
   final Widget? suffixIcon;
-  final Key? fieldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +40,6 @@ class PulseTextField extends StatelessWidget {
         Text(label, style: theme.textTheme.labelMedium),
         const SizedBox(height: 6),
         TextField(
-          key: fieldKey,
           controller: controller,
           obscureText: obscureText,
           keyboardType: keyboardType,

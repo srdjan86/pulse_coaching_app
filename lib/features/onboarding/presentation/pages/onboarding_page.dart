@@ -40,70 +40,85 @@ class _OnboardingBody extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.screenHorizontal,
           ),
-          child: Consumer<OnboardingViewModel>(
-            builder: (context, viewModel, _) {
-              final emailError =
-                  viewModel.validationError ==
-                      OnboardingValidationError.invalidEmail
-                  ? l10n.onboardingEmailInvalid
-                  : null;
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: IntrinsicHeight(
+                    child: Consumer<OnboardingViewModel>(
+                      builder: (context, viewModel, _) {
+                        final emailError =
+                            viewModel.validationError ==
+                                OnboardingValidationError.invalidEmail
+                            ? l10n.onboardingEmailInvalid
+                            : null;
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: AppSpacing.xl),
-                  const PulseLogo(),
-                  const SizedBox(height: 48),
-                  Text(
-                    l10n.onboardingTitle,
-                    style: theme.textTheme.displaySmall?.copyWith(fontSize: 34),
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  Text(
-                    l10n.onboardingSubtitle,
-                    style: theme.textTheme.bodyLarge,
-                  ),
-                  const SizedBox(height: 40),
-                  PulseTextField(
-                    fieldKey: const Key('onboarding_email'),
-                    label: l10n.onboardingEmailLabel,
-                    hintText: l10n.onboardingEmailHint,
-                    errorText: emailError,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.done,
-                    autofillHints: const [AutofillHints.email],
-                    onChanged: viewModel.updateEmail,
-                    onSubmitted: (_) => _onSubmit(context, viewModel),
-                  ),
-                  const Spacer(),
-                  PulsePrimaryButton(
-                    buttonKey: const Key('onboarding_submit'),
-                    label: viewModel.isLoading
-                        ? l10n.onboardingLoadingCta
-                        : l10n.onboardingCta,
-                    isLoading: viewModel.isLoading,
-                    icon: viewModel.isLoading ? null : Icons.arrow_forward,
-                    onPressed: () => _onSubmit(context, viewModel),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  Text.rich(
-                    TextSpan(
-                      text: '${l10n.onboardingSignInPrompt} ',
-                      children: [
-                        TextSpan(
-                          text: l10n.onboardingSignInLink,
-                          style: TextStyle(
-                            color: colors.primary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const SizedBox(height: AppSpacing.xl),
+                            const PulseLogo(),
+                            const SizedBox(height: AppSpacing.xxl),
+                            Text(
+                              l10n.onboardingTitle,
+                              style: theme.textTheme.displaySmall?.copyWith(
+                                fontSize: 34,
+                              ),
+                            ),
+                            const SizedBox(height: AppSpacing.md),
+                            Text(
+                              l10n.onboardingSubtitle,
+                              style: theme.textTheme.bodyLarge,
+                            ),
+                            const SizedBox(height: AppSpacing.xxl),
+                            PulseTextField(
+                              key: const Key('onboarding_email'),
+                              label: l10n.onboardingEmailLabel,
+                              hintText: l10n.onboardingEmailHint,
+                              errorText: emailError,
+                              keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.done,
+                              autofillHints: const [AutofillHints.email],
+                              onChanged: viewModel.updateEmail,
+                              onSubmitted: (_) => _onSubmit(context, viewModel),
+                            ),
+                            const Spacer(),
+                            PulsePrimaryButton(
+                              key: const Key('onboarding_submit'),
+                              label: viewModel.isLoading
+                                  ? l10n.onboardingLoadingCta
+                                  : l10n.onboardingCta,
+                              isLoading: viewModel.isLoading,
+                              icon: viewModel.isLoading
+                                  ? null
+                                  : Icons.arrow_forward,
+                              onPressed: () => _onSubmit(context, viewModel),
+                            ),
+                            const SizedBox(height: AppSpacing.lg),
+                            Text.rich(
+                              TextSpan(
+                                text: '${l10n.onboardingSignInPrompt} ',
+                                children: [
+                                  TextSpan(
+                                    text: l10n.onboardingSignInLink,
+                                    style: TextStyle(
+                                      color: colors.primary,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                            const SizedBox(height: AppSpacing.xxl),
+                          ],
+                        );
+                      },
                     ),
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyMedium,
                   ),
-                  const SizedBox(height: 40),
-                ],
+                ),
               );
             },
           ),

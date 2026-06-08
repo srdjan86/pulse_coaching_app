@@ -9,13 +9,13 @@ class CoachingVideoLibraryViewModel extends ChangeNotifier {
 
   List<CoachingVideo> _videos = const [];
   bool _isLoading = false;
-  String? _errorMessage;
+  bool _hasError = false;
   bool _isLoaded = false;
   CoachingVideoCategory? _selectedCategory;
 
   List<CoachingVideo> get videos => _videos;
   bool get isLoading => _isLoading;
-  String? get errorMessage => _errorMessage;
+  bool get hasError => _hasError;
   bool get isLoaded => _isLoaded;
   CoachingVideoCategory? get selectedCategory => _selectedCategory;
 
@@ -34,14 +34,14 @@ class CoachingVideoLibraryViewModel extends ChangeNotifier {
 
   Future<void> load() async {
     _isLoading = true;
-    _errorMessage = null;
+    _hasError = false;
     notifyListeners();
 
     try {
       _videos = await _repository.getVideos();
       _isLoaded = true;
     } catch (_) {
-      _errorMessage = 'Could not load lessons';
+      _hasError = true;
     } finally {
       _isLoading = false;
       notifyListeners();

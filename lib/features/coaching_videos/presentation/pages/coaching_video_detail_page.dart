@@ -88,7 +88,7 @@ class _CoachingVideoDetailBodyState extends State<_CoachingVideoDetailBody> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (viewModel.errorMessage != null) {
+          if (viewModel.hasError) {
             return Center(child: Text(l10n.coachingVideoLoadError));
           }
 

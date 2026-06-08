@@ -1,11 +1,13 @@
 import 'package:pulse_coaching_app/core/theme/app_colors.dart';
 import 'package:pulse_coaching_app/core/theme/app_spacing.dart';
+import 'package:pulse_coaching_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class PulseLogo extends StatelessWidget {
-  const PulseLogo({this.showLabel = true, super.key});
+  const PulseLogo({this.showLabel = true, this.label, super.key});
 
   final bool showLabel;
+  final String? label;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class PulseLogo extends StatelessWidget {
         if (showLabel) ...[
           const SizedBox(width: AppSpacing.sm),
           Text(
-            'Pulse',
+            label ?? AppLocalizations.of(context).appTitle,
             style: theme.textTheme.titleLarge?.copyWith(fontSize: 20),
           ),
         ],
