@@ -20,7 +20,8 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Appearance'), findsOneWidget);
+    expect(find.textContaining('APPEARANCE'), findsOneWidget);
+    expect(find.text('Theme'), findsOneWidget);
     expect(find.text('System'), findsOneWidget);
     expect(find.text('Light'), findsOneWidget);
     expect(find.text('Dark'), findsOneWidget);

@@ -24,19 +24,23 @@ void main() {
     await getIt.reset();
   });
 
-  testWidgets('home page shows feature cards', (tester) async {
+  testWidgets('home page shows coaching library and dev cards', (tester) async {
+    tester.view.physicalSize = const Size(400, 1200);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+
     await tester.pumpWidget(
-      const MaterialApp(
+      MaterialApp(
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: HomePage(),
+        home: const HomePage(),
       ),
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Counter (BLoC)'), findsOneWidget);
-    expect(find.text('Sign in to Pulse'), findsOneWidget);
+    expect(find.text('Pulse'), findsOneWidget);
     expect(find.text('Coaching library'), findsOneWidget);
+    expect(find.text('Counter (BLoC)'), findsOneWidget);
     expect(find.text('Flavor: dev'), findsOneWidget);
   });
 }

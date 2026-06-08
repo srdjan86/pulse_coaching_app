@@ -11,11 +11,26 @@ class CoachingVideoLibraryViewModel extends ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
   bool _isLoaded = false;
+  CoachingVideoCategory? _selectedCategory;
 
   List<CoachingVideo> get videos => _videos;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   bool get isLoaded => _isLoaded;
+  CoachingVideoCategory? get selectedCategory => _selectedCategory;
+
+  List<CoachingVideo> get filteredVideos {
+    final category = _selectedCategory;
+    if (category == null) {
+      return _videos;
+    }
+    return _videos.where((video) => video.category == category).toList();
+  }
+
+  void selectCategory(CoachingVideoCategory? category) {
+    _selectedCategory = category;
+    notifyListeners();
+  }
 
   Future<void> load() async {
     _isLoading = true;

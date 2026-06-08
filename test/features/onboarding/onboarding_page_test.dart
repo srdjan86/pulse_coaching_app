@@ -102,7 +102,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('AI-ready Flutter delivery template'), findsOneWidget);
+    expect(find.text('Good morning'), findsOneWidget);
     expect(find.text('Welcome to Pulse'), findsNothing);
   });
 }

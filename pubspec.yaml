@@ -20,6 +20,7 @@ dependencies:
   intl: any
   provider: ^6.1.5
   shared_preferences: ^2.5.3
+  google_fonts: ^6.2.1
 
   # Backend examples — swap via BACKEND dart-define (mock | firebase | supabase)
   firebase_core: ^4.0.0
