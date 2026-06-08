@@ -108,6 +108,53 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginPasswordRequired => 'Password is required';
 
   @override
+  String get coachingVideosTitle => 'Coaching library';
+
+  @override
+  String get coachingVideosDescription =>
+      'Browse guided workout and recovery lessons';
+
+  @override
+  String get coachingVideoDetailTitle => 'Lesson';
+
+  @override
+  String get coachingVideosEmpty => 'No lessons available yet.';
+
+  @override
+  String coachingVideoDurationMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String coachingVideoDurationHoursMinutes(int hours, int minutes) {
+    return '$hours h $minutes min';
+  }
+
+  @override
+  String get coachingVideoPlayerMockHint => 'Video playback preview';
+
+  @override
+  String get coachingVideoPlayerUnavailable => 'Video playback is unavailable';
+
+  @override
+  String get coachingVideoNotFound => 'Lesson not found';
+
+  @override
+  String get coachingVideoLoadError => 'Could not load lessons';
+
+  @override
+  String get coachingVideoCategoryMindfulness => 'Mindfulness';
+
+  @override
+  String get coachingVideoCategoryStrength => 'Strength';
+
+  @override
+  String get coachingVideoCategoryMobility => 'Mobility';
+
+  @override
+  String get coachingVideoCategoryRecovery => 'Recovery';
+
+  @override
   String get settingsTitle => 'Settings';
 
   @override

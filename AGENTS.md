@@ -66,6 +66,26 @@ flutter test
 
 If UI changed, include screenshots or screen recording in the PR.
 
+## Commit and PR approval
+
+After making code changes, the agent must stop after validation and summarize:
+
+- files changed
+- tests / commands run
+- known risks or follow-ups
+
+The agent must not commit, push, or create a pull request until the user explicitly approves that action.
+
+## Dart style notes
+
+For unused callback parameters, use Dart wildcard parameters:
+
+```dart
+separatorBuilder: (_, _) => const SizedBox(height: 12)
+```
+
+Do not replace unused callback parameters with named variables such as `(context, index)` unless those values are actually used. Avoid `__`, `___`, or similar placeholder names; use repeated `_` instead.
+
 ## Project overview
 
 - **Stack**: Flutter (Dart 3.11+), BLoC, MVVM (`provider`), GoRouter, GetIt

@@ -36,6 +36,7 @@ void main() {
 
     expect(find.text('Counter (BLoC)'), findsOneWidget);
     expect(find.text('Sign in to Pulse'), findsOneWidget);
+    expect(find.text('Coaching library'), findsOneWidget);
     expect(find.text('Flavor: dev'), findsOneWidget);
   });
 }
