@@ -181,6 +181,16 @@ class _CoachingVideoDetailBodyState extends State<_CoachingVideoDetailBody> {
                         ],
                       ),
                     ),
+                    const SizedBox(height: AppSpacing.xl),
+                    PulsePrimaryButton(
+                      label: viewModel.isSaved
+                          ? l10n.coachingVideoUnsaveLesson
+                          : l10n.coachingVideoSaveLesson,
+                      icon: viewModel.isSaved
+                          ? Icons.bookmark
+                          : Icons.bookmark_border,
+                      onPressed: viewModel.toggleSaved,
+                    ),
                     if (widget.enablePlayback) ...[
                       const SizedBox(height: AppSpacing.xl),
                       PulsePrimaryButton(

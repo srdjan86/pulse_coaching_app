@@ -3,6 +3,7 @@ import 'package:pulse_coaching_app/features/coaching_videos/domain/entities/coac
 import 'package:pulse_coaching_app/features/coaching_videos/domain/repositories/coaching_video_repository.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/view_models/coaching_video_detail_view_model.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/view_models/coaching_video_library_view_model.dart';
+import 'package:pulse_coaching_app/features/saved_lessons/data/repositories/in_memory_saved_lessons_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -17,6 +18,7 @@ void main() {
       expect(viewModel.isLoaded, isTrue);
       expect(viewModel.isLoading, isFalse);
       expect(viewModel.videos, coachingVideoMockData);
+      expect(viewModel.videos.length, greaterThanOrEqualTo(5));
       expect(viewModel.hasError, isFalse);
     });
 
@@ -48,6 +50,7 @@ void main() {
     test('load populates matching video', () async {
       final viewModel = CoachingVideoDetailViewModel(
         _FakeCoachingVideoRepository(videos: coachingVideoMockData),
+        InMemorySavedLessonsRepository(),
       );
 
       await viewModel.load('morning-mobility');
@@ -60,12 +63,32 @@ void main() {
     test('load keeps video null when not found', () async {
       final viewModel = CoachingVideoDetailViewModel(
         _FakeCoachingVideoRepository(videos: coachingVideoMockData),
+        InMemorySavedLessonsRepository(),
       );
 
       await viewModel.load('missing');
 
       expect(viewModel.isLoaded, isTrue);
       expect(viewModel.video, isNull);
+    });
+
+    test('loads saved state and toggles it', () async {
+      final savedLessonsRepository = InMemorySavedLessonsRepository(
+        initialSavedLessonIds: {'morning-mobility'},
+      );
+      final viewModel = CoachingVideoDetailViewModel(
+        _FakeCoachingVideoRepository(videos: coachingVideoMockData),
+        savedLessonsRepository,
+      );
+
+      await viewModel.load('morning-mobility');
+
+      expect(viewModel.isSaved, isTrue);
+
+      await viewModel.toggleSaved();
+
+      expect(viewModel.isSaved, isFalse);
+      expect(await savedLessonsRepository.isSaved('morning-mobility'), isFalse);
     });
   });
 }

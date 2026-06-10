@@ -112,6 +112,13 @@ class _HomeBodyState extends State<_HomeBody> {
                   : null,
               onTap: () => context.push('/coaching-videos'),
             ),
+            const SizedBox(height: AppSpacing.md),
+            PulseFeatureCard(
+              title: l10n.savedLessonsTitle,
+              subtitle: l10n.savedLessonsDescription,
+              icon: Icons.bookmark_border,
+              onTap: () => context.push('/saved-lessons'),
+            ),
             if (viewModel.continueVideos.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.xl),
               PulseSectionHeader(label: l10n.homeContinueSection),

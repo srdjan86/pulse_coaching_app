@@ -48,4 +48,16 @@ final coachingVideoMockData = [
       'https://assets.mixkit.co/videos/4578/4578-thumb-720-0.jpg',
     ),
   ),
+  CoachingVideo(
+    id: 'evening-stretch',
+    title: 'Evening Stretch Downshift',
+    description:
+        'Ease into rest with slow stretches for the neck, back, and hips.',
+    category: CoachingVideoCategory.recovery,
+    duration: const Duration(minutes: 9),
+    videoUrl: Uri.parse('https://assets.mixkit.co/videos/4578/4578-720.mp4'),
+    thumbnailUrl: Uri.parse(
+      'https://assets.mixkit.co/videos/4578/4578-thumb-720-0.jpg',
+    ),
+  ),
 ];
