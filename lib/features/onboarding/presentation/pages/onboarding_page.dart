@@ -1,4 +1,9 @@
 import 'package:pulse_coaching_app/app/di/service_locator.dart';
+import 'package:pulse_coaching_app/core/theme/app_colors.dart';
+import 'package:pulse_coaching_app/core/theme/app_spacing.dart';
+import 'package:pulse_coaching_app/core/widgets/pulse_logo.dart';
+import 'package:pulse_coaching_app/core/widgets/pulse_primary_button.dart';
+import 'package:pulse_coaching_app/core/widgets/pulse_text_field.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/view_models/onboarding_view_model.dart';
 import 'package:pulse_coaching_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -25,74 +30,97 @@ class _OnboardingBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final colors = AppColors.of(context);
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      backgroundColor: colors.surface,
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 480),
-              child: Consumer<OnboardingViewModel>(
-                builder: (context, viewModel, _) {
-                  final emailError =
-                      viewModel.validationError ==
-                          OnboardingValidationError.invalidEmail
-                      ? l10n.onboardingEmailInvalid
-                      : null;
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.screenHorizontal,
+          ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: IntrinsicHeight(
+                    child: Consumer<OnboardingViewModel>(
+                      builder: (context, viewModel, _) {
+                        final emailError =
+                            viewModel.validationError ==
+                                OnboardingValidationError.invalidEmail
+                            ? l10n.onboardingEmailInvalid
+                            : null;
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        l10n.onboardingTitle,
-                        style: theme.textTheme.headlineMedium,
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        l10n.onboardingSubtitle,
-                        style: theme.textTheme.bodyLarge,
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 32),
-                      TextField(
-                        key: const Key('onboarding_email'),
-                        keyboardType: TextInputType.emailAddress,
-                        autofillHints: const [AutofillHints.email],
-                        textInputAction: TextInputAction.done,
-                        decoration: InputDecoration(
-                          labelText: l10n.onboardingEmailLabel,
-                          hintText: l10n.onboardingEmailHint,
-                          errorText: emailError,
-                        ),
-                        onChanged: viewModel.updateEmail,
-                        onSubmitted: (_) => _onSubmit(context, viewModel),
-                      ),
-                      const SizedBox(height: 24),
-                      FilledButton(
-                        key: const Key('onboarding_submit'),
-                        onPressed: viewModel.isLoading
-                            ? null
-                            : () => _onSubmit(context, viewModel),
-                        child: viewModel.isLoading
-                            ? SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: theme.colorScheme.onPrimary,
-                                ),
-                              )
-                            : Text(l10n.onboardingCta),
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const SizedBox(height: AppSpacing.xl),
+                            const PulseLogo(),
+                            const SizedBox(height: AppSpacing.xxl),
+                            Text(
+                              l10n.onboardingTitle,
+                              style: theme.textTheme.displaySmall?.copyWith(
+                                fontSize: 34,
+                              ),
+                            ),
+                            const SizedBox(height: AppSpacing.md),
+                            Text(
+                              l10n.onboardingSubtitle,
+                              style: theme.textTheme.bodyLarge,
+                            ),
+                            const SizedBox(height: AppSpacing.xxl),
+                            PulseTextField(
+                              key: const Key('onboarding_email'),
+                              label: l10n.onboardingEmailLabel,
+                              hintText: l10n.onboardingEmailHint,
+                              errorText: emailError,
+                              keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.done,
+                              autofillHints: const [AutofillHints.email],
+                              onChanged: viewModel.updateEmail,
+                              onSubmitted: (_) => _onSubmit(context, viewModel),
+                            ),
+                            const Spacer(),
+                            PulsePrimaryButton(
+                              key: const Key('onboarding_submit'),
+                              label: viewModel.isLoading
+                                  ? l10n.onboardingLoadingCta
+                                  : l10n.onboardingCta,
+                              isLoading: viewModel.isLoading,
+                              icon: viewModel.isLoading
+                                  ? null
+                                  : Icons.arrow_forward,
+                              onPressed: () => _onSubmit(context, viewModel),
+                            ),
+                            const SizedBox(height: AppSpacing.lg),
+                            Text.rich(
+                              TextSpan(
+                                text: '${l10n.onboardingSignInPrompt} ',
+                                children: [
+                                  TextSpan(
+                                    text: l10n.onboardingSignInLink,
+                                    style: TextStyle(
+                                      color: colors.primary,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                            const SizedBox(height: AppSpacing.xxl),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),

@@ -1,9 +1,15 @@
 import 'package:pulse_coaching_app/app/di/service_locator.dart';
+import 'package:pulse_coaching_app/core/theme/app_colors.dart';
+import 'package:pulse_coaching_app/core/theme/app_spacing.dart';
+import 'package:pulse_coaching_app/core/widgets/pulse_primary_button.dart';
+import 'package:pulse_coaching_app/core/widgets/pulse_section_header.dart';
+import 'package:pulse_coaching_app/features/coaching_videos/presentation/utils/coaching_video_category_style.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/utils/coaching_video_localization.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/view_models/coaching_video_detail_view_model.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/widgets/coaching_video_player.dart';
 import 'package:pulse_coaching_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class CoachingVideoDetailPage extends StatelessWidget {
@@ -71,18 +77,18 @@ class _CoachingVideoDetailBodyState extends State<_CoachingVideoDetailBody> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final colors = AppColors.of(context);
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
-      appBar: AppBar(title: Text(l10n.coachingVideoDetailTitle)),
+      backgroundColor: colors.surface,
       body: Consumer<CoachingVideoDetailViewModel>(
         builder: (context, viewModel, _) {
           if (viewModel.isLoading && viewModel.video == null) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (viewModel.errorMessage != null) {
+          if (viewModel.hasError) {
             return Center(child: Text(l10n.coachingVideoLoadError));
           }
 
@@ -96,33 +102,96 @@ class _CoachingVideoDetailBodyState extends State<_CoachingVideoDetailBody> {
           }
 
           return ListView(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.zero,
             children: [
-              CoachingVideoPlayer(
-                video: video,
-                enablePlayback: widget.enablePlayback,
-              ),
-              const SizedBox(height: 24),
-              Text(video.title, style: theme.textTheme.headlineSmall),
-              const SizedBox(height: 12),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
+              Stack(
                 children: [
-                  Chip(
-                    label: Text(
-                      coachingVideoCategoryLabel(video.category, l10n),
-                    ),
+                  CoachingVideoPlayer(
+                    video: video,
+                    enablePlayback: widget.enablePlayback,
                   ),
-                  Chip(
-                    label: Text(
-                      formatCoachingVideoDuration(video.duration, l10n),
+                  SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      child: IconButton.filled(
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.black.withValues(alpha: 0.4),
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: () => context.pop(),
+                        icon: const Icon(Icons.arrow_back, size: 18),
+                      ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-              Text(video.description, style: theme.textTheme.bodyLarge),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.screenHorizontal,
+                  AppSpacing.xl,
+                  AppSpacing.screenHorizontal,
+                  AppSpacing.xxl,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        PulseCategoryBadge(
+                          label: coachingVideoCategoryLabel(
+                            video.category,
+                            l10n,
+                          ),
+                          category: video.category,
+                        ),
+                        const SizedBox(width: AppSpacing.sm),
+                        Icon(
+                          Icons.schedule,
+                          size: 12,
+                          color: colors.mutedForeground,
+                        ),
+                        const SizedBox(width: 3),
+                        Text(
+                          formatCoachingVideoDuration(video.duration, l10n),
+                          style: theme.textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    Text(video.title, style: theme.textTheme.headlineSmall),
+                    const SizedBox(height: AppSpacing.lg),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      decoration: BoxDecoration(
+                        color: colors.card,
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(color: colors.border),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          PulseSectionHeader(
+                            label: l10n.coachingVideoAboutSection,
+                          ),
+                          Text(
+                            video.description,
+                            style: theme.textTheme.bodyLarge,
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (widget.enablePlayback) ...[
+                      const SizedBox(height: AppSpacing.xl),
+                      PulsePrimaryButton(
+                        label: l10n.coachingVideoStartSession,
+                        icon: Icons.play_arrow,
+                        onPressed: () {},
+                      ),
+                    ],
+                  ],
+                ),
+              ),
             ],
           );
         },

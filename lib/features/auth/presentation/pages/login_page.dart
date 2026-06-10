@@ -1,4 +1,9 @@
 import 'package:pulse_coaching_app/app/di/service_locator.dart';
+import 'package:pulse_coaching_app/core/theme/app_colors.dart';
+import 'package:pulse_coaching_app/core/theme/app_spacing.dart';
+import 'package:pulse_coaching_app/core/widgets/pulse_logo.dart';
+import 'package:pulse_coaching_app/core/widgets/pulse_primary_button.dart';
+import 'package:pulse_coaching_app/core/widgets/pulse_text_field.dart';
 import 'package:pulse_coaching_app/features/auth/presentation/view_models/auth_view_model.dart';
 import 'package:pulse_coaching_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +34,7 @@ class _LoginBody extends StatefulWidget {
 class _LoginBodyState extends State<_LoginBody> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _obscurePassword = true;
   String? _emailError;
   String? _passwordError;
 
@@ -72,99 +78,139 @@ class _LoginBodyState extends State<_LoginBody> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final colors = AppColors.of(context);
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      backgroundColor: colors.surface,
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 480),
-              child: Consumer<AuthViewModel>(
-                builder: (context, viewModel, _) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        l10n.loginTitle,
-                        style: theme.textTheme.headlineMedium,
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        l10n.loginSubtitle,
-                        style: theme.textTheme.bodyLarge,
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 32),
-                      TextField(
-                        key: const Key('login_email'),
-                        controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        autofillHints: const [AutofillHints.email],
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                          labelText: l10n.loginEmailLabel,
-                          errorText: _emailError,
-                        ),
-                        onChanged: (_) {
-                          if (_emailError != null) {
-                            setState(() => _emailError = null);
-                          }
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      TextField(
-                        key: const Key('login_password'),
-                        controller: _passwordController,
-                        obscureText: true,
-                        textInputAction: TextInputAction.done,
-                        decoration: InputDecoration(
-                          labelText: l10n.loginPasswordLabel,
-                          hintText: l10n.loginPasswordHint,
-                          errorText: _passwordError,
-                        ),
-                        onChanged: (_) {
-                          if (_passwordError != null) {
-                            setState(() => _passwordError = null);
-                          }
-                        },
-                        onSubmitted: (_) => _submit(context, viewModel),
-                      ),
-                      if (viewModel.errorMessage != null) ...[
-                        const SizedBox(height: 12),
-                        Text(
-                          viewModel.errorMessage!,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.error,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                      const SizedBox(height: 24),
-                      FilledButton(
-                        key: const Key('login_submit'),
-                        onPressed: viewModel.isLoading
-                            ? null
-                            : () => _submit(context, viewModel),
-                        child: viewModel.isLoading
-                            ? SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: theme.colorScheme.onPrimary,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.screenHorizontal,
+          ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: IntrinsicHeight(
+                    child: Consumer<AuthViewModel>(
+                      builder: (context, viewModel, _) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const SizedBox(height: AppSpacing.xl),
+                            const PulseLogo(),
+                            const SizedBox(height: AppSpacing.xxl),
+                            Text(
+                              l10n.loginTitle,
+                              style: theme.textTheme.headlineMedium?.copyWith(
+                                fontSize: 30,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              l10n.loginSubtitle,
+                              style: theme.textTheme.bodyLarge,
+                            ),
+                            const SizedBox(height: AppSpacing.xxl),
+                            PulseTextField(
+                              key: const Key('login_email'),
+                              label: l10n.loginEmailLabel,
+                              controller: _emailController,
+                              errorText: _emailError,
+                              keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.next,
+                              autofillHints: const [AutofillHints.email],
+                              onChanged: (_) {
+                                if (_emailError != null) {
+                                  setState(() => _emailError = null);
+                                }
+                              },
+                            ),
+                            const SizedBox(height: AppSpacing.lg),
+                            PulseTextField(
+                              key: const Key('login_password'),
+                              label: l10n.loginPasswordLabel,
+                              controller: _passwordController,
+                              hintText: l10n.loginPasswordHint,
+                              errorText: _passwordError,
+                              obscureText: _obscurePassword,
+                              textInputAction: TextInputAction.done,
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscurePassword
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                  color: colors.mutedForeground,
                                 ),
-                              )
-                            : Text(l10n.signIn),
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
+                                onPressed: () {
+                                  setState(
+                                    () => _obscurePassword = !_obscurePassword,
+                                  );
+                                },
+                              ),
+                              onChanged: (_) {
+                                if (_passwordError != null) {
+                                  setState(() => _passwordError = null);
+                                }
+                              },
+                              onSubmitted: (_) => _submit(context, viewModel),
+                            ),
+                            if (viewModel.errorMessage != null) ...[
+                              const SizedBox(height: AppSpacing.lg),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 10,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: colors.error.withValues(alpha: 0.08),
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: colors.error),
+                                ),
+                                child: Text(
+                                  viewModel.errorMessage!,
+                                  style: theme.textTheme.bodyLarge?.copyWith(
+                                    color: colors.error,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ],
+                            const Spacer(),
+                            PulsePrimaryButton(
+                              key: const Key('login_submit'),
+                              label: l10n.signIn,
+                              isLoading: viewModel.isLoading,
+                              onPressed: () => _submit(context, viewModel),
+                            ),
+                            const SizedBox(height: AppSpacing.lg),
+                            Text.rich(
+                              TextSpan(
+                                text: '${l10n.loginGetStartedPrompt} ',
+                                children: [
+                                  TextSpan(
+                                    text: l10n.loginGetStartedLink,
+                                    style: TextStyle(
+                                      color: colors.primary,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                            const SizedBox(height: AppSpacing.xxl),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),

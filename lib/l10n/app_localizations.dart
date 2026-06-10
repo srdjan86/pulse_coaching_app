@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// Application title shown in the app bar
   ///
   /// In en, this message translates to:
-  /// **'AI Flutter Template'**
+  /// **'Pulse'**
   String get appTitle;
 
   /// No description provided for @homeTitle.
@@ -109,6 +109,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Home'**
   String get homeTitle;
+
+  /// No description provided for @homeGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get homeGreeting;
+
+  /// No description provided for @homeFocusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s focus'**
+  String get homeFocusLabel;
+
+  /// No description provided for @homeFocusQuote.
+  ///
+  /// In en, this message translates to:
+  /// **'Small consistent steps build lasting change.'**
+  String get homeFocusQuote;
+
+  /// No description provided for @homeExploreSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore'**
+  String get homeExploreSection;
+
+  /// No description provided for @homeContinueSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get homeContinueSection;
+
+  /// No description provided for @homeDevSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Developer'**
+  String get homeDevSection;
+
+  /// No description provided for @coachingVideosSessionCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} sessions'**
+  String coachingVideosSessionCount(int count);
 
   /// No description provided for @homeSubtitle.
   ///
@@ -236,6 +278,24 @@ abstract class AppLocalizations {
   /// **'Enter a valid email address'**
   String get onboardingEmailInvalid;
 
+  /// No description provided for @onboardingSignInPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get onboardingSignInPrompt;
+
+  /// No description provided for @onboardingSignInLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get onboardingSignInLink;
+
+  /// No description provided for @onboardingLoadingCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting started…'**
+  String get onboardingLoadingCta;
+
   /// No description provided for @loginTitle.
   ///
   /// In en, this message translates to:
@@ -277,6 +337,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password is required'**
   String get loginPasswordRequired;
+
+  /// No description provided for @loginErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Email or password is incorrect. Please try again.'**
+  String get loginErrorMessage;
+
+  /// No description provided for @loginForgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get loginForgotPassword;
+
+  /// No description provided for @loginGetStartedPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'New to Pulse?'**
+  String get loginGetStartedPrompt;
+
+  /// No description provided for @loginGetStartedLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Get started'**
+  String get loginGetStartedLink;
+
+  /// No description provided for @coachingVideoCategoryAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get coachingVideoCategoryAll;
+
+  /// No description provided for @coachingVideoAboutSection.
+  ///
+  /// In en, this message translates to:
+  /// **'About this session'**
+  String get coachingVideoAboutSection;
+
+  /// No description provided for @coachingVideoStartSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Start session'**
+  String get coachingVideoStartSession;
+
+  /// No description provided for @coachingVideoPauseSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause session'**
+  String get coachingVideoPauseSession;
+
+  /// No description provided for @themeSectionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how Pulse looks on your device'**
+  String get themeSectionDescription;
+
+  /// No description provided for @themeOptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get themeOptionLabel;
 
   /// No description provided for @coachingVideosTitle.
   ///

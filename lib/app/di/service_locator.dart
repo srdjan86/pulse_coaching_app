@@ -12,6 +12,7 @@ import 'package:pulse_coaching_app/features/coaching_videos/presentation/view_mo
 import 'package:pulse_coaching_app/features/counter/data/repositories/counter_repository_impl.dart';
 import 'package:pulse_coaching_app/features/counter/domain/repositories/counter_repository.dart';
 import 'package:pulse_coaching_app/features/counter/presentation/bloc/counter_bloc.dart';
+import 'package:pulse_coaching_app/features/home/presentation/view_models/home_view_model.dart';
 import 'package:pulse_coaching_app/features/onboarding/data/repositories/shared_preferences_onboarding_repository.dart';
 import 'package:pulse_coaching_app/features/onboarding/domain/repositories/onboarding_repository.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/view_models/onboarding_view_model.dart';
@@ -63,6 +64,7 @@ Future<void> configureDependencies(
   getIt.registerLazySingleton<CoachingVideoRepository>(
     MockCoachingVideoRepository.new,
   );
+  getIt.registerFactory(() => HomeViewModel(getIt()));
   getIt.registerFactory(() => CoachingVideoLibraryViewModel(getIt()));
   getIt.registerFactory(() => CoachingVideoDetailViewModel(getIt()));
 }

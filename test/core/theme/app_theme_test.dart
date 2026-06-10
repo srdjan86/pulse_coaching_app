@@ -22,11 +22,11 @@ void main() {
       expect(theme.extension<AppColors>(), AppColors.light);
     });
 
-    test('uses flavor accent for secondary color', () {
+    test('uses flavor accent for tertiary color', () {
       final dev = AppTheme.light(flavor: 'dev');
       final staging = AppTheme.light(flavor: 'staging');
 
-      expect(dev.colorScheme.secondary, isNot(staging.colorScheme.secondary));
+      expect(dev.colorScheme.tertiary, isNot(staging.colorScheme.tertiary));
     });
 
     test('scaffold and app bar use brand surface', () {

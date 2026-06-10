@@ -81,7 +81,7 @@ void main() {
   testWidgets('invalid email shows validation message', (tester) async {
     await pumpOnboarding(tester);
 
-    await tester.enterText(find.byKey(const Key('onboarding_email')), 'bad');
+    await tester.enterText(_fieldByKey('onboarding_email'), 'bad');
     await tester.tap(find.byKey(const Key('onboarding_submit')));
     await tester.pumpAndSettle();
 
@@ -91,10 +91,7 @@ void main() {
   testWidgets('valid submit shows loading then navigates home', (tester) async {
     await pumpOnboarding(tester, navigateOnSuccess: true);
 
-    await tester.enterText(
-      find.byKey(const Key('onboarding_email')),
-      'user@example.com',
-    );
+    await tester.enterText(_fieldByKey('onboarding_email'), 'user@example.com');
     await tester.tap(find.byKey(const Key('onboarding_submit')));
     await tester.pump();
 
@@ -102,7 +99,14 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('AI-ready Flutter delivery template'), findsOneWidget);
+    expect(find.text('Good morning'), findsOneWidget);
     expect(find.text('Welcome to Pulse'), findsNothing);
   });
+}
+
+Finder _fieldByKey(String key) {
+  return find.descendant(
+    of: find.byKey(Key(key)),
+    matching: find.byType(TextField),
+  );
 }

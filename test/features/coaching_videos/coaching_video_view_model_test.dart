@@ -17,7 +17,7 @@ void main() {
       expect(viewModel.isLoaded, isTrue);
       expect(viewModel.isLoading, isFalse);
       expect(viewModel.videos, coachingVideoMockData);
-      expect(viewModel.errorMessage, isNull);
+      expect(viewModel.hasError, isFalse);
     });
 
     test('load captures repository errors', () async {
@@ -28,7 +28,19 @@ void main() {
       await viewModel.load();
 
       expect(viewModel.isLoading, isFalse);
-      expect(viewModel.errorMessage, isNotNull);
+      expect(viewModel.hasError, isTrue);
+    });
+
+    test('selectCategory filters videos', () async {
+      final viewModel = CoachingVideoLibraryViewModel(
+        _FakeCoachingVideoRepository(videos: coachingVideoMockData),
+      );
+
+      await viewModel.load();
+      viewModel.selectCategory(CoachingVideoCategory.mobility);
+
+      expect(viewModel.filteredVideos.length, 1);
+      expect(viewModel.filteredVideos.first.id, 'morning-mobility');
     });
   });
 
@@ -42,7 +54,7 @@ void main() {
 
       expect(viewModel.isLoaded, isTrue);
       expect(viewModel.video?.id, 'morning-mobility');
-      expect(viewModel.errorMessage, isNull);
+      expect(viewModel.hasError, isFalse);
     });
 
     test('load keeps video null when not found', () async {

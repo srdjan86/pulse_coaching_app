@@ -9,10 +9,33 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'AI Flutter Template';
+  String get appTitle => 'Pulse';
 
   @override
   String get homeTitle => 'Home';
+
+  @override
+  String get homeGreeting => 'Good morning';
+
+  @override
+  String get homeFocusLabel => 'Today\'s focus';
+
+  @override
+  String get homeFocusQuote => 'Small consistent steps build lasting change.';
+
+  @override
+  String get homeExploreSection => 'Explore';
+
+  @override
+  String get homeContinueSection => 'Continue';
+
+  @override
+  String get homeDevSection => 'Developer';
+
+  @override
+  String coachingVideosSessionCount(int count) {
+    return '$count sessions';
+  }
 
   @override
   String get homeSubtitle => 'AI-ready Flutter delivery template';
@@ -87,6 +110,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingEmailInvalid => 'Enter a valid email address';
 
   @override
+  String get onboardingSignInPrompt => 'Already have an account?';
+
+  @override
+  String get onboardingSignInLink => 'Sign in';
+
+  @override
+  String get onboardingLoadingCta => 'Getting started…';
+
+  @override
   String get loginTitle => 'Sign in to Pulse';
 
   @override
@@ -106,6 +138,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loginPasswordRequired => 'Password is required';
+
+  @override
+  String get loginErrorMessage =>
+      'Email or password is incorrect. Please try again.';
+
+  @override
+  String get loginForgotPassword => 'Forgot password?';
+
+  @override
+  String get loginGetStartedPrompt => 'New to Pulse?';
+
+  @override
+  String get loginGetStartedLink => 'Get started';
+
+  @override
+  String get coachingVideoCategoryAll => 'All';
+
+  @override
+  String get coachingVideoAboutSection => 'About this session';
+
+  @override
+  String get coachingVideoStartSession => 'Start session';
+
+  @override
+  String get coachingVideoPauseSession => 'Pause session';
+
+  @override
+  String get themeSectionDescription => 'Choose how Pulse looks on your device';
+
+  @override
+  String get themeOptionLabel => 'Theme';
 
   @override
   String get coachingVideosTitle => 'Coaching library';
