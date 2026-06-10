@@ -410,6 +410,30 @@ abstract class AppLocalizations {
   /// **'Browse guided workout and recovery lessons'**
   String get coachingVideosDescription;
 
+  /// No description provided for @savedLessonsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved lessons'**
+  String get savedLessonsTitle;
+
+  /// No description provided for @savedLessonsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep favorite lessons ready for later'**
+  String get savedLessonsDescription;
+
+  /// No description provided for @savedLessonsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No saved lessons yet.'**
+  String get savedLessonsEmpty;
+
+  /// No description provided for @savedLessonsLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load saved lessons'**
+  String get savedLessonsLoadError;
+
   /// No description provided for @coachingVideoDetailTitle.
   ///
   /// In en, this message translates to:
@@ -457,6 +481,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not load lessons'**
   String get coachingVideoLoadError;
+
+  /// No description provided for @coachingVideoSaveLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Save lesson'**
+  String get coachingVideoSaveLesson;
+
+  /// No description provided for @coachingVideoUnsaveLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from saved'**
+  String get coachingVideoUnsaveLesson;
 
   /// No description provided for @coachingVideoCategoryMindfulness.
   ///

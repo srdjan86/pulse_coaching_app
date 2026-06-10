@@ -7,6 +7,7 @@ import 'package:pulse_coaching_app/features/counter/presentation/pages/counter_p
 import 'package:pulse_coaching_app/features/home/presentation/pages/home_page.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/view_models/onboarding_view_model.dart';
+import 'package:pulse_coaching_app/features/saved_lessons/presentation/pages/saved_lessons_page.dart';
 import 'package:pulse_coaching_app/features/settings/presentation/pages/settings_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -36,6 +37,10 @@ GoRouter createAppRouter() {
         builder: (context, state) => const CounterPage(),
       ),
       GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
+      GoRoute(
+        path: '/saved-lessons',
+        builder: (context, state) => const SavedLessonsPage(),
+      ),
       GoRoute(
         path: '/coaching-videos',
         builder: (context, state) => const CoachingVideoLibraryPage(),

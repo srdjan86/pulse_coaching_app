@@ -178,6 +178,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'Browse guided workout and recovery lessons';
 
   @override
+  String get savedLessonsTitle => 'Saved lessons';
+
+  @override
+  String get savedLessonsDescription => 'Keep favorite lessons ready for later';
+
+  @override
+  String get savedLessonsEmpty => 'No saved lessons yet.';
+
+  @override
+  String get savedLessonsLoadError => 'Could not load saved lessons';
+
+  @override
   String get coachingVideoDetailTitle => 'Lesson';
 
   @override
@@ -204,6 +216,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get coachingVideoLoadError => 'Could not load lessons';
+
+  @override
+  String get coachingVideoSaveLesson => 'Save lesson';
+
+  @override
+  String get coachingVideoUnsaveLesson => 'Remove from saved';
 
   @override
   String get coachingVideoCategoryMindfulness => 'Mindfulness';

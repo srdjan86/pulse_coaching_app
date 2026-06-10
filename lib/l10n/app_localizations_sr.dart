@@ -178,6 +178,18 @@ class AppLocalizationsSr extends AppLocalizations {
       'Pregledajte vođene treninge i lekcije oporavka';
 
   @override
+  String get savedLessonsTitle => 'Sačuvane lekcije';
+
+  @override
+  String get savedLessonsDescription => 'Omiljene lekcije spremne za kasnije';
+
+  @override
+  String get savedLessonsEmpty => 'Još nema sačuvanih lekcija.';
+
+  @override
+  String get savedLessonsLoadError => 'Nije moguće učitati sačuvane lekcije';
+
+  @override
   String get coachingVideoDetailTitle => 'Lekcija';
 
   @override
@@ -205,6 +217,12 @@ class AppLocalizationsSr extends AppLocalizations {
 
   @override
   String get coachingVideoLoadError => 'Nije moguće učitati lekcije';
+
+  @override
+  String get coachingVideoSaveLesson => 'Sačuvaj lekciju';
+
+  @override
+  String get coachingVideoUnsaveLesson => 'Ukloni iz sačuvanih';
 
   @override
   String get coachingVideoCategoryMindfulness => 'Svesnost';

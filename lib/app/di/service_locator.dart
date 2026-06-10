@@ -16,6 +16,9 @@ import 'package:pulse_coaching_app/features/home/presentation/view_models/home_v
 import 'package:pulse_coaching_app/features/onboarding/data/repositories/shared_preferences_onboarding_repository.dart';
 import 'package:pulse_coaching_app/features/onboarding/domain/repositories/onboarding_repository.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/view_models/onboarding_view_model.dart';
+import 'package:pulse_coaching_app/features/saved_lessons/data/repositories/shared_preferences_saved_lessons_repository.dart';
+import 'package:pulse_coaching_app/features/saved_lessons/domain/repositories/saved_lessons_repository.dart';
+import 'package:pulse_coaching_app/features/saved_lessons/presentation/view_models/saved_lessons_view_model.dart';
 import 'package:pulse_coaching_app/features/settings/data/repositories/shared_preferences_theme_preferences_repository.dart';
 import 'package:pulse_coaching_app/features/settings/domain/repositories/theme_preferences_repository.dart';
 import 'package:pulse_coaching_app/features/settings/presentation/view_models/theme_settings_view_model.dart';
@@ -28,6 +31,7 @@ Future<void> configureDependencies(
   AppConfig config, {
   SharedPreferences? preferences,
   OnboardingRepository? onboardingRepository,
+  SavedLessonsRepository? savedLessonsRepository,
 }) async {
   if (getIt.isRegistered<AppConfig>()) {
     return;
@@ -64,9 +68,20 @@ Future<void> configureDependencies(
   getIt.registerLazySingleton<CoachingVideoRepository>(
     MockCoachingVideoRepository.new,
   );
+  getIt.registerLazySingleton<SavedLessonsRepository>(
+    () =>
+        savedLessonsRepository ??
+        SharedPreferencesSavedLessonsRepository(getIt()),
+  );
   getIt.registerFactory(() => HomeViewModel(getIt()));
   getIt.registerFactory(() => CoachingVideoLibraryViewModel(getIt()));
-  getIt.registerFactory(() => CoachingVideoDetailViewModel(getIt()));
+  getIt.registerFactory(() => CoachingVideoDetailViewModel(getIt(), getIt()));
+  getIt.registerFactory(
+    () => SavedLessonsViewModel(
+      coachingVideoRepository: getIt(),
+      savedLessonsRepository: getIt(),
+    ),
+  );
 }
 
 AuthRepository _createAuthRepository(AppConfig config) {
