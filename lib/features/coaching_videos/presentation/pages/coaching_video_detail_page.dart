@@ -3,7 +3,7 @@ import 'package:pulse_coaching_app/core/theme/app_colors.dart';
 import 'package:pulse_coaching_app/core/theme/app_spacing.dart';
 import 'package:pulse_coaching_app/core/widgets/pulse_primary_button.dart';
 import 'package:pulse_coaching_app/core/widgets/pulse_section_header.dart';
-import 'package:pulse_coaching_app/features/coaching_videos/presentation/utils/coaching_video_category_style.dart';
+import 'package:pulse_coaching_app/features/coaching_videos/presentation/widgets/coaching_video_category_chip.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/utils/coaching_video_localization.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/view_models/coaching_video_detail_view_model.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/widgets/coaching_video_player.dart';

@@ -10,6 +10,7 @@
   "homeFocusQuote": "Small consistent steps build lasting change.",
   "homeExploreSection": "Explore",
   "homeContinueSection": "Continue",
+  "homeContinueLoadError": "Could not load recent sessions.",
   "homeDevSection": "Developer",
   "coachingVideosSessionCount": "{count} sessions",
   "@coachingVideosSessionCount": {

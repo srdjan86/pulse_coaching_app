@@ -3,6 +3,8 @@ import 'package:pulse_coaching_app/core/config/app_config.dart';
 import 'package:pulse_coaching_app/core/config/app_flavor.dart';
 import 'package:pulse_coaching_app/core/config/backend_type.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/data/repositories/mock_coaching_video_repository.dart';
+import 'package:pulse_coaching_app/features/coaching_videos/domain/entities/coaching_video.dart';
+import 'package:pulse_coaching_app/features/coaching_videos/domain/repositories/coaching_video_repository.dart';
 import 'package:pulse_coaching_app/features/home/presentation/pages/home_page.dart';
 import 'package:pulse_coaching_app/features/home/presentation/view_models/home_view_model.dart';
 import 'package:pulse_coaching_app/l10n/app_localizations.dart';
@@ -51,4 +53,35 @@ void main() {
     expect(find.text('Counter (BLoC)'), findsOneWidget);
     expect(find.text('Flavor: dev'), findsOneWidget);
   });
+
+  testWidgets('home page shows an error when recent sessions fail to load', (
+    tester,
+  ) async {
+    final viewModel = HomeViewModel(_FailingCoachingVideoRepository());
+    await viewModel.load();
+    expect(viewModel.hasError, isTrue);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: HomePage(viewModel: viewModel),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Could not load recent sessions.'), findsOneWidget);
+  });
+}
+
+class _FailingCoachingVideoRepository implements CoachingVideoRepository {
+  @override
+  Future<CoachingVideo?> getVideoById(String id) async {
+    throw Exception('Failed to load video');
+  }
+
+  @override
+  Future<List<CoachingVideo>> getVideos() async {
+    throw Exception('Failed to load videos');
+  }
 }

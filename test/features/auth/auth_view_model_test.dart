@@ -31,5 +31,41 @@ void main() {
 
       expect(viewModel.isSignedIn, isFalse);
     });
+
+    test('validates empty login fields before sign in', () async {
+      final didSignIn = await viewModel.submitSignIn();
+
+      expect(didSignIn, isFalse);
+      expect(viewModel.isSignedIn, isFalse);
+      expect(
+        viewModel.emailValidationError,
+        LoginFieldValidationError.required,
+      );
+      expect(
+        viewModel.passwordValidationError,
+        LoginFieldValidationError.required,
+      );
+    });
+
+    test('clears login validation errors as fields are updated', () async {
+      await viewModel.submitSignIn();
+
+      viewModel.updateEmail('demo@example.com');
+      viewModel.updatePassword('password');
+
+      expect(viewModel.emailValidationError, isNull);
+      expect(viewModel.passwordValidationError, isNull);
+    });
+
+    test('submits sign in with valid login fields', () async {
+      viewModel.updateEmail('demo@example.com');
+      viewModel.updatePassword('password');
+
+      final didSignIn = await viewModel.submitSignIn();
+
+      expect(didSignIn, isTrue);
+      expect(viewModel.isSignedIn, isTrue);
+      expect(viewModel.user?.email, 'demo@example.com');
+    });
   });
 }

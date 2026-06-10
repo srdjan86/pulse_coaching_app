@@ -1,7 +1,7 @@
 import 'package:pulse_coaching_app/core/theme/app_colors.dart';
 import 'package:pulse_coaching_app/core/theme/app_spacing.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/domain/entities/coaching_video.dart';
-import 'package:pulse_coaching_app/features/coaching_videos/presentation/utils/coaching_video_category_style.dart';
+import 'package:pulse_coaching_app/features/coaching_videos/presentation/widgets/coaching_video_category_chip.dart';
 import 'package:flutter/material.dart';
 
 class CoachingVideoThumbnail extends StatelessWidget {

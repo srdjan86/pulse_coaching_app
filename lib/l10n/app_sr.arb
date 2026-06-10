@@ -7,6 +7,7 @@
   "homeFocusQuote": "Mali dosledni koraci grade trajne promene.",
   "homeExploreSection": "Istraži",
   "homeContinueSection": "Nastavi",
+  "homeContinueLoadError": "Nije moguće učitati nedavne sesije.",
   "homeDevSection": "Developer",
   "coachingVideosSessionCount": "{count} sesija",
   "homeSubtitle": "Flutter šablon spreman za AI radni tok",

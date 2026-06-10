@@ -6,7 +6,7 @@ import 'package:pulse_coaching_app/core/theme/app_spacing.dart';
 import 'package:pulse_coaching_app/core/widgets/pulse_feature_card.dart';
 import 'package:pulse_coaching_app/core/widgets/pulse_section_header.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/domain/entities/coaching_video.dart';
-import 'package:pulse_coaching_app/features/coaching_videos/presentation/utils/coaching_video_category_style.dart';
+import 'package:pulse_coaching_app/features/coaching_videos/presentation/widgets/coaching_video_category_chip.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/utils/coaching_video_localization.dart';
 import 'package:pulse_coaching_app/features/home/presentation/view_models/home_view_model.dart';
 import 'package:pulse_coaching_app/l10n/app_localizations.dart';
@@ -131,6 +131,9 @@ class _HomeBodyState extends State<_HomeBody> {
                   ),
                 ),
               ),
+            ] else if (viewModel.hasError) ...[
+              const SizedBox(height: AppSpacing.xl),
+              _HomeNotice(message: l10n.homeContinueLoadError),
             ],
             if (config.flavor == AppFlavor.dev) ...[
               const SizedBox(height: AppSpacing.xl),
@@ -179,7 +182,7 @@ class _FocusHero extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(AppSpacing.xl),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusHero),
         gradient: LinearGradient(
           colors: [colors.primary, colors.primaryPressed],
           begin: Alignment.topLeft,
@@ -209,6 +212,28 @@ class _FocusHero extends StatelessWidget {
   }
 }
 
+class _HomeNotice extends StatelessWidget {
+  const _HomeNotice({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      decoration: BoxDecoration(
+        color: colors.card,
+        borderRadius: BorderRadius.circular(AppSpacing.radiusButton),
+        border: Border.all(color: colors.border),
+      ),
+      child: Text(message, style: theme.textTheme.bodyMedium),
+    );
+  }
+}
+
 class _ContinueLessonTile extends StatelessWidget {
   const _ContinueLessonTile({required this.video, required this.onTap});
 
@@ -225,7 +250,7 @@ class _ContinueLessonTile extends StatelessWidget {
     return Material(
       color: colors.card,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusButton),
         side: BorderSide(color: colors.border),
       ),
       clipBehavior: Clip.antiAlias,
@@ -239,8 +264,8 @@ class _ContinueLessonTile extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: 40,
-                height: 40,
+                width: AppSpacing.iconTileSize,
+                height: AppSpacing.iconTileSize,
                 decoration: BoxDecoration(
                   color: style.foreground,
                   borderRadius: BorderRadius.circular(AppSpacing.radiusLogo),

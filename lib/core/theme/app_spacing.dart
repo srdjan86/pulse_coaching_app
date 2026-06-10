@@ -12,9 +12,11 @@ abstract final class AppSpacing {
   static const double radiusInput = 12;
   static const double radiusButton = 14;
   static const double radiusCard = 16;
+  static const double radiusHero = 18;
   static const double radiusChip = 20;
   static const double radiusLogo = 10;
 
   static const double minButtonHeight = 52;
+  static const double iconTileSize = 40;
   static const double iconButtonSize = 44;
 }
