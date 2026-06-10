@@ -30,6 +30,9 @@ class AppLocalizationsSr extends AppLocalizations {
   String get homeContinueSection => 'Nastavi';
 
   @override
+  String get homeContinueLoadError => 'Nije moguće učitati nedavne sesije.';
+
+  @override
   String get homeDevSection => 'Developer';
 
   @override

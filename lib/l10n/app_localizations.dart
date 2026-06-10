@@ -140,6 +140,12 @@ abstract class AppLocalizations {
   /// **'Continue'**
   String get homeContinueSection;
 
+  /// No description provided for @homeContinueLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load recent sessions.'**
+  String get homeContinueLoadError;
+
   /// No description provided for @homeDevSection.
   ///
   /// In en, this message translates to:

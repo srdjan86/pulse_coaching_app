@@ -69,7 +69,6 @@ class AppTheme {
         style: FilledButton.styleFrom(
           backgroundColor: colors.primary,
           foregroundColor: colors.onPrimary,
-          disabledBackgroundColor: colors.primaryPressed,
           minimumSize: const Size.fromHeight(AppSpacing.minButtonHeight),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSpacing.radiusButton),
@@ -177,7 +176,7 @@ class AppTheme {
         fontWeight: FontWeight.w600,
       ),
       labelLarge: base.labelLarge?.copyWith(
-        color: colors.onPrimary,
+        color: colors.onSurface,
         fontWeight: FontWeight.w600,
         letterSpacing: -0.1,
       ),

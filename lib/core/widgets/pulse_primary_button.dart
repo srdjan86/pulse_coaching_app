@@ -24,6 +24,7 @@ class PulsePrimaryButton extends StatelessWidget {
       onPressed: isLoading ? null : onPressed,
       style: FilledButton.styleFrom(
         backgroundColor: isLoading ? colors.primaryPressed : colors.primary,
+        disabledBackgroundColor: isLoading ? colors.primaryPressed : null,
       ),
       child: isLoading
           ? SizedBox(

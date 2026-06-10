@@ -30,6 +30,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeContinueSection => 'Continue';
 
   @override
+  String get homeContinueLoadError => 'Could not load recent sessions.';
+
+  @override
   String get homeDevSection => 'Developer';
 
   @override

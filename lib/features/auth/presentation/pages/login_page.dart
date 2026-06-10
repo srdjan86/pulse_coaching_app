@@ -24,53 +24,12 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-class _LoginBody extends StatefulWidget {
+class _LoginBody extends StatelessWidget {
   const _LoginBody();
 
-  @override
-  State<_LoginBody> createState() => _LoginBodyState();
-}
-
-class _LoginBodyState extends State<_LoginBody> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool _obscurePassword = true;
-  String? _emailError;
-  String? _passwordError;
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  bool _validate(AppLocalizations l10n) {
-    final emailError = _emailController.text.trim().isEmpty
-        ? l10n.loginEmailRequired
-        : null;
-    final passwordError = _passwordController.text.isEmpty
-        ? l10n.loginPasswordRequired
-        : null;
-
-    setState(() {
-      _emailError = emailError;
-      _passwordError = passwordError;
-    });
-
-    return emailError == null && passwordError == null;
-  }
-
   Future<void> _submit(BuildContext context, AuthViewModel viewModel) async {
-    final l10n = AppLocalizations.of(context);
-    if (!_validate(l10n)) return;
-
-    await viewModel.signIn(
-      email: _emailController.text.trim(),
-      password: _passwordController.text,
-    );
-
-    if (viewModel.isSignedIn && context.mounted) {
+    final didSignIn = await viewModel.submitSignIn();
+    if (didSignIn && context.mounted) {
       context.go('/');
     }
   }
@@ -117,44 +76,36 @@ class _LoginBodyState extends State<_LoginBody> {
                             PulseTextField(
                               key: const Key('login_email'),
                               label: l10n.loginEmailLabel,
-                              controller: _emailController,
-                              errorText: _emailError,
+                              errorText: _loginValidationErrorLabel(
+                                viewModel.emailValidationError,
+                                l10n.loginEmailRequired,
+                              ),
                               keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
                               autofillHints: const [AutofillHints.email],
-                              onChanged: (_) {
-                                if (_emailError != null) {
-                                  setState(() => _emailError = null);
-                                }
-                              },
+                              onChanged: viewModel.updateEmail,
                             ),
                             const SizedBox(height: AppSpacing.lg),
                             PulseTextField(
                               key: const Key('login_password'),
                               label: l10n.loginPasswordLabel,
-                              controller: _passwordController,
                               hintText: l10n.loginPasswordHint,
-                              errorText: _passwordError,
-                              obscureText: _obscurePassword,
+                              errorText: _loginValidationErrorLabel(
+                                viewModel.passwordValidationError,
+                                l10n.loginPasswordRequired,
+                              ),
+                              obscureText: viewModel.isPasswordObscured,
                               textInputAction: TextInputAction.done,
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  _obscurePassword
+                                  viewModel.isPasswordObscured
                                       ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
                                   color: colors.mutedForeground,
                                 ),
-                                onPressed: () {
-                                  setState(
-                                    () => _obscurePassword = !_obscurePassword,
-                                  );
-                                },
+                                onPressed: viewModel.togglePasswordVisibility,
                               ),
-                              onChanged: (_) {
-                                if (_passwordError != null) {
-                                  setState(() => _passwordError = null);
-                                }
-                              },
+                              onChanged: viewModel.updatePassword,
                               onSubmitted: (_) => _submit(context, viewModel),
                             ),
                             if (viewModel.errorMessage != null) ...[
@@ -216,4 +167,14 @@ class _LoginBodyState extends State<_LoginBody> {
       ),
     );
   }
+}
+
+String? _loginValidationErrorLabel(
+  LoginFieldValidationError? error,
+  String requiredLabel,
+) {
+  return switch (error) {
+    LoginFieldValidationError.required => requiredLabel,
+    null => null,
+  };
 }
