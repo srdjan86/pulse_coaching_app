@@ -2,6 +2,9 @@
 
 The goal is to use AI to accelerate delivery while keeping senior human control.
 
+For the portfolio and client-facing narrative, see
+[`docs/ai-assisted-delivery.md`](ai-assisted-delivery.md).
+
 ## Workflow
 
 1. Create a GitHub issue with a clear title and description.

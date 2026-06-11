@@ -12,6 +12,15 @@ Pulse helps users discover coaching content, track progress, and save favorite l
 
 Inherited from the template: Flutter, BLoC, MVVM, flavors, localization, GitHub Actions, `AGENTS.md`.
 
+## AI-assisted delivery proof of work
+
+This app is also a portfolio artifact for an AI-assisted Flutter delivery
+workflow: ticket → plan → implementation → tests → PR → CI → review.
+
+Start with [`docs/ai-assisted-delivery.md`](docs/ai-assisted-delivery.md) for
+the client-facing case study, then see [`docs/ai-workflow.md`](docs/ai-workflow.md)
+for the operating workflow.
+
 ## Run locally
 
 ```bash
@@ -32,17 +41,18 @@ flutter test
 
 | Issue | Title | Status |
 |-------|--------|--------|
-| [#1](https://github.com/srdjan86/pulse_coaching_app/issues/1) | Onboarding screen | Open |
-| [#2](https://github.com/srdjan86/pulse_coaching_app/issues/2) | App theme & design tokens | Open |
-| [#3](https://github.com/srdjan86/pulse_coaching_app/issues/3) | Login form UI | Open |
-| [#4](https://github.com/srdjan86/pulse_coaching_app/issues/4) | Saved lessons (local) | Open |
-| [#5](https://github.com/srdjan86/pulse_coaching_app/issues/5) | Lesson feed (mock data) | Open |
+| [#1](https://github.com/srdjan86/pulse_coaching_app/issues/1) | Onboarding screen | Closed |
+| [#2](https://github.com/srdjan86/pulse_coaching_app/issues/2) | App theme & design tokens | Closed |
+| [#3](https://github.com/srdjan86/pulse_coaching_app/issues/3) | Login form UI | Closed |
+| [#4](https://github.com/srdjan86/pulse_coaching_app/issues/4) | Saved lessons (local) | Closed |
+| [#5](https://github.com/srdjan86/pulse_coaching_app/issues/5) | Lesson feed (mock data) | Closed |
+| [#20](https://github.com/srdjan86/pulse_coaching_app/issues/20) | Apply Figma design to Flutter UI | Closed |
 
 [View all issues](https://github.com/srdjan86/pulse_coaching_app/issues). Create new work there before starting AI implementation.
 
 ## Workflow
 
-See `docs/ai-workflow.md` and `AGENTS.md`.
+See `docs/ai-assisted-delivery.md`, `docs/ai-workflow.md`, and `AGENTS.md`.
 
 ## Origin
 
