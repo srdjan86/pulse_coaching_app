@@ -6,6 +6,8 @@ import 'package:pulse_coaching_app/features/auth/data/repositories/supabase_auth
 import 'package:pulse_coaching_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:pulse_coaching_app/features/auth/presentation/view_models/auth_view_model.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/data/repositories/mock_coaching_video_repository.dart';
+import 'package:pulse_coaching_app/features/coaching_videos/data/repositories/supabase_coaching_video_repository.dart';
+import 'package:pulse_coaching_app/features/coaching_videos/data/sources/supabase_lesson_remote_data_source.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/domain/repositories/coaching_video_repository.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/view_models/coaching_video_detail_view_model.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/view_models/coaching_video_library_view_model.dart';
@@ -66,7 +68,7 @@ Future<void> configureDependencies(
   );
 
   getIt.registerLazySingleton<CoachingVideoRepository>(
-    MockCoachingVideoRepository.new,
+    () => _createCoachingVideoRepository(config),
   );
   getIt.registerLazySingleton<SavedLessonsRepository>(
     () =>
@@ -92,5 +94,15 @@ AuthRepository _createAuthRepository(AppConfig config) {
       anonKey: config.supabaseAnonKey,
     ),
     BackendType.mock => MockAuthRepository(),
+  };
+}
+
+CoachingVideoRepository _createCoachingVideoRepository(AppConfig config) {
+  return switch (config.backend) {
+    BackendType.supabase => SupabaseCoachingVideoRepository(
+      SupabaseLessonRemoteDataSource(),
+    ),
+    BackendType.firebase => MockCoachingVideoRepository(),
+    BackendType.mock => MockCoachingVideoRepository(),
   };
 }

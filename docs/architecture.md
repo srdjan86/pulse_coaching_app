@@ -64,6 +64,8 @@ GetIt registrations live in `lib/app/di/service_locator.dart`.
 
 Auth supports `mock` (default), `firebase`, and `supabase` via `AppConfig` / dart-define.
 
+The lesson catalog uses Supabase when `BACKEND=supabase`; see `docs/supabase.md`.
+
 ## Flavors
 
 `dev`, `staging`, and `prod` entry points with matching Android/iOS flavor configuration.
