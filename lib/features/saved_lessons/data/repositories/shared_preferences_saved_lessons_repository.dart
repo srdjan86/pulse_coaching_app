@@ -38,4 +38,7 @@ class SharedPreferencesSavedLessonsRepository
     final sortedLessonIds = lessonIds.toList()..sort();
     await _preferences.setStringList(_savedLessonIdsKey, sortedLessonIds);
   }
+
+  @override
+  Future<void> promoteLocalSavesOnSignIn() async {}
 }

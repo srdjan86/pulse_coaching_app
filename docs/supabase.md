@@ -50,12 +50,11 @@ Use the same pattern for `config/prod.json` with a separate Supabase project.
 
 `public.lessons` stores published coaching videos. IDs are stable slugs (e.g. `morning-mobility`) so they match mock data and saved-lesson references.
 
-`public.user_saved_lessons` stores per-user saves. RLS restricts read/write to `auth.uid()`.
+`public.user_saved_lessons` stores per-user saves. RLS restricts read/write/update to `auth.uid()`. Guest saves in local storage are promoted to Supabase on sign-in.
 
 Row Level Security on `lessons` allows anonymous read of `published = true` rows.
 
 ## Next steps
 
 - Optional Supabase Storage for thumbnails
-- Merge local guest saves into remote on login
 - Staging/prod Supabase projects per flavor

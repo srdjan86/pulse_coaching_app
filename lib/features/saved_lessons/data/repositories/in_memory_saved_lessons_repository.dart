@@ -25,4 +25,7 @@ class InMemorySavedLessonsRepository implements SavedLessonsRepository {
   Future<void> unsave(String lessonId) async {
     _savedLessonIds.remove(lessonId);
   }
+
+  @override
+  Future<void> promoteLocalSavesOnSignIn() async {}
 }

@@ -71,6 +71,15 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void resetAuthFormFeedback() {
+    _emailValidationError = null;
+    _passwordValidationError = null;
+    _errorMessage = null;
+    _infoMessage = null;
+    _needsEmailConfirmation = false;
+    notifyListeners();
+  }
+
   Future<bool> submitSignIn() async {
     if (!_validateSignIn()) {
       return false;
@@ -86,7 +95,7 @@ class AuthViewModel extends ChangeNotifier {
     }
 
     await signUp(email: _email.trim(), password: _password);
-    return _didAuthSucceed() || _needsEmailConfirmation;
+    return _didAuthSucceed();
   }
 
   Future<void> signIn({required String email, required String password}) async {

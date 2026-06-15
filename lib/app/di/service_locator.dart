@@ -83,11 +83,14 @@ Future<void> configureDependencies(
   );
   getIt.registerFactory(() => HomeViewModel(getIt()));
   getIt.registerFactory(() => CoachingVideoLibraryViewModel(getIt()));
-  getIt.registerFactory(() => CoachingVideoDetailViewModel(getIt(), getIt()));
+  getIt.registerFactory(
+    () => CoachingVideoDetailViewModel(getIt(), getIt(), getIt()),
+  );
   getIt.registerFactory(
     () => SavedLessonsViewModel(
       coachingVideoRepository: getIt(),
       savedLessonsRepository: getIt(),
+      authRepository: getIt(),
     ),
   );
 }

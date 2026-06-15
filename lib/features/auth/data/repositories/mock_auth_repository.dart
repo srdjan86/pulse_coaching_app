@@ -5,10 +5,12 @@ import 'package:pulse_coaching_app/features/auth/domain/entities/app_user.dart';
 import 'package:pulse_coaching_app/features/auth/domain/repositories/auth_repository.dart';
 
 class MockAuthRepository implements AuthRepository {
-  MockAuthRepository();
+  MockAuthRepository({this.signUpRequiresEmailConfirmation = false});
 
   static const demoEmail = 'demo@example.com';
   static const demoPassword = 'password';
+
+  final bool signUpRequiresEmailConfirmation;
 
   final StreamController<AppUser?> _controller =
       StreamController<AppUser?>.broadcast();
@@ -39,6 +41,10 @@ class MockAuthRepository implements AuthRepository {
     required String email,
     required String password,
   }) async {
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    if (signUpRequiresEmailConfirmation) {
+      return null;
+    }
     return signIn(email: email, password: password);
   }
 

@@ -82,7 +82,8 @@ class _LoginBodyState extends State<_LoginBody> {
     }
   }
 
-  void _toggleAuthMode() {
+  void _toggleAuthMode(AuthViewModel viewModel) {
+    viewModel.resetAuthFormFeedback();
     setState(() => _isSignUpMode = !_isSignUpMode);
   }
 
@@ -216,7 +217,7 @@ class _LoginBodyState extends State<_LoginBody> {
                                 actionLabel: isSignUpMode
                                     ? l10n.signIn
                                     : l10n.signUpButton,
-                                onPressed: _toggleAuthMode,
+                                onPressed: () => _toggleAuthMode(viewModel),
                               ),
                             ],
                             const SizedBox(height: AppSpacing.xxl),
@@ -342,6 +343,6 @@ String _authErrorMessage(AppLocalizations l10n, String code) {
 String _authInfoMessage(AppLocalizations l10n, String code) {
   return switch (code) {
     'sign_up_confirmation_required' => l10n.signUpConfirmationMessage,
-    _ => code,
+    _ => l10n.loginGenericErrorMessage,
   };
 }

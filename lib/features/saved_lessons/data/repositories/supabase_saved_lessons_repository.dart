@@ -43,4 +43,7 @@ class SupabaseSavedLessonsRepository implements SavedLessonsRepository {
   Future<void> unsave(String lessonId) async {
     await _remoteDataSource.unsave(_requireUserId(), lessonId);
   }
+
+  @override
+  Future<void> promoteLocalSavesOnSignIn() async {}
 }

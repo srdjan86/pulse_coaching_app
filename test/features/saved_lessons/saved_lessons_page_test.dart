@@ -1,3 +1,4 @@
+import '../../helpers/fake_auth_repository.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/domain/entities/coaching_video.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/domain/repositories/coaching_video_repository.dart';
 import 'package:pulse_coaching_app/features/saved_lessons/data/repositories/in_memory_saved_lessons_repository.dart';
@@ -32,6 +33,7 @@ Future<void> _pumpSavedLessons(
     savedLessonsRepository: InMemorySavedLessonsRepository(
       initialSavedLessonIds: savedLessonIds,
     ),
+    authRepository: FakeAuthRepository(),
   );
 
   await tester.pumpWidget(

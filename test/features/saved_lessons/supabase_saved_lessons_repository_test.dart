@@ -108,5 +108,27 @@ void main() {
       expect(await local.isSaved('mindful-breathing'), isTrue);
       expect(await remote.getSavedLessonIds(), isEmpty);
     });
+
+    test('promotes local saves to remote on sign in', () async {
+      final local = InMemorySavedLessonsRepository(
+        initialSavedLessonIds: {'morning-mobility'},
+      );
+      final remoteDataSource = _FakeSavedLessonRemoteDataSource();
+      final remote = SupabaseSavedLessonsRepository(
+        remoteDataSource,
+        userIdProvider: () => 'user-1',
+      );
+      final repository = BackendAwareSavedLessonsRepository(
+        backend: BackendType.supabase,
+        local: local,
+        remote: remote,
+        currentUserId: () => 'user-1',
+      );
+
+      await repository.promoteLocalSavesOnSignIn();
+
+      expect(await remote.isSaved('morning-mobility'), isTrue);
+      expect(await local.isSaved('morning-mobility'), isTrue);
+    });
   });
 }

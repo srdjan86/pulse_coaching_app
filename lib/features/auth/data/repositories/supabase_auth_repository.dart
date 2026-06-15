@@ -1,4 +1,5 @@
 import 'package:pulse_coaching_app/core/errors/auth_failure.dart';
+import 'package:pulse_coaching_app/features/auth/data/mappers/supabase_auth_error_mapper.dart';
 import 'package:pulse_coaching_app/features/auth/domain/entities/app_user.dart';
 import 'package:pulse_coaching_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -44,7 +45,7 @@ class SupabaseAuthRepository implements AuthRepository {
     } on AuthFailure {
       rethrow;
     } on AuthException catch (error) {
-      throw AuthFailure(_mapAuthCode(error), details: error.message);
+      throw AuthFailure(mapSupabaseAuthCode(error), details: error.message);
     } catch (error) {
       throw AuthFailure('network_error', details: error.toString());
     }
@@ -70,7 +71,7 @@ class SupabaseAuthRepository implements AuthRepository {
     } on AuthFailure {
       rethrow;
     } on AuthException catch (error) {
-      throw AuthFailure(_mapAuthCode(error), details: error.message);
+      throw AuthFailure(mapSupabaseAuthCode(error), details: error.message);
     } catch (error) {
       throw AuthFailure('network_error', details: error.toString());
     }
@@ -81,29 +82,10 @@ class SupabaseAuthRepository implements AuthRepository {
     try {
       await _auth.signOut();
     } on AuthException catch (error) {
-      throw AuthFailure(_mapAuthCode(error), details: error.message);
+      throw AuthFailure(mapSupabaseAuthCode(error), details: error.message);
     } catch (error) {
       throw AuthFailure('network_error', details: error.toString());
     }
-  }
-
-  String _mapAuthCode(AuthException error) {
-    final message = error.message.toLowerCase();
-
-    if (message.contains('invalid login credentials')) {
-      return 'invalid_login_credentials';
-    }
-    if (message.contains('email not confirmed')) {
-      return 'email_not_confirmed';
-    }
-    if (message.contains('user already registered')) {
-      return 'user_already_registered';
-    }
-    if (message.contains('password')) {
-      return 'weak_password';
-    }
-
-    return 'auth_error';
   }
 
   AppUser? _mapUser(User? user) {

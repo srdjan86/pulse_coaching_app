@@ -37,4 +37,16 @@ class BackendAwareSavedLessonsRepository implements SavedLessonsRepository {
 
   @override
   Future<void> unsave(String lessonId) => _active.unsave(lessonId);
+
+  @override
+  Future<void> promoteLocalSavesOnSignIn() async {
+    if (_backend != BackendType.supabase || _currentUserId() == null) {
+      return;
+    }
+
+    final localIds = await _local.getSavedLessonIds();
+    for (final lessonId in localIds) {
+      await _remote.save(lessonId);
+    }
+  }
 }

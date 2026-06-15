@@ -31,7 +31,21 @@ void main() {
     WidgetTester tester, {
     AuthViewModel? viewModel,
     bool withRouter = false,
+    BackendType backend = BackendType.mock,
   }) async {
+    if (backend != BackendType.mock) {
+      await getIt.reset();
+      await configureTestDependencies(
+        AppConfig(
+          flavor: AppFlavor.staging,
+          appName: 'Pulse Staging',
+          backend: backend,
+          supabaseUrl: 'https://example.supabase.co',
+          supabaseAnonKey: 'test-key',
+        ),
+      );
+    }
+
     final page = LoginPage(viewModel: viewModel ?? makeViewModel());
 
     if (withRouter) {
@@ -192,6 +206,34 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Sign in to Pulse'), findsOneWidget);
+  });
+
+  testWidgets('email confirmation stays on login and shows message', (
+    tester,
+  ) async {
+    await pumpLogin(
+      tester,
+      viewModel: AuthViewModel(
+        MockAuthRepository(signUpRequiresEmailConfirmation: true),
+      ),
+      withRouter: true,
+      backend: BackendType.supabase,
+    );
+
+    await tester.tap(find.byKey(const Key('auth_mode_toggle')));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(_fieldByKey('login_email'), 'new@example.com');
+    await tester.enterText(_fieldByKey('login_password'), 'password123');
+    await tester.tap(find.byKey(const Key('login_submit')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Account created. Confirm your email, then sign in.'),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('login_submit')), findsOneWidget);
+    expect(find.text('home'), findsNothing);
   });
 }
 

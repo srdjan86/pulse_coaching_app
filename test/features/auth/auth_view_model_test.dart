@@ -12,6 +12,8 @@ void main() {
       viewModel = AuthViewModel(repository);
     });
 
+    AuthViewModel viewModelWith(MockAuthRepository repo) => AuthViewModel(repo);
+
     tearDown(() {
       viewModel.dispose();
     });
@@ -90,6 +92,52 @@ void main() {
         viewModel.emailValidationError,
         LoginFieldValidationError.invalidEmail,
       );
+    });
+
+    test('rejects short password on sign up', () async {
+      viewModel.updateEmail('new@example.com');
+      viewModel.updatePassword('123');
+
+      final didSignUp = await viewModel.submitSignUp();
+
+      expect(didSignUp, isFalse);
+      expect(viewModel.isSignedIn, isFalse);
+      expect(
+        viewModel.passwordValidationError,
+        LoginFieldValidationError.passwordTooShort,
+      );
+    });
+
+    test('email confirmation does not count as signed in', () async {
+      final confirmationViewModel = viewModelWith(
+        MockAuthRepository(signUpRequiresEmailConfirmation: true),
+      );
+      addTearDown(confirmationViewModel.dispose);
+
+      confirmationViewModel.updateEmail('new@example.com');
+      confirmationViewModel.updatePassword('password123');
+
+      final didSignUp = await confirmationViewModel.submitSignUp();
+
+      expect(didSignUp, isFalse);
+      expect(confirmationViewModel.isSignedIn, isFalse);
+      expect(confirmationViewModel.needsEmailConfirmation, isTrue);
+      expect(
+        confirmationViewModel.infoMessage,
+        'sign_up_confirmation_required',
+      );
+    });
+
+    test('resetAuthFormFeedback clears validation and messages', () async {
+      await viewModel.submitSignIn();
+
+      viewModel.resetAuthFormFeedback();
+
+      expect(viewModel.emailValidationError, isNull);
+      expect(viewModel.passwordValidationError, isNull);
+      expect(viewModel.errorMessage, isNull);
+      expect(viewModel.infoMessage, isNull);
+      expect(viewModel.needsEmailConfirmation, isFalse);
     });
   });
 }
