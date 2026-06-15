@@ -13,7 +13,7 @@
       ]
     },
     {
-      "name": "staging (mock)",
+      "name": "staging",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_staging.dart",

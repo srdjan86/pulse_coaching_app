@@ -136,14 +136,34 @@ class AppLocalizationsSr extends AppLocalizations {
   String get loginPasswordHint => 'Vaša lozinka';
 
   @override
+  String get signUpPasswordHint => 'Najmanje 6 karaktera';
+
+  @override
   String get loginEmailRequired => 'Email je obavezan';
+
+  @override
+  String get loginEmailInvalid => 'Unesite ispravnu email adresu';
 
   @override
   String get loginPasswordRequired => 'Lozinka je obavezna';
 
   @override
+  String get loginPasswordTooShort => 'Lozinka mora imati najmanje 6 karaktera';
+
+  @override
   String get loginErrorMessage =>
       'Email ili lozinka nisu ispravni. Pokušajte ponovo.';
+
+  @override
+  String get loginGenericErrorMessage => 'Nešto nije u redu. Pokušajte ponovo.';
+
+  @override
+  String get loginNetworkErrorMessage =>
+      'Server nije dostupan. Proverite konekciju i pokušajte ponovo.';
+
+  @override
+  String get loginMockCredentialsHint =>
+      'Mock demo: demo@example.com / password';
 
   @override
   String get loginForgotPassword => 'Zaboravili ste lozinku?';
@@ -153,6 +173,62 @@ class AppLocalizationsSr extends AppLocalizations {
 
   @override
   String get loginGetStartedLink => 'Započni';
+
+  @override
+  String get loginNoAccountPrompt => 'Nemate nalog?';
+
+  @override
+  String get loginHasAccountPrompt => 'Već imate nalog?';
+
+  @override
+  String get signUpTitle => 'Kreirajte nalog';
+
+  @override
+  String get signUpSubtitle =>
+      'Registrujte se da sačuvate lekcije i sinhronizujete ih.';
+
+  @override
+  String get signUpButton => 'Kreiraj nalog';
+
+  @override
+  String get signUpConfirmationMessage =>
+      'Nalog je kreiran. Potvrdite email, zatim se prijavite.';
+
+  @override
+  String get loginEmailConfirmedSignedInMessage =>
+      'Email je potvrđen. Prijavljeni ste.';
+
+  @override
+  String get loginEmailConfirmedSignInMessage =>
+      'Email je potvrđen. Prijavite se lozinkom.';
+
+  @override
+  String get loginVerifyingEmailMessage => 'Potvrđujemo vaš email…';
+
+  @override
+  String get loginContinueButton => 'Nastavi';
+
+  @override
+  String get loginEmailNotConfirmed => 'Potvrdite email pre prijave.';
+
+  @override
+  String get loginUserAlreadyRegistered =>
+      'Nalog sa ovim emailom već postoji. Pokušajte prijavu.';
+
+  @override
+  String get loginWeakPassword => 'Izaberite jaču lozinku i pokušajte ponovo.';
+
+  @override
+  String get loginEmailRateLimitMessage =>
+      'Poslato je previše emailova. Sačekajte nekoliko minuta i pokušajte ponovo.';
+
+  @override
+  String get loginEmailLinkExpiredMessage =>
+      'Link za potvrdu nije važeći ili je istekao. Prijavite se ako ste već potvrdili email, ili se ponovo registrujte.';
+
+  @override
+  String get accountSignedInSubtitle =>
+      'Sačuvane lekcije se sinhronizuju sa nalogom. Dodirnite za odjavu.';
 
   @override
   String get coachingVideoCategoryAll => 'Sve';

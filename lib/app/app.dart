@@ -3,12 +3,16 @@ import 'package:pulse_coaching_app/app/router/app_router.dart';
 import 'package:pulse_coaching_app/core/config/app_config.dart';
 import 'package:pulse_coaching_app/core/config/backend_type.dart';
 import 'package:pulse_coaching_app/core/theme/app_theme.dart';
+import 'package:pulse_coaching_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:pulse_coaching_app/features/auth/presentation/view_models/auth_view_model.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/view_models/onboarding_view_model.dart';
+import 'package:pulse_coaching_app/features/saved_lessons/domain/repositories/saved_lessons_repository.dart';
 import 'package:pulse_coaching_app/features/settings/presentation/view_models/theme_settings_view_model.dart';
 import 'package:pulse_coaching_app/l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pulse_coaching_app/features/auth/data/repositories/supabase_auth_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DeliveryApp extends StatelessWidget {
@@ -51,6 +55,8 @@ Future<void> bootstrap(AppConfig config) async {
   await _initializeBackend(config);
   await configureDependencies(config);
 
+  getIt<AuthViewModel>();
+  _wireSavedLessonsAuthSync(config);
   await getIt<ThemeSettingsViewModel>().load();
   await getIt<OnboardingViewModel>().load();
 
@@ -71,7 +77,30 @@ Future<void> _initializeBackend(AppConfig config) async {
         url: config.supabaseUrl,
         anonKey: config.supabaseAnonKey,
       );
+      SupabaseAuthRepository.installEarlyErrorListener(
+        Supabase.instance.client.auth,
+      );
     case BackendType.mock:
       break;
   }
+}
+
+void _wireSavedLessonsAuthSync(AppConfig config) {
+  if (config.backend != BackendType.supabase) {
+    return;
+  }
+
+  final authRepository = getIt<AuthRepository>();
+  final savedLessonsRepository = getIt<SavedLessonsRepository>();
+  var previousUserId = authRepository.currentUser?.id;
+
+  authRepository.watchUser().listen((user) async {
+    final userId = user?.id;
+    final signedIn = previousUserId == null && userId != null;
+    previousUserId = userId;
+
+    if (signedIn) {
+      await savedLessonsRepository.promoteLocalSavesOnSignIn();
+    }
+  });
 }

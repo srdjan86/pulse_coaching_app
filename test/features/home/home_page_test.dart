@@ -2,6 +2,8 @@ import 'package:pulse_coaching_app/app/di/service_locator.dart';
 import 'package:pulse_coaching_app/core/config/app_config.dart';
 import 'package:pulse_coaching_app/core/config/app_flavor.dart';
 import 'package:pulse_coaching_app/core/config/backend_type.dart';
+import 'package:pulse_coaching_app/features/auth/data/repositories/mock_auth_repository.dart';
+import 'package:pulse_coaching_app/features/auth/presentation/view_models/auth_view_model.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/data/repositories/mock_coaching_video_repository.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/domain/entities/coaching_video.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/domain/repositories/coaching_video_repository.dart';
@@ -11,6 +13,7 @@ import 'package:pulse_coaching_app/l10n/app_localizations.dart';
 import '../../helpers/test_dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   setUp(() async {
@@ -52,6 +55,39 @@ void main() {
     expect(find.text('Morning Mobility Reset'), findsOneWidget);
     expect(find.text('Counter (BLoC)'), findsOneWidget);
     expect(find.text('Flavor: dev'), findsOneWidget);
+  });
+
+  testWidgets('home page shows sign in when backend is supabase', (
+    tester,
+  ) async {
+    await getIt.reset();
+    await configureTestDependencies(
+      const AppConfig(
+        flavor: AppFlavor.staging,
+        appName: 'Pulse Staging',
+        backend: BackendType.supabase,
+        supabaseUrl: 'https://example.supabase.co',
+        supabaseAnonKey: 'test-key',
+      ),
+    );
+
+    final viewModel = HomeViewModel(MockCoachingVideoRepository());
+    await viewModel.load();
+
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: ChangeNotifierProvider.value(
+          value: AuthViewModel(MockAuthRepository()),
+          child: HomePage(viewModel: viewModel),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Sign in to Pulse'), findsOneWidget);
+    expect(find.text('Counter (BLoC)'), findsNothing);
   });
 
   testWidgets('home page shows an error when recent sessions fail to load', (

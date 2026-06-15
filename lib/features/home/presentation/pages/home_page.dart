@@ -1,10 +1,12 @@
 import 'package:pulse_coaching_app/app/di/service_locator.dart';
 import 'package:pulse_coaching_app/core/config/app_config.dart';
 import 'package:pulse_coaching_app/core/config/app_flavor.dart';
+import 'package:pulse_coaching_app/core/config/backend_type.dart';
 import 'package:pulse_coaching_app/core/theme/app_colors.dart';
 import 'package:pulse_coaching_app/core/theme/app_spacing.dart';
 import 'package:pulse_coaching_app/core/widgets/pulse_feature_card.dart';
 import 'package:pulse_coaching_app/core/widgets/pulse_section_header.dart';
+import 'package:pulse_coaching_app/features/auth/presentation/view_models/auth_view_model.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/domain/entities/coaching_video.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/widgets/coaching_video_category_chip.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/utils/coaching_video_localization.dart';
@@ -29,9 +31,18 @@ class HomePage extends StatelessWidget {
       );
     }
 
-    return ChangeNotifierProvider(
+    final home = ChangeNotifierProvider(
       create: (_) => getIt<HomeViewModel>(),
       child: const _HomeBody(),
+    );
+
+    if (getIt<AppConfig>().backend == BackendType.mock) {
+      return home;
+    }
+
+    return ChangeNotifierProvider.value(
+      value: getIt<AuthViewModel>(),
+      child: home,
     );
   }
 }
@@ -119,6 +130,10 @@ class _HomeBodyState extends State<_HomeBody> {
               icon: Icons.bookmark_border,
               onTap: () => context.push('/saved-lessons'),
             ),
+            if (config.backend != BackendType.mock) ...[
+              const SizedBox(height: AppSpacing.md),
+              const _HomeAuthCard(),
+            ],
             if (viewModel.continueVideos.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.xl),
               PulseSectionHeader(label: l10n.homeContinueSection),
@@ -144,13 +159,15 @@ class _HomeBodyState extends State<_HomeBody> {
                 icon: Icons.exposure_plus_1_outlined,
                 onTap: () => context.push('/counter'),
               ),
-              const SizedBox(height: AppSpacing.md),
-              PulseFeatureCard(
-                title: l10n.loginTitle,
-                subtitle: l10n.authDescription,
-                icon: Icons.login_outlined,
-                onTap: () => context.push('/login'),
-              ),
+              if (config.backend == BackendType.mock) ...[
+                const SizedBox(height: AppSpacing.md),
+                PulseFeatureCard(
+                  title: l10n.loginTitle,
+                  subtitle: l10n.authDescription,
+                  icon: Icons.login_outlined,
+                  onTap: () => context.push('/login'),
+                ),
+              ],
               const SizedBox(height: AppSpacing.md),
               Text(
                 l10n.flavorLabel(config.flavor.name),
@@ -164,6 +181,39 @@ class _HomeBodyState extends State<_HomeBody> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _HomeAuthCard extends StatelessWidget {
+  const _HomeAuthCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
+    return Consumer<AuthViewModel>(
+      builder: (context, auth, _) {
+        if (auth.isSignedIn) {
+          return PulseFeatureCard(
+            title: l10n.signedInAs(auth.user!.email),
+            subtitle: l10n.accountSignedInSubtitle,
+            icon: Icons.verified_user_outlined,
+            onTap: () {
+              if (!auth.isLoading) {
+                auth.signOut();
+              }
+            },
+          );
+        }
+
+        return PulseFeatureCard(
+          title: l10n.loginTitle,
+          subtitle: l10n.authDescription,
+          icon: Icons.login_outlined,
+          onTap: () => context.push('/login'),
+        );
+      },
     );
   }
 }

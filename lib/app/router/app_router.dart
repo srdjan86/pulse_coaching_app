@@ -1,4 +1,5 @@
 import 'package:pulse_coaching_app/app/di/service_locator.dart';
+import 'package:pulse_coaching_app/core/config/supabase_auth_config.dart';
 import 'package:pulse_coaching_app/features/auth/presentation/pages/auth_demo_page.dart';
 import 'package:pulse_coaching_app/features/auth/presentation/pages/login_page.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/pages/coaching_video_detail_page.dart';
@@ -15,6 +16,10 @@ GoRouter createAppRouter() {
   return GoRouter(
     initialLocation: '/',
     redirect: (context, state) {
+      if (SupabaseAuthConfig.isAuthCallbackUri(state.uri)) {
+        return SupabaseAuthConfig.postAuthCallbackLoginLocation;
+      }
+
       final completed = getIt<OnboardingViewModel>().hasCompletedOnboarding;
       final goingToOnboarding = state.matchedLocation == '/onboarding';
 
@@ -54,7 +59,17 @@ GoRouter createAppRouter() {
           ),
         ],
       ),
-      GoRoute(path: '/auth', builder: (context, state) => const AuthDemoPage()),
+      GoRoute(
+        path: '/auth',
+        builder: (context, state) => const AuthDemoPage(),
+        routes: [
+          GoRoute(
+            path: 'callback',
+            redirect: (_, _) =>
+                SupabaseAuthConfig.postAuthCallbackLoginLocation,
+          ),
+        ],
+      ),
       GoRoute(
         path: '/settings',
         builder: (context, state) => const SettingsPage(),

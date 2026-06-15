@@ -1,3 +1,5 @@
+import 'package:pulse_coaching_app/core/validation/email_validator.dart'
+    as validation;
 import 'package:pulse_coaching_app/features/onboarding/domain/repositories/onboarding_repository.dart';
 import 'package:flutter/foundation.dart';
 
@@ -61,11 +63,7 @@ class OnboardingViewModel extends ChangeNotifier {
     return true;
   }
 
-  static bool isValidEmail(String value) {
-    final trimmed = value.trim();
-    if (trimmed.isEmpty) return false;
-    return RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(trimmed);
-  }
+  static bool isValidEmail(String value) => validation.isValidEmail(value);
 
   bool _isValidEmail(String value) => isValidEmail(value);
 }

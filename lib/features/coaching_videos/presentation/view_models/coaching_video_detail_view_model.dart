@@ -1,13 +1,26 @@
+import 'dart:async';
+
+import 'package:pulse_coaching_app/features/auth/domain/entities/app_user.dart';
+import 'package:pulse_coaching_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/domain/entities/coaching_video.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/domain/repositories/coaching_video_repository.dart';
 import 'package:pulse_coaching_app/features/saved_lessons/domain/repositories/saved_lessons_repository.dart';
 import 'package:flutter/material.dart';
 
 class CoachingVideoDetailViewModel extends ChangeNotifier {
-  CoachingVideoDetailViewModel(this._repository, this._savedLessonsRepository);
+  CoachingVideoDetailViewModel(
+    this._repository,
+    this._savedLessonsRepository,
+    AuthRepository authRepository,
+  ) {
+    _authSubscription = authRepository.watchUser().listen((_) {
+      unawaited(_refreshSavedState());
+    });
+  }
 
   final CoachingVideoRepository _repository;
   final SavedLessonsRepository _savedLessonsRepository;
+  late final StreamSubscription<AppUser?> _authSubscription;
 
   CoachingVideo? _video;
   bool _isLoading = false;
@@ -38,6 +51,21 @@ class CoachingVideoDetailViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> _refreshSavedState() async {
+    final video = _video;
+    if (video == null || !_isLoaded) {
+      return;
+    }
+
+    final isSaved = await _savedLessonsRepository.isSaved(video.id);
+    if (isSaved == _isSaved) {
+      return;
+    }
+
+    _isSaved = isSaved;
+    notifyListeners();
+  }
+
   Future<void> toggleSaved() async {
     final video = _video;
     if (video == null) return;
@@ -50,5 +78,11 @@ class CoachingVideoDetailViewModel extends ChangeNotifier {
       _isSaved = true;
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _authSubscription.cancel();
+    super.dispose();
   }
 }

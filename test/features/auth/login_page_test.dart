@@ -30,13 +30,29 @@ void main() {
   Future<void> pumpLogin(
     WidgetTester tester, {
     AuthViewModel? viewModel,
-    bool withRouter = false,
+    bool withRouter = true,
+    String initialLocation = '/login',
+    BackendType backend = BackendType.mock,
+    bool settle = true,
   }) async {
+    if (backend != BackendType.mock) {
+      await getIt.reset();
+      await configureTestDependencies(
+        AppConfig(
+          flavor: AppFlavor.staging,
+          appName: 'Pulse Staging',
+          backend: backend,
+          supabaseUrl: 'https://example.supabase.co',
+          supabaseAnonKey: 'test-key',
+        ),
+      );
+    }
+
     final page = LoginPage(viewModel: viewModel ?? makeViewModel());
 
     if (withRouter) {
       final router = GoRouter(
-        initialLocation: '/login',
+        initialLocation: initialLocation,
         routes: [
           GoRoute(path: '/login', builder: (ctx, st) => page),
           GoRoute(
@@ -61,7 +77,11 @@ void main() {
         ),
       );
     }
-    await tester.pumpAndSettle();
+    if (settle) {
+      await tester.pumpAndSettle();
+    } else {
+      await tester.pump();
+    }
   }
 
   testWidgets('shows title, email field, password field, and sign-in button', (
@@ -101,7 +121,7 @@ void main() {
   ) async {
     await pumpLogin(tester, withRouter: true);
 
-    await tester.enterText(_fieldByKey('login_email'), 'user@example.com');
+    await tester.enterText(_fieldByKey('login_email'), 'demo@example.com');
     await tester.enterText(_fieldByKey('login_password'), 'password');
     await tester.tap(find.byKey(const Key('login_submit')));
     await tester.pump();
@@ -113,6 +133,140 @@ void main() {
     expect(find.text('home'), findsOneWidget);
     expect(find.byKey(const Key('login_submit')), findsNothing);
   });
+
+  testWidgets('shows mock credentials hint on mock backend', (tester) async {
+    await pumpLogin(tester);
+
+    expect(
+      find.text('Mock backend demo: demo@example.com / password'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('shows error for invalid email format', (tester) async {
+    await pumpLogin(tester);
+
+    await tester.enterText(_fieldByKey('login_email'), 'not-an-email');
+    await tester.enterText(_fieldByKey('login_password'), 'password');
+    await tester.tap(find.byKey(const Key('login_submit')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Enter a valid email address'), findsOneWidget);
+    expect(find.text('home'), findsNothing);
+  });
+
+  testWidgets('shows error and stays on login for wrong password', (
+    tester,
+  ) async {
+    await pumpLogin(tester, withRouter: true);
+
+    await tester.enterText(_fieldByKey('login_email'), 'demo@example.com');
+    await tester.enterText(_fieldByKey('login_password'), 'wrong-password');
+    await tester.tap(find.byKey(const Key('login_submit')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Email or password is incorrect. Please try again.'),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('login_submit')), findsOneWidget);
+    expect(find.text('home'), findsNothing);
+  });
+
+  testWidgets('mock backend hides sign-up toggle', (tester) async {
+    await pumpLogin(tester);
+
+    expect(find.byKey(const Key('auth_mode_toggle')), findsNothing);
+    expect(find.text('New to Pulse?'), findsNothing);
+  });
+
+  testWidgets('supabase backend toggles between sign in and sign up', (
+    tester,
+  ) async {
+    await getIt.reset();
+    await configureTestDependencies(
+      const AppConfig(
+        flavor: AppFlavor.staging,
+        appName: 'Pulse Staging',
+        backend: BackendType.supabase,
+        supabaseUrl: 'https://example.supabase.co',
+        supabaseAnonKey: 'test-key',
+      ),
+    );
+
+    await pumpLogin(tester);
+
+    expect(find.text('Sign in to Pulse'), findsOneWidget);
+    expect(find.text('Sign in'), findsOneWidget);
+    expect(find.text("Don't have an account?"), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('auth_mode_toggle')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Create your account'), findsOneWidget);
+    expect(find.text('Create account'), findsOneWidget);
+    expect(find.text('Already have an account?'), findsOneWidget);
+    expect(find.text('Sign in to Pulse'), findsNothing);
+
+    await tester.tap(find.byKey(const Key('auth_mode_toggle')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Sign in to Pulse'), findsOneWidget);
+  });
+
+  testWidgets('email confirmation stays on login and shows message', (
+    tester,
+  ) async {
+    await pumpLogin(
+      tester,
+      viewModel: AuthViewModel(
+        MockAuthRepository(signUpRequiresEmailConfirmation: true),
+      ),
+      withRouter: true,
+      backend: BackendType.supabase,
+    );
+
+    await tester.tap(find.byKey(const Key('auth_mode_toggle')));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(_fieldByKey('login_email'), 'new@example.com');
+    await tester.enterText(_fieldByKey('login_password'), 'password123');
+    await tester.tap(find.byKey(const Key('login_submit')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Account created. Confirm your email, then sign in.'),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('login_submit')), findsOneWidget);
+    expect(find.text('home'), findsNothing);
+  });
+
+  testWidgets(
+    'email confirmation deep link shows expired link error when signed out',
+    (tester) async {
+      await pumpLogin(
+        tester,
+        initialLocation: '/login?fromEmailConfirmation=1',
+        backend: BackendType.supabase,
+        settle: false,
+      );
+
+      expect(find.text('Verifying your email…'), findsOneWidget);
+
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pump();
+
+      expect(
+        find.text(
+          'This confirmation link is invalid or has expired. Sign in if you already confirmed your email, or sign up again.',
+        ),
+        findsOneWidget,
+      );
+      expect(find.text('Sign in'), findsOneWidget);
+      expect(find.text('home'), findsNothing);
+    },
+  );
 }
 
 Finder _fieldByKey(String key) {

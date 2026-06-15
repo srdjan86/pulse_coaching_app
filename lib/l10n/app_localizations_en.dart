@@ -137,14 +137,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginPasswordHint => 'Your password';
 
   @override
+  String get signUpPasswordHint => 'At least 6 characters';
+
+  @override
   String get loginEmailRequired => 'Email is required';
+
+  @override
+  String get loginEmailInvalid => 'Enter a valid email address';
 
   @override
   String get loginPasswordRequired => 'Password is required';
 
   @override
+  String get loginPasswordTooShort => 'Password must be at least 6 characters';
+
+  @override
   String get loginErrorMessage =>
       'Email or password is incorrect. Please try again.';
+
+  @override
+  String get loginGenericErrorMessage =>
+      'Something went wrong. Please try again.';
+
+  @override
+  String get loginNetworkErrorMessage =>
+      'Could not reach the server. Check your connection and try again.';
+
+  @override
+  String get loginMockCredentialsHint =>
+      'Mock backend demo: demo@example.com / password';
 
   @override
   String get loginForgotPassword => 'Forgot password?';
@@ -154,6 +175,62 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loginGetStartedLink => 'Get started';
+
+  @override
+  String get loginNoAccountPrompt => 'Don\'t have an account?';
+
+  @override
+  String get loginHasAccountPrompt => 'Already have an account?';
+
+  @override
+  String get signUpTitle => 'Create your account';
+
+  @override
+  String get signUpSubtitle =>
+      'Sign up to save lessons and sync across devices.';
+
+  @override
+  String get signUpButton => 'Create account';
+
+  @override
+  String get signUpConfirmationMessage =>
+      'Account created. Confirm your email, then sign in.';
+
+  @override
+  String get loginEmailConfirmedSignedInMessage =>
+      'Email confirmed. You\'re signed in.';
+
+  @override
+  String get loginEmailConfirmedSignInMessage =>
+      'Email confirmed. Sign in with your password.';
+
+  @override
+  String get loginVerifyingEmailMessage => 'Verifying your email…';
+
+  @override
+  String get loginContinueButton => 'Continue';
+
+  @override
+  String get loginEmailNotConfirmed => 'Confirm your email before signing in.';
+
+  @override
+  String get loginUserAlreadyRegistered =>
+      'An account with this email already exists. Try signing in.';
+
+  @override
+  String get loginWeakPassword => 'Choose a stronger password and try again.';
+
+  @override
+  String get loginEmailRateLimitMessage =>
+      'Too many sign-up emails sent. Wait a few minutes and try again.';
+
+  @override
+  String get loginEmailLinkExpiredMessage =>
+      'This confirmation link is invalid or has expired. Sign in if you already confirmed your email, or sign up again.';
+
+  @override
+  String get accountSignedInSubtitle =>
+      'Saved lessons sync to your account. Tap to sign out.';
 
   @override
   String get coachingVideoCategoryAll => 'All';

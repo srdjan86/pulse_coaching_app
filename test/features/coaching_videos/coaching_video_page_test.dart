@@ -1,3 +1,4 @@
+import '../../helpers/fake_auth_repository.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/domain/entities/coaching_video.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/domain/repositories/coaching_video_repository.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/presentation/pages/coaching_video_detail_page.dart';
@@ -52,6 +53,7 @@ void main() {
                 viewModel: CoachingVideoDetailViewModel(
                   repository,
                   savedLessonsRepository,
+                  FakeAuthRepository(),
                 ),
                 enablePlayback: false,
               ),
@@ -83,6 +85,7 @@ void main() {
     final viewModel = CoachingVideoDetailViewModel(
       repository,
       InMemorySavedLessonsRepository(),
+      FakeAuthRepository(),
     );
 
     await tester.pumpWidget(
@@ -108,6 +111,7 @@ void main() {
     final viewModel = CoachingVideoDetailViewModel(
       repository,
       InMemorySavedLessonsRepository(),
+      FakeAuthRepository(),
     );
 
     await tester.pumpWidget(
@@ -133,6 +137,7 @@ void main() {
     final viewModel = CoachingVideoDetailViewModel(
       repository,
       savedLessonsRepository,
+      FakeAuthRepository(),
     );
 
     await tester.pumpWidget(

@@ -1,3 +1,4 @@
+import '../../helpers/fake_auth_repository.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/data/sources/coaching_video_mock_data.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/domain/entities/coaching_video.dart';
 import 'package:pulse_coaching_app/features/coaching_videos/domain/repositories/coaching_video_repository.dart';
@@ -47,11 +48,19 @@ void main() {
   });
 
   group('CoachingVideoDetailViewModel', () {
+    late FakeAuthRepository authRepository;
+
+    setUp(() => authRepository = FakeAuthRepository());
+
+    tearDown(() => authRepository.dispose());
+
     test('load populates matching video', () async {
       final viewModel = CoachingVideoDetailViewModel(
         _FakeCoachingVideoRepository(videos: coachingVideoMockData),
         InMemorySavedLessonsRepository(),
+        authRepository,
       );
+      addTearDown(viewModel.dispose);
 
       await viewModel.load('morning-mobility');
 
@@ -64,7 +73,9 @@ void main() {
       final viewModel = CoachingVideoDetailViewModel(
         _FakeCoachingVideoRepository(videos: coachingVideoMockData),
         InMemorySavedLessonsRepository(),
+        authRepository,
       );
+      addTearDown(viewModel.dispose);
 
       await viewModel.load('missing');
 
@@ -79,7 +90,9 @@ void main() {
       final viewModel = CoachingVideoDetailViewModel(
         _FakeCoachingVideoRepository(videos: coachingVideoMockData),
         savedLessonsRepository,
+        authRepository,
       );
+      addTearDown(viewModel.dispose);
 
       await viewModel.load('morning-mobility');
 

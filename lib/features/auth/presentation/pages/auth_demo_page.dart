@@ -13,8 +13,8 @@ class AuthDemoPage extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final config = getIt<AppConfig>();
 
-    return ChangeNotifierProvider(
-      create: (_) => getIt<AuthViewModel>(),
+    return ChangeNotifierProvider.value(
+      value: getIt<AuthViewModel>(),
       child: Scaffold(
         appBar: AppBar(title: Text(l10n.authTitle)),
         body: Padding(
