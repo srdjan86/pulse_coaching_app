@@ -12,6 +12,13 @@ String mapSupabaseAuthCode(AuthException error) {
   if (message.contains('user already registered')) {
     return 'user_already_registered';
   }
+  if (message.contains('rate limit')) {
+    return 'email_rate_limit_exceeded';
+  }
+  if (message.contains('invalid or has expired') ||
+      error.statusCode == 'otp_expired') {
+    return 'email_link_expired';
+  }
   if (message.contains('password')) {
     return 'weak_password';
   }

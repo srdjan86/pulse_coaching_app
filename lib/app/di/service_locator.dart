@@ -101,6 +101,7 @@ AuthRepository _createAuthRepository(AppConfig config) {
     BackendType.supabase => SupabaseAuthRepository(
       url: config.supabaseUrl,
       anonKey: config.supabaseAnonKey,
+      authRedirectUrl: config.supabaseAuthRedirectUrl,
     ),
     BackendType.mock => MockAuthRepository(),
   };

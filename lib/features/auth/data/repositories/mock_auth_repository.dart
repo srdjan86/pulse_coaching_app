@@ -5,12 +5,16 @@ import 'package:pulse_coaching_app/features/auth/domain/entities/app_user.dart';
 import 'package:pulse_coaching_app/features/auth/domain/repositories/auth_repository.dart';
 
 class MockAuthRepository implements AuthRepository {
-  MockAuthRepository({this.signUpRequiresEmailConfirmation = false});
+  MockAuthRepository({
+    this.signUpRequiresEmailConfirmation = false,
+    this.pendingAuthFailure,
+  });
 
   static const demoEmail = 'demo@example.com';
   static const demoPassword = 'password';
 
   final bool signUpRequiresEmailConfirmation;
+  AuthFailure? pendingAuthFailure;
 
   final StreamController<AppUser?> _controller =
       StreamController<AppUser?>.broadcast();
@@ -60,5 +64,31 @@ class MockAuthRepository implements AuthRepository {
     if (normalizedEmail != demoEmail || password != demoPassword) {
       throw const AuthFailure('invalid_login_credentials');
     }
+  }
+
+  @override
+  AuthFailure? consumeRecentAuthFailure() {
+    final failure = pendingAuthFailure;
+    pendingAuthFailure = null;
+    return failure;
+  }
+
+  @override
+  Future<AppUser?> waitForEmailConfirmationSession({
+    required bool Function() isSignedIn,
+    required AppUser? Function() readCurrentUser,
+    Duration timeout = const Duration(seconds: 5),
+  }) async {
+    const mockAttempts = 4;
+
+    for (var attempt = 0; attempt < mockAttempts; attempt++) {
+      if (isSignedIn()) {
+        return readCurrentUser();
+      }
+
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+    }
+
+    throw const AuthFailure('email_link_expired');
   }
 }

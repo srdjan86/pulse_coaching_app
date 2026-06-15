@@ -11,10 +11,22 @@ enum LoginFieldValidationError { required, invalidEmail, passwordTooShort }
 class AuthViewModel extends ChangeNotifier {
   AuthViewModel(this._repository) {
     _user = _repository.currentUser;
-    _subscription = _repository.watchUser().listen((user) {
-      _user = user;
-      notifyListeners();
-    });
+    _subscription = _repository.watchUser().listen(
+      (user) {
+        _user = user;
+        notifyListeners();
+      },
+      onError: (error, _) {
+        if (error is AuthFailure) {
+          if (_awaitingEmailConfirmationDeepLink) {
+            _failEmailConfirmation(error.code);
+          } else {
+            _errorMessage = error.code;
+            notifyListeners();
+          }
+        }
+      },
+    );
   }
 
   final AuthRepository _repository;
@@ -25,6 +37,7 @@ class AuthViewModel extends ChangeNotifier {
   String? _errorMessage;
   String? _infoMessage;
   bool _needsEmailConfirmation = false;
+  bool _awaitingEmailConfirmationDeepLink = false;
   String _email = '';
   String _password = '';
   bool _isPasswordObscured = true;
@@ -36,6 +49,7 @@ class AuthViewModel extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   String? get infoMessage => _infoMessage;
   bool get needsEmailConfirmation => _needsEmailConfirmation;
+  bool get isVerifyingEmailConfirmation => _awaitingEmailConfirmationDeepLink;
   bool get isSignedIn => _user != null;
   bool get isPasswordObscured => _isPasswordObscured;
   LoginFieldValidationError? get emailValidationError => _emailValidationError;
@@ -72,6 +86,7 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   void resetAuthFormFeedback() {
+    _awaitingEmailConfirmationDeepLink = false;
     _emailValidationError = null;
     _passwordValidationError = null;
     _errorMessage = null;
@@ -96,6 +111,57 @@ class AuthViewModel extends ChangeNotifier {
 
     await signUp(email: _email.trim(), password: _password);
     return _didAuthSucceed();
+  }
+
+  Future<void> handleEmailConfirmationDeepLink() async {
+    _awaitingEmailConfirmationDeepLink = true;
+    _errorMessage = null;
+    _infoMessage = null;
+    notifyListeners();
+
+    final pendingFailure = _repository.consumeRecentAuthFailure();
+    if (pendingFailure != null) {
+      _failEmailConfirmation(pendingFailure.code);
+      return;
+    }
+
+    if (isSignedIn) {
+      _completeEmailConfirmationDeepLink();
+      return;
+    }
+
+    try {
+      await _repository.waitForEmailConfirmationSession(
+        isSignedIn: () => isSignedIn,
+        readCurrentUser: () => _user,
+      );
+
+      if (_awaitingEmailConfirmationDeepLink) {
+        _completeEmailConfirmationDeepLink();
+      }
+    } on AuthFailure catch (error) {
+      if (_awaitingEmailConfirmationDeepLink) {
+        _failEmailConfirmation(error.code);
+      }
+    }
+  }
+
+  void _completeEmailConfirmationDeepLink() {
+    if (!_awaitingEmailConfirmationDeepLink || _errorMessage != null) {
+      return;
+    }
+
+    _awaitingEmailConfirmationDeepLink = false;
+    _errorMessage = null;
+    _infoMessage = 'email_confirmed_signed_in';
+    notifyListeners();
+  }
+
+  void _failEmailConfirmation(String code) {
+    _awaitingEmailConfirmationDeepLink = false;
+    _infoMessage = null;
+    _errorMessage = code;
+    notifyListeners();
   }
 
   Future<void> signIn({required String email, required String password}) async {

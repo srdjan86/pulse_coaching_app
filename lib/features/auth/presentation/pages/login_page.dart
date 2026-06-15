@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:pulse_coaching_app/app/di/service_locator.dart';
 import 'package:pulse_coaching_app/core/config/app_config.dart';
 import 'package:pulse_coaching_app/core/config/backend_type.dart';
+import 'package:pulse_coaching_app/core/config/supabase_auth_config.dart';
 import 'package:pulse_coaching_app/core/theme/app_colors.dart';
 import 'package:pulse_coaching_app/core/theme/app_spacing.dart';
 import 'package:pulse_coaching_app/core/widgets/pulse_logo.dart';
@@ -42,12 +45,27 @@ class _LoginBodyState extends State<_LoginBody> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      final auth = context.read<AuthViewModel>();
-      if (auth.isSignedIn) {
-        context.go('/');
-      }
+      unawaited(_handleInitialNavigation());
     });
+  }
+
+  Future<void> _handleInitialNavigation() async {
+    if (!mounted) return;
+
+    final auth = context.read<AuthViewModel>();
+    final fromEmailConfirmation =
+        SupabaseAuthConfig.isEmailConfirmationDeepLink(
+          GoRouterState.of(context).uri,
+        );
+
+    if (fromEmailConfirmation) {
+      await auth.handleEmailConfirmationDeepLink();
+      return;
+    }
+
+    if (auth.isSignedIn) {
+      context.go('/');
+    }
   }
 
   Future<void> _submitSignIn(
@@ -112,6 +130,12 @@ class _LoginBodyState extends State<_LoginBody> {
                   child: IntrinsicHeight(
                     child: Consumer<AuthViewModel>(
                       builder: (context, viewModel, _) {
+                        final feedback = _resolveAuthFeedback(viewModel, l10n);
+                        final showContinueAfterConfirmation =
+                            viewModel.isSignedIn &&
+                            viewModel.infoMessage ==
+                                'email_confirmed_signed_in';
+
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
@@ -175,38 +199,34 @@ class _LoginBodyState extends State<_LoginBody> {
                                 onPressed: viewModel.togglePasswordVisibility,
                               ),
                               onChanged: viewModel.updatePassword,
-                              onSubmitted: (_) =>
-                                  _submit(context, viewModel, isSignUpMode),
+                              onSubmitted: (_) {
+                                if (showContinueAfterConfirmation) {
+                                  context.go('/');
+                                  return;
+                                }
+                                _submit(context, viewModel, isSignUpMode);
+                              },
                             ),
-                            if (viewModel.errorMessage != null) ...[
+                            if (feedback != null) ...[
                               const SizedBox(height: AppSpacing.lg),
-                              _AuthMessageBox(
-                                message: _authErrorMessage(
-                                  l10n,
-                                  viewModel.errorMessage!,
-                                ),
-                                color: colors.error,
-                              ),
-                            ],
-                            if (viewModel.infoMessage != null) ...[
-                              const SizedBox(height: AppSpacing.lg),
-                              _AuthMessageBox(
-                                message: _authInfoMessage(
-                                  l10n,
-                                  viewModel.infoMessage!,
-                                ),
-                                color: colors.primary,
-                              ),
+                              _AuthFeedbackBanner(feedback: feedback),
                             ],
                             const Spacer(),
                             PulsePrimaryButton(
                               key: const Key('login_submit'),
-                              label: isSignUpMode
+                              label: showContinueAfterConfirmation
+                                  ? l10n.loginContinueButton
+                                  : isSignUpMode
                                   ? l10n.signUpButton
                                   : l10n.signIn,
                               isLoading: viewModel.isLoading,
-                              onPressed: () =>
-                                  _submit(context, viewModel, isSignUpMode),
+                              onPressed: showContinueAfterConfirmation
+                                  ? () => context.go('/')
+                                  : () => _submit(
+                                      context,
+                                      viewModel,
+                                      isSignUpMode,
+                                    ),
                             ),
                             if (showSignUp) ...[
                               const SizedBox(height: AppSpacing.lg),
@@ -276,6 +296,99 @@ class _AuthModeToggle extends StatelessWidget {
   }
 }
 
+class _AuthFeedbackBanner extends StatelessWidget {
+  const _AuthFeedbackBanner({required this.feedback});
+
+  final _AuthFeedback feedback;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
+    final theme = Theme.of(context);
+    final (Color color, IconData? icon) = switch (feedback.kind) {
+      AuthFeedbackKind.error => (colors.error, Icons.error_outline),
+      AuthFeedbackKind.success => (colors.primary, Icons.check_circle_outline),
+      AuthFeedbackKind.info => (colors.mutedForeground, Icons.info_outline),
+      AuthFeedbackKind.processing => (colors.mutedForeground, null),
+    };
+
+    return Container(
+      key: const Key('auth_feedback_banner'),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: color),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (feedback.kind == AuthFeedbackKind.processing) ...[
+            SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(strokeWidth: 2, color: color),
+            ),
+            const SizedBox(width: 10),
+          ] else if (icon != null) ...[
+            Icon(icon, size: 18, color: color),
+            const SizedBox(width: 10),
+          ],
+          Expanded(
+            child: Text(
+              feedback.message,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: color,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+enum AuthFeedbackKind { error, success, info, processing }
+
+class _AuthFeedback {
+  const _AuthFeedback({required this.kind, required this.message});
+
+  final AuthFeedbackKind kind;
+  final String message;
+}
+
+_AuthFeedback? _resolveAuthFeedback(
+  AuthViewModel viewModel,
+  AppLocalizations l10n,
+) {
+  if (viewModel.isVerifyingEmailConfirmation &&
+      viewModel.errorMessage == null) {
+    return _AuthFeedback(
+      kind: AuthFeedbackKind.processing,
+      message: l10n.loginVerifyingEmailMessage,
+    );
+  }
+
+  if (viewModel.errorMessage != null) {
+    return _AuthFeedback(
+      kind: AuthFeedbackKind.error,
+      message: _authErrorMessage(l10n, viewModel.errorMessage!),
+    );
+  }
+
+  if (viewModel.infoMessage != null) {
+    final code = viewModel.infoMessage!;
+    final kind = switch (code) {
+      'email_confirmed_signed_in' => AuthFeedbackKind.success,
+      _ => AuthFeedbackKind.info,
+    };
+    return _AuthFeedback(kind: kind, message: _authInfoMessage(l10n, code));
+  }
+
+  return null;
+}
+
 class _AuthMessageBox extends StatelessWidget {
   const _AuthMessageBox({required this.message, required this.color});
 
@@ -334,6 +447,8 @@ String _authErrorMessage(AppLocalizations l10n, String code) {
     'email_not_confirmed' => l10n.loginEmailNotConfirmed,
     'user_already_registered' => l10n.loginUserAlreadyRegistered,
     'weak_password' => l10n.loginWeakPassword,
+    'email_rate_limit_exceeded' => l10n.loginEmailRateLimitMessage,
+    'email_link_expired' => l10n.loginEmailLinkExpiredMessage,
     'network_error' => l10n.loginNetworkErrorMessage,
     'auth_error' => l10n.loginGenericErrorMessage,
     _ => l10n.loginGenericErrorMessage,
@@ -343,6 +458,7 @@ String _authErrorMessage(AppLocalizations l10n, String code) {
 String _authInfoMessage(AppLocalizations l10n, String code) {
   return switch (code) {
     'sign_up_confirmation_required' => l10n.signUpConfirmationMessage,
+    'email_confirmed_signed_in' => l10n.loginEmailConfirmedSignedInMessage,
     _ => l10n.loginGenericErrorMessage,
   };
 }

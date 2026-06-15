@@ -197,6 +197,20 @@ class AppLocalizationsEn extends AppLocalizations {
       'Account created. Confirm your email, then sign in.';
 
   @override
+  String get loginEmailConfirmedSignedInMessage =>
+      'Email confirmed. You\'re signed in.';
+
+  @override
+  String get loginEmailConfirmedSignInMessage =>
+      'Email confirmed. Sign in with your password.';
+
+  @override
+  String get loginVerifyingEmailMessage => 'Verifying your email…';
+
+  @override
+  String get loginContinueButton => 'Continue';
+
+  @override
   String get loginEmailNotConfirmed => 'Confirm your email before signing in.';
 
   @override
@@ -205,6 +219,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loginWeakPassword => 'Choose a stronger password and try again.';
+
+  @override
+  String get loginEmailRateLimitMessage =>
+      'Too many sign-up emails sent. Wait a few minutes and try again.';
+
+  @override
+  String get loginEmailLinkExpiredMessage =>
+      'This confirmation link is invalid or has expired. Sign in if you already confirmed your email, or sign up again.';
 
   @override
   String get accountSignedInSubtitle =>

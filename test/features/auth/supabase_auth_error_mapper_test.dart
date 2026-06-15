@@ -34,6 +34,26 @@ void main() {
       );
     });
 
+    test('maps email rate limit exceeded', () {
+      expect(
+        mapSupabaseAuthCode(const AuthException('email rate limit exceeded')),
+        'email_rate_limit_exceeded',
+      );
+    });
+
+    test('maps expired email confirmation link', () {
+      expect(
+        mapSupabaseAuthCode(
+          const AuthException(
+            'Email link is invalid or has expired',
+            statusCode: 'otp_expired',
+            code: 'access_denied',
+          ),
+        ),
+        'email_link_expired',
+      );
+    });
+
     test('falls back to auth_error', () {
       expect(
         mapSupabaseAuthCode(const AuthException('Something unexpected')),

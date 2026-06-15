@@ -1,3 +1,4 @@
+import 'package:pulse_coaching_app/core/errors/auth_failure.dart';
 import 'package:pulse_coaching_app/features/auth/data/repositories/mock_auth_repository.dart';
 import 'package:pulse_coaching_app/features/auth/presentation/view_models/auth_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -69,6 +70,7 @@ void main() {
       expect(viewModel.isSignedIn, isTrue);
       expect(viewModel.user?.email, 'demo@example.com');
     });
+
     test('rejects invalid credentials on mock backend', () async {
       viewModel.updateEmail('demo@example.com');
       viewModel.updatePassword('wrong-password');
@@ -126,6 +128,42 @@ void main() {
         confirmationViewModel.infoMessage,
         'sign_up_confirmation_required',
       );
+    });
+
+    test('handleEmailConfirmationDeepLink shows expired link error', () async {
+      final pending = viewModel.handleEmailConfirmationDeepLink();
+
+      expect(viewModel.isVerifyingEmailConfirmation, isTrue);
+
+      await pending;
+
+      expect(viewModel.errorMessage, 'email_link_expired');
+      expect(viewModel.infoMessage, isNull);
+      expect(viewModel.isVerifyingEmailConfirmation, isFalse);
+    });
+
+    test(
+      'handleEmailConfirmationDeepLink uses buffered auth failure',
+      () async {
+        final repo = MockAuthRepository()
+          ..pendingAuthFailure = const AuthFailure('email_link_expired');
+        final deepLinkViewModel = AuthViewModel(repo);
+        addTearDown(deepLinkViewModel.dispose);
+
+        await deepLinkViewModel.handleEmailConfirmationDeepLink();
+
+        expect(deepLinkViewModel.errorMessage, 'email_link_expired');
+        expect(deepLinkViewModel.infoMessage, isNull);
+      },
+    );
+
+    test('handleEmailConfirmationDeepLink shows signed in success', () async {
+      await viewModel.signIn(email: 'demo@example.com', password: 'password');
+
+      await viewModel.handleEmailConfirmationDeepLink();
+
+      expect(viewModel.infoMessage, 'email_confirmed_signed_in');
+      expect(viewModel.isSignedIn, isTrue);
     });
 
     test('resetAuthFormFeedback clears validation and messages', () async {

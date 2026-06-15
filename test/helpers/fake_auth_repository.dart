@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:pulse_coaching_app/core/errors/auth_failure.dart';
 import 'package:pulse_coaching_app/features/auth/domain/entities/app_user.dart';
 import 'package:pulse_coaching_app/features/auth/domain/repositories/auth_repository.dart';
 
@@ -35,6 +36,18 @@ class FakeAuthRepository implements AuthRepository {
   @override
   Future<void> signOut() async {
     emitUser(null);
+  }
+
+  @override
+  AuthFailure? consumeRecentAuthFailure() => null;
+
+  @override
+  Future<AppUser?> waitForEmailConfirmationSession({
+    required bool Function() isSignedIn,
+    required AppUser? Function() readCurrentUser,
+    Duration timeout = const Duration(seconds: 5),
+  }) {
+    throw UnimplementedError();
   }
 
   void dispose() {

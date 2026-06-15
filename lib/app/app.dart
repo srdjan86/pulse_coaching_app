@@ -12,6 +12,7 @@ import 'package:pulse_coaching_app/l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pulse_coaching_app/features/auth/data/repositories/supabase_auth_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DeliveryApp extends StatelessWidget {
@@ -75,6 +76,9 @@ Future<void> _initializeBackend(AppConfig config) async {
       await Supabase.initialize(
         url: config.supabaseUrl,
         anonKey: config.supabaseAnonKey,
+      );
+      SupabaseAuthRepository.installEarlyErrorListener(
+        Supabase.instance.client.auth,
       );
     case BackendType.mock:
       break;

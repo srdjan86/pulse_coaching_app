@@ -195,6 +195,20 @@ class AppLocalizationsSr extends AppLocalizations {
       'Nalog je kreiran. Potvrdite email, zatim se prijavite.';
 
   @override
+  String get loginEmailConfirmedSignedInMessage =>
+      'Email je potvrđen. Prijavljeni ste.';
+
+  @override
+  String get loginEmailConfirmedSignInMessage =>
+      'Email je potvrđen. Prijavite se lozinkom.';
+
+  @override
+  String get loginVerifyingEmailMessage => 'Potvrđujemo vaš email…';
+
+  @override
+  String get loginContinueButton => 'Nastavi';
+
+  @override
   String get loginEmailNotConfirmed => 'Potvrdite email pre prijave.';
 
   @override
@@ -203,6 +217,14 @@ class AppLocalizationsSr extends AppLocalizations {
 
   @override
   String get loginWeakPassword => 'Izaberite jaču lozinku i pokušajte ponovo.';
+
+  @override
+  String get loginEmailRateLimitMessage =>
+      'Poslato je previše emailova. Sačekajte nekoliko minuta i pokušajte ponovo.';
+
+  @override
+  String get loginEmailLinkExpiredMessage =>
+      'Link za potvrdu nije važeći ili je istekao. Prijavite se ako ste već potvrdili email, ili se ponovo registrujte.';
 
   @override
   String get accountSignedInSubtitle =>

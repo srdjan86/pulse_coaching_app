@@ -30,8 +30,10 @@ void main() {
   Future<void> pumpLogin(
     WidgetTester tester, {
     AuthViewModel? viewModel,
-    bool withRouter = false,
+    bool withRouter = true,
+    String initialLocation = '/login',
     BackendType backend = BackendType.mock,
+    bool settle = true,
   }) async {
     if (backend != BackendType.mock) {
       await getIt.reset();
@@ -50,7 +52,7 @@ void main() {
 
     if (withRouter) {
       final router = GoRouter(
-        initialLocation: '/login',
+        initialLocation: initialLocation,
         routes: [
           GoRoute(path: '/login', builder: (ctx, st) => page),
           GoRoute(
@@ -75,7 +77,11 @@ void main() {
         ),
       );
     }
-    await tester.pumpAndSettle();
+    if (settle) {
+      await tester.pumpAndSettle();
+    } else {
+      await tester.pump();
+    }
   }
 
   testWidgets('shows title, email field, password field, and sign-in button', (
@@ -235,6 +241,32 @@ void main() {
     expect(find.byKey(const Key('login_submit')), findsOneWidget);
     expect(find.text('home'), findsNothing);
   });
+
+  testWidgets(
+    'email confirmation deep link shows expired link error when signed out',
+    (tester) async {
+      await pumpLogin(
+        tester,
+        initialLocation: '/login?fromEmailConfirmation=1',
+        backend: BackendType.supabase,
+        settle: false,
+      );
+
+      expect(find.text('Verifying your email…'), findsOneWidget);
+
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pump();
+
+      expect(
+        find.text(
+          'This confirmation link is invalid or has expired. Sign in if you already confirmed your email, or sign up again.',
+        ),
+        findsOneWidget,
+      );
+      expect(find.text('Sign in'), findsOneWidget);
+      expect(find.text('home'), findsNothing);
+    },
+  );
 }
 
 Finder _fieldByKey(String key) {

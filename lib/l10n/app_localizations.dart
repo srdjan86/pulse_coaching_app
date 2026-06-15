@@ -440,6 +440,30 @@ abstract class AppLocalizations {
   /// **'Account created. Confirm your email, then sign in.'**
   String get signUpConfirmationMessage;
 
+  /// No description provided for @loginEmailConfirmedSignedInMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Email confirmed. You\'re signed in.'**
+  String get loginEmailConfirmedSignedInMessage;
+
+  /// No description provided for @loginEmailConfirmedSignInMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Email confirmed. Sign in with your password.'**
+  String get loginEmailConfirmedSignInMessage;
+
+  /// No description provided for @loginVerifyingEmailMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Verifying your email…'**
+  String get loginVerifyingEmailMessage;
+
+  /// No description provided for @loginContinueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get loginContinueButton;
+
   /// No description provided for @loginEmailNotConfirmed.
   ///
   /// In en, this message translates to:
@@ -457,6 +481,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose a stronger password and try again.'**
   String get loginWeakPassword;
+
+  /// No description provided for @loginEmailRateLimitMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many sign-up emails sent. Wait a few minutes and try again.'**
+  String get loginEmailRateLimitMessage;
+
+  /// No description provided for @loginEmailLinkExpiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This confirmation link is invalid or has expired. Sign in if you already confirmed your email, or sign up again.'**
+  String get loginEmailLinkExpiredMessage;
 
   /// No description provided for @accountSignedInSubtitle.
   ///
