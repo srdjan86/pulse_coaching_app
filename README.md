@@ -1,32 +1,48 @@
 # Pulse Coaching App
 
-A minimal **coaching & wellness MVP** built from the [AI Flutter Delivery Template](https://github.com/srdjan86/ai_flutter_delivery_template).
+A **coaching & wellness MVP** and **portfolio proof-of-work** for senior Flutter delivery with AI-assisted workflows — built from the [AI Flutter Delivery Template](https://github.com/srdjan86/ai_flutter_delivery_template).
 
-This repo is the **product** — features and backlog live here; work is tracked in **GitHub Issues**. The template stays generic; Pulse is where we ship.
+Pulse is the product repo: features, backlog, and shipped PRs live here.
 
-## Concept
+## At a glance
 
-Pulse helps users discover coaching content, track progress, and save favorite lessons — starting with mock data and growing through AI-assisted delivery (ticket → plan → PR → CI).
+| Area | Highlights |
+|------|------------|
+| **Architecture** | Feature-first (`domain` / `data` / `presentation`), repository pattern, GetIt DI, GoRouter |
+| **State** | BLoC (counter), MVVM + `provider` (auth, home, lessons) |
+| **Backends** | `mock` (CI default), `firebase`, **Supabase** (lessons catalog) |
+| **Flavors** | `dev`, `staging`, `prod` with dart-define config |
+| **Quality** | 76+ unit/widget tests, format + analyze + test in CI |
+| **Delivery** | GitHub Issues → plan → PR → CI → review ([workflow docs](docs/ai-workflow.md)) |
 
-## Stack
+## Shipped highlights
 
-Inherited from the template: Flutter, BLoC, MVVM, flavors, localization, GitHub Actions, `AGENTS.md`.
+| PR | What it demonstrates |
+|----|----------------------|
+| [#23](https://github.com/srdjan86/pulse_coaching_app/pull/23) | Figma design system applied to Flutter UI |
+| [#24](https://github.com/srdjan86/pulse_coaching_app/pull/24) | Saved lessons + expanded lesson feed |
+| [#25](https://github.com/srdjan86/pulse_coaching_app/pull/25) | AI-assisted delivery case study |
+| [#26](https://github.com/srdjan86/pulse_coaching_app/pull/26) | Supabase lesson catalog backend |
 
-## AI-assisted delivery proof of work
+**Case study:** [`docs/ai-assisted-delivery.md`](docs/ai-assisted-delivery.md) — client-facing narrative of ticket → plan → code → tests → PR → CI.
 
-This app is also a portfolio artifact for an AI-assisted Flutter delivery
-workflow: ticket → plan → implementation → tests → PR → CI → review.
-
-Start with [`docs/ai-assisted-delivery.md`](docs/ai-assisted-delivery.md) for
-the client-facing case study, then see [`docs/ai-workflow.md`](docs/ai-workflow.md)
-for the operating workflow.
+**Backend setup:** [`docs/supabase.md`](docs/supabase.md) — migrations, credentials, staging run.
 
 ## Run locally
+
+**Dev (mock backend, no credentials):**
 
 ```bash
 flutter pub get
 cd ios && pod install && cd ..
 flutter run --flavor dev -t lib/main_dev.dart --dart-define-from-file=config/dev.json
+```
+
+**Staging (Supabase)** — add your project URL and publishable key locally in `config/staging.json` (never commit real keys):
+
+```bash
+flutter run --flavor staging -t lib/main_staging.dart \
+  --dart-define-from-file=config/staging.json
 ```
 
 ## Validation
@@ -37,7 +53,11 @@ flutter analyze
 flutter test
 ```
 
-## Backlog (GitHub Issues)
+## Stack
+
+Flutter · Dart 3.11+ · BLoC · MVVM · GoRouter · GetIt · localization (en, sr) · GitHub Actions · `AGENTS.md`
+
+## Backlog
 
 | Issue | Title | Status |
 |-------|--------|--------|
@@ -48,12 +68,12 @@ flutter test
 | [#5](https://github.com/srdjan86/pulse_coaching_app/issues/5) | Lesson feed (mock data) | Closed |
 | [#20](https://github.com/srdjan86/pulse_coaching_app/issues/20) | Apply Figma design to Flutter UI | Closed |
 
-[View all issues](https://github.com/srdjan86/pulse_coaching_app/issues). Create new work there before starting AI implementation.
+[View all issues](https://github.com/srdjan86/pulse_coaching_app/issues)
 
 ## Workflow
 
-See `docs/ai-assisted-delivery.md`, `docs/ai-workflow.md`, and `AGENTS.md`.
+See [`docs/ai-assisted-delivery.md`](docs/ai-assisted-delivery.md), [`docs/ai-workflow.md`](docs/ai-workflow.md), and [`AGENTS.md`](AGENTS.md).
 
 ## Origin
 
-Created from `srdjan86/ai_flutter_delivery_template` — do not merge product-specific changes back into the template unless they improve the factory itself.
+Created from `srdjan86/ai_flutter_delivery_template` — product-specific changes stay in this repo unless they improve the template factory itself.
