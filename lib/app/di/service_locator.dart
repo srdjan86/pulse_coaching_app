@@ -18,7 +18,10 @@ import 'package:pulse_coaching_app/features/home/presentation/view_models/home_v
 import 'package:pulse_coaching_app/features/onboarding/data/repositories/shared_preferences_onboarding_repository.dart';
 import 'package:pulse_coaching_app/features/onboarding/domain/repositories/onboarding_repository.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/view_models/onboarding_view_model.dart';
+import 'package:pulse_coaching_app/features/saved_lessons/data/repositories/backend_aware_saved_lessons_repository.dart';
 import 'package:pulse_coaching_app/features/saved_lessons/data/repositories/shared_preferences_saved_lessons_repository.dart';
+import 'package:pulse_coaching_app/features/saved_lessons/data/repositories/supabase_saved_lessons_repository.dart';
+import 'package:pulse_coaching_app/features/saved_lessons/data/sources/supabase_saved_lesson_remote_data_source.dart';
 import 'package:pulse_coaching_app/features/saved_lessons/domain/repositories/saved_lessons_repository.dart';
 import 'package:pulse_coaching_app/features/saved_lessons/presentation/view_models/saved_lessons_view_model.dart';
 import 'package:pulse_coaching_app/features/settings/data/repositories/shared_preferences_theme_preferences_repository.dart';
@@ -26,6 +29,7 @@ import 'package:pulse_coaching_app/features/settings/domain/repositories/theme_p
 import 'package:pulse_coaching_app/features/settings/presentation/view_models/theme_settings_view_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 final getIt = GetIt.instance;
 
@@ -72,8 +76,7 @@ Future<void> configureDependencies(
   );
   getIt.registerLazySingleton<SavedLessonsRepository>(
     () =>
-        savedLessonsRepository ??
-        SharedPreferencesSavedLessonsRepository(getIt()),
+        savedLessonsRepository ?? _createSavedLessonsRepository(config, prefs),
   );
   getIt.registerFactory(() => HomeViewModel(getIt()));
   getIt.registerFactory(() => CoachingVideoLibraryViewModel(getIt()));
@@ -104,5 +107,26 @@ CoachingVideoRepository _createCoachingVideoRepository(AppConfig config) {
     ),
     BackendType.firebase => MockCoachingVideoRepository(),
     BackendType.mock => MockCoachingVideoRepository(),
+  };
+}
+
+SavedLessonsRepository _createSavedLessonsRepository(
+  AppConfig config,
+  SharedPreferences preferences,
+) {
+  final local = SharedPreferencesSavedLessonsRepository(preferences);
+
+  return switch (config.backend) {
+    BackendType.supabase => BackendAwareSavedLessonsRepository(
+      backend: config.backend,
+      local: local,
+      remote: SupabaseSavedLessonsRepository(
+        SupabaseSavedLessonRemoteDataSource(),
+        userIdProvider: () => Supabase.instance.client.auth.currentUser?.id,
+      ),
+      currentUserId: () => Supabase.instance.client.auth.currentUser?.id,
+    ),
+    BackendType.firebase => local,
+    BackendType.mock => local,
   };
 }
