@@ -54,7 +54,10 @@ Future<void> configureDependencies(
   getIt.registerLazySingleton<AuthRepository>(
     () => _createAuthRepository(config),
   );
-  getIt.registerFactory(() => AuthViewModel(getIt()));
+  getIt.registerLazySingleton<AuthViewModel>(
+    () => AuthViewModel(getIt()),
+    dispose: (viewModel) => viewModel.dispose(),
+  );
 
   getIt.registerLazySingleton<OnboardingRepository>(
     () =>

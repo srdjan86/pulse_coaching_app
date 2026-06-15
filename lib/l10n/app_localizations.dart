@@ -332,11 +332,23 @@ abstract class AppLocalizations {
   /// **'Your password'**
   String get loginPasswordHint;
 
+  /// No description provided for @signUpPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 6 characters'**
+  String get signUpPasswordHint;
+
   /// No description provided for @loginEmailRequired.
   ///
   /// In en, this message translates to:
   /// **'Email is required'**
   String get loginEmailRequired;
+
+  /// No description provided for @loginEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get loginEmailInvalid;
 
   /// No description provided for @loginPasswordRequired.
   ///
@@ -344,11 +356,35 @@ abstract class AppLocalizations {
   /// **'Password is required'**
   String get loginPasswordRequired;
 
+  /// No description provided for @loginPasswordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get loginPasswordTooShort;
+
   /// No description provided for @loginErrorMessage.
   ///
   /// In en, this message translates to:
   /// **'Email or password is incorrect. Please try again.'**
   String get loginErrorMessage;
+
+  /// No description provided for @loginGenericErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get loginGenericErrorMessage;
+
+  /// No description provided for @loginNetworkErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not reach the server. Check your connection and try again.'**
+  String get loginNetworkErrorMessage;
+
+  /// No description provided for @loginMockCredentialsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Mock backend demo: demo@example.com / password'**
+  String get loginMockCredentialsHint;
 
   /// No description provided for @loginForgotPassword.
   ///
@@ -367,6 +403,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Get started'**
   String get loginGetStartedLink;
+
+  /// No description provided for @loginNoAccountPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get loginNoAccountPrompt;
+
+  /// No description provided for @loginHasAccountPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get loginHasAccountPrompt;
+
+  /// No description provided for @signUpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account'**
+  String get signUpTitle;
+
+  /// No description provided for @signUpSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign up to save lessons and sync across devices.'**
+  String get signUpSubtitle;
+
+  /// No description provided for @signUpButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get signUpButton;
+
+  /// No description provided for @signUpConfirmationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created. Confirm your email, then sign in.'**
+  String get signUpConfirmationMessage;
+
+  /// No description provided for @loginEmailNotConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your email before signing in.'**
+  String get loginEmailNotConfirmed;
+
+  /// No description provided for @loginUserAlreadyRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'An account with this email already exists. Try signing in.'**
+  String get loginUserAlreadyRegistered;
+
+  /// No description provided for @loginWeakPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a stronger password and try again.'**
+  String get loginWeakPassword;
+
+  /// No description provided for @accountSignedInSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved lessons sync to your account. Tap to sign out.'**
+  String get accountSignedInSubtitle;
 
   /// No description provided for @coachingVideoCategoryAll.
   ///

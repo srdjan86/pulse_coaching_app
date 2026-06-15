@@ -3,6 +3,7 @@ import 'package:pulse_coaching_app/app/router/app_router.dart';
 import 'package:pulse_coaching_app/core/config/app_config.dart';
 import 'package:pulse_coaching_app/core/config/backend_type.dart';
 import 'package:pulse_coaching_app/core/theme/app_theme.dart';
+import 'package:pulse_coaching_app/features/auth/presentation/view_models/auth_view_model.dart';
 import 'package:pulse_coaching_app/features/onboarding/presentation/view_models/onboarding_view_model.dart';
 import 'package:pulse_coaching_app/features/settings/presentation/view_models/theme_settings_view_model.dart';
 import 'package:pulse_coaching_app/l10n/app_localizations.dart';
@@ -51,6 +52,7 @@ Future<void> bootstrap(AppConfig config) async {
   await _initializeBackend(config);
   await configureDependencies(config);
 
+  getIt<AuthViewModel>();
   await getIt<ThemeSettingsViewModel>().load();
   await getIt<OnboardingViewModel>().load();
 

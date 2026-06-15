@@ -9,6 +9,9 @@ class FirebaseAuthRepository implements AuthRepository {
   final FirebaseAuth _firebaseAuth;
 
   @override
+  AppUser? get currentUser => _mapUser(_firebaseAuth.currentUser);
+
+  @override
   Stream<AppUser?> watchUser() {
     return _firebaseAuth.authStateChanges().map(_mapUser);
   }
@@ -28,6 +31,19 @@ class FirebaseAuthRepository implements AuthRepository {
       throw StateError('Firebase sign-in succeeded without a user.');
     }
     return user;
+  }
+
+  @override
+  Future<AppUser?> signUp({
+    required String email,
+    required String password,
+  }) async {
+    final credential = await _firebaseAuth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    return _mapUser(credential.user);
   }
 
   @override

@@ -67,5 +67,29 @@ void main() {
       expect(viewModel.isSignedIn, isTrue);
       expect(viewModel.user?.email, 'demo@example.com');
     });
+    test('rejects invalid credentials on mock backend', () async {
+      viewModel.updateEmail('demo@example.com');
+      viewModel.updatePassword('wrong-password');
+
+      final didSignIn = await viewModel.submitSignIn();
+
+      expect(didSignIn, isFalse);
+      expect(viewModel.isSignedIn, isFalse);
+      expect(viewModel.errorMessage, 'invalid_login_credentials');
+    });
+
+    test('rejects invalid email format before sign in', () async {
+      viewModel.updateEmail('not-an-email');
+      viewModel.updatePassword('password');
+
+      final didSignIn = await viewModel.submitSignIn();
+
+      expect(didSignIn, isFalse);
+      expect(viewModel.isSignedIn, isFalse);
+      expect(
+        viewModel.emailValidationError,
+        LoginFieldValidationError.invalidEmail,
+      );
+    });
   });
 }

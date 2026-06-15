@@ -101,7 +101,7 @@ void main() {
   ) async {
     await pumpLogin(tester, withRouter: true);
 
-    await tester.enterText(_fieldByKey('login_email'), 'user@example.com');
+    await tester.enterText(_fieldByKey('login_email'), 'demo@example.com');
     await tester.enterText(_fieldByKey('login_password'), 'password');
     await tester.tap(find.byKey(const Key('login_submit')));
     await tester.pump();
@@ -112,6 +112,86 @@ void main() {
 
     expect(find.text('home'), findsOneWidget);
     expect(find.byKey(const Key('login_submit')), findsNothing);
+  });
+
+  testWidgets('shows mock credentials hint on mock backend', (tester) async {
+    await pumpLogin(tester);
+
+    expect(
+      find.text('Mock backend demo: demo@example.com / password'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('shows error for invalid email format', (tester) async {
+    await pumpLogin(tester);
+
+    await tester.enterText(_fieldByKey('login_email'), 'not-an-email');
+    await tester.enterText(_fieldByKey('login_password'), 'password');
+    await tester.tap(find.byKey(const Key('login_submit')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Enter a valid email address'), findsOneWidget);
+    expect(find.text('home'), findsNothing);
+  });
+
+  testWidgets('shows error and stays on login for wrong password', (
+    tester,
+  ) async {
+    await pumpLogin(tester, withRouter: true);
+
+    await tester.enterText(_fieldByKey('login_email'), 'demo@example.com');
+    await tester.enterText(_fieldByKey('login_password'), 'wrong-password');
+    await tester.tap(find.byKey(const Key('login_submit')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Email or password is incorrect. Please try again.'),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('login_submit')), findsOneWidget);
+    expect(find.text('home'), findsNothing);
+  });
+
+  testWidgets('mock backend hides sign-up toggle', (tester) async {
+    await pumpLogin(tester);
+
+    expect(find.byKey(const Key('auth_mode_toggle')), findsNothing);
+    expect(find.text('New to Pulse?'), findsNothing);
+  });
+
+  testWidgets('supabase backend toggles between sign in and sign up', (
+    tester,
+  ) async {
+    await getIt.reset();
+    await configureTestDependencies(
+      const AppConfig(
+        flavor: AppFlavor.staging,
+        appName: 'Pulse Staging',
+        backend: BackendType.supabase,
+        supabaseUrl: 'https://example.supabase.co',
+        supabaseAnonKey: 'test-key',
+      ),
+    );
+
+    await pumpLogin(tester);
+
+    expect(find.text('Sign in to Pulse'), findsOneWidget);
+    expect(find.text('Sign in'), findsOneWidget);
+    expect(find.text("Don't have an account?"), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('auth_mode_toggle')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Create your account'), findsOneWidget);
+    expect(find.text('Create account'), findsOneWidget);
+    expect(find.text('Already have an account?'), findsOneWidget);
+    expect(find.text('Sign in to Pulse'), findsNothing);
+
+    await tester.tap(find.byKey(const Key('auth_mode_toggle')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Sign in to Pulse'), findsOneWidget);
   });
 }
 
