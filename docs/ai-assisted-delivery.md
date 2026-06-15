@@ -56,9 +56,10 @@ Pulse is a coaching and wellness MVP. It currently demonstrates:
 - Login UI using MVVM-style state management.
 - Theme settings with local persistence.
 - Figma-aligned design system with shared Flutter widgets.
-- Coaching lesson feed using mock data.
+- Coaching lesson feed with mock or Supabase catalog.
 - Lesson detail screen with video playback support.
 - Local saved lessons with SharedPreferences persistence.
+- **Supabase auth** (sign-up, email confirmation deep links) and **cloud saved-lessons sync** when signed in.
 - Localization-ready user-facing strings.
 - CI and test coverage across view models, repositories, and important widgets.
 
@@ -76,6 +77,8 @@ Useful pull requests:
 
 - [#23 Apply Figma design system](https://github.com/srdjan86/pulse_coaching_app/pull/23)
 - [#24 Add saved lessons and expand lesson feed](https://github.com/srdjan86/pulse_coaching_app/pull/24)
+- [#26 Add Supabase lesson catalog](https://github.com/srdjan86/pulse_coaching_app/pull/26)
+- [#28 Supabase auth and saved-lessons sync](https://github.com/srdjan86/pulse_coaching_app/pull/28)
 
 Useful issues:
 
