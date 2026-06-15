@@ -10,9 +10,9 @@ Pulse is the product repo: features, backlog, and shipped PRs live here.
 |------|------------|
 | **Architecture** | Feature-first (`domain` / `data` / `presentation`), repository pattern, GetIt DI, GoRouter |
 | **State** | BLoC (counter), MVVM + `provider` (auth, home, lessons) |
-| **Backends** | `mock` (CI default), `firebase`, **Supabase** (lessons catalog) |
+| **Backends** | `mock` (CI default), `firebase`, **Supabase** (lessons, auth, saved-lessons sync) |
 | **Flavors** | `dev`, `staging`, `prod` with dart-define config |
-| **Quality** | 76+ unit/widget tests, format + analyze + test in CI |
+| **Quality** | 110+ unit/widget/integration tests, format + analyze + test in CI |
 | **Delivery** | GitHub Issues → plan → PR → CI → review ([workflow docs](docs/ai-workflow.md)) |
 
 ## Shipped highlights
@@ -23,6 +23,7 @@ Pulse is the product repo: features, backlog, and shipped PRs live here.
 | [#24](https://github.com/srdjan86/pulse_coaching_app/pull/24) | Saved lessons + expanded lesson feed |
 | [#25](https://github.com/srdjan86/pulse_coaching_app/pull/25) | AI-assisted delivery case study |
 | [#26](https://github.com/srdjan86/pulse_coaching_app/pull/26) | Supabase lesson catalog backend |
+| [#28](https://github.com/srdjan86/pulse_coaching_app/pull/28) | Supabase auth, saved-lessons sync, email deep links |
 
 **Case study:** [`docs/ai-assisted-delivery.md`](docs/ai-assisted-delivery.md) — client-facing narrative of ticket → plan → code → tests → PR → CI.
 
